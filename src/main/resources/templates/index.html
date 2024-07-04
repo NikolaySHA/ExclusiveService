@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/commons::head}"></head>
+<body>
+<header th:replace="~{fragments/commons::nav}"></header>
+<main>
+    <div class="container bg-blur rounded mt-5 ">
+        <h1>Добре дошли в апликацията на Ексклузив Сервиз ООД.</h1>
+        <hr class="my-3 bg-white w-50"/>
+
+        <p class="h4">
+            Ексклузив сервиз ООД - доверен сервиз на Асет Иншуранс. Боядисва вашите автомобили и се грижи за добрия им външен вид.</p>
+        <hr class="my-3 bg-white w-75"/>
+
+        <h3>
+            <a class="text-primary" th:href="@{/users/login}">Вход</a>
+            ако имате акаунт или се
+            <a class="text-primary" th:href="@{/users/register}">регистрирай</a>
+            сега и запази час.
+        </h3>
+    </div>
+</main>
+<footer th:replace="fragments/commons::footer"></footer>
+</body>
+</html>

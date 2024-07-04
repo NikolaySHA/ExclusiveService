@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/commons::head"></head>
+<body>
+<header th:replace="fragments/commons::nav"></header>
+<main>
+    <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Регистрация</span></h1>
+    <hr class="hr-3 w-25 bg-white"/>
+
+    <form class="mx-auto w-25 bg-blur rounded"
+          th:method="POST"
+          th:action="@{/users/register}"
+          th:object="${registerData}"
+    >
+
+        <div class="form-group">
+            <div class="label-holder text-white textCol d-flex justify-content-center">
+                <label for="email" class="h4 mb-2">Имейл</label>
+            </div>
+            <input type="email"
+                   class="form-control"
+                   id="email"
+                   name="email"
+                   th:field="*{email}"
+                   th:errorclass="'is-invalid alert-danger'"/>
+            <small class="invalid-feedback text-danger">Моля въведете валиден имейл!</small>
+        </div>
+
+        <div class="form-group">
+            <div class="label-holder text-white textCol d-flex justify-content-center">
+                <label for="password" class="h4 mb-2">Парола</label>
+            </div>
+            <input type="password"
+                   class="form-control"
+                   id="password"
+                   name="password"
+                   th:field="*{password}"
+                   th:errorclass="'is-invalid alert-danger'"/>
+            <small class="invalid-feedback text-danger">Моля въведете парола!</small>
+        </div>
+        <div class="form-group">
+            <div class="label-holder text-white textCol d-flex justify-content-center">
+                <label for="confirmPassword" class="h4 mb-2">Повтори парола</label>
+            </div>
+            <input type="password"
+                   class="form-control"
+                   id="confirmPassword"
+                   name="confirmPassword"
+                   th:field="*{confirmPassword}"
+                   th:errorclass="'is-invalid alert-danger'"/>
+            <small class="invalid-feedback text-danger">Моля въведете парола!</small>
+        </div>
+
+        <div class="form-group">
+            <div class="label-holder text-white textCol d-flex justify-content-center">
+                <label for="name" class="h4 mb-2">Име</label>
+            </div>
+            <input type="name"
+                   class="form-control"
+                   id="name"
+                   name="name"
+                   th:field="*{name}"
+                   th:errorclass="'is-invalid alert-danger'"/>
+            <small class="invalid-feedback text-danger">Моля въведете име!</small>
+        </div>
+        <div class="form-group">
+            <div class="label-holder text-white textCol d-flex justify-content-center">
+                <label for="viberNumber" class="h4 mb-2">Вайбър</label>
+            </div>
+            <input type="phone"
+                   class="form-control"
+                   id="viberNumber"
+                   name="viberNumber"
+                   th:field="*{viberNumber}"
+                   th:errorclass="'is-invalid alert-danger'"/>
+            <small class="invalid-feedback text-danger">Моля въведете актуален вайбър номер!</small>
+        </div>
+
+
+        <div class="button-holder d-flex justify-content-center">
+            <button type="submit" class="btn btn-warning  mb-3" value="Register">Регистрирай ме</button>
+        </div>
+
+    </form>
+</main>
+<footer th:replace="fragments/commons::footer"></footer>
+</body>
+</html>
