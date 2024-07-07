@@ -31,7 +31,11 @@ public class CarService {
         car.setModel(data.getModel());
         car.setLicensePlate(data.getLicensePlate());
         car.setColor(data.getColor());
-        car.setVin(data.getVin());
+        String vin = data.getVin();
+        if (vin.equals("")) {
+            vin = null;
+        }
+        car.setVin(vin);
         car.setOwner(userService.findLoggedUser());
         carRepository.save(car);
         return true;
@@ -40,5 +44,13 @@ public class CarService {
     public List<Car> findCarsByUser() {
         User loggedUser = userService.findLoggedUser();
         return this.carRepository.findByOwner_Email(loggedUser.getEmail());
+    }
+    
+    public Optional<Car> findById(Long id) {
+        return this.carRepository.findById(id);
+    }
+    
+    public void delete(Car car) {
+        carRepository.delete(car);
     }
 }

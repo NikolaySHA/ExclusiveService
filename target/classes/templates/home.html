@@ -31,7 +31,7 @@
                                 <td>
                                     <form th:method="POST"
                                           th:action="@{/delete-car/{id}(id=${car.id})}">
-                                        <button href="/" class="bg-transparent"><i class="fa-regular fa-calendar-check text-danger">премахни</i></button>
+                                        <button class="bg-transparent" type="submit"><img class="mx-auto" src="/images/delete-512.png" alt="Appointments" width="25px" height="25px"></button>
                                     </form>
                                 </td>
                             </tr>
@@ -58,11 +58,6 @@
                                 <td th:text="${appointment.getDate()}">Дата</td>
                                 <td th:text="${appointment.getCar().getLicensePlate()}">Рег. Номер</td>
                                 <td th:text="${appointment.getPaintDetails()}">Детайли за боя</td>
-                                <td>
-                                    <form th:method="POST"
-                                          th:action="@{/delete-appointment/{id}(id=${appointment.id})}">
-                                        <button class="bg-transparent" type="submit"><img class="mx-auto" src="/images/delete-512.png" alt="Appointments" width="25px" height="25px"></button>
-                                    </form>
                                 </td>
                             </tr>
                         </table>

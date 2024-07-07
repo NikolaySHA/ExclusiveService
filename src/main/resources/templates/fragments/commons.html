@@ -23,11 +23,11 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-primary active h5 text-stroke"
+                    <a class="nav-link text-light active h5 text-stroke"
                        th:href="@{/gallery}">Галерия</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-primary active h5 text-stroke" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    <a class="nav-link dropdown-toggle text-light active h5 text-stroke" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                        th:href="@{/services}">Услуги</a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="#">Боядисване на автомобили</a>
@@ -37,34 +37,34 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-primary active h5 text-stroke"
+                    <a class="nav-link text-light active h5 text-stroke"
                        th:href="@{/contacts}">Контакти</a>
                 </li>
                 <li class="nav-item"
                     sec:authorize="hasRole('ROLE_ADMIN')">
-                <a class="nav-link text-primary active h5 text-stroke"
+                <a class="nav-link text-light active h5 text-stroke"
                    th:href="@{/admin}">Admin</a>
             </li>
 
                 <li class="nav-item">
-                    <a class="nav-link text-primary active h5 text-stroke"
+                    <a class="nav-link text-light active h5 text-stroke"
                        th:href="@{/add-appointment}">Запази час</a>
                 </li>
                 <li class="nav-item"
                     sec:authorize="!isAuthenticated()">
-                    <a class="nav-link text-primary active h5 text-stroke"
+                    <a class="nav-link text-light active h5 text-stroke"
                        th:href="@{/users/login}">Вход</a>
                 </li>
 
                 <li class="nav-item active"
                     sec:authorize="!isAuthenticated()">
-                    <a class="nav-link text-primary active h5 text-stroke"
+                    <a class="nav-link text-light active h5 text-stroke"
                        th:href="@{/users/register}">Регистрация</a>
                 </li>
 
                 <li sec:authorize="isAuthenticated()"
                     class="nav-item active">
-                    <a class="nav-link text-primary active h5 text-stroke"
+                    <a class="nav-link text-light active h5 text-stroke"
                        th:href="@{/add-car}">Добави автомобил</a>
                 </li>
 
@@ -72,13 +72,13 @@
                     class="nav-item active">
                     <form th:action="@{/users/logout}" method="post">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                        <button type="submit" class="nav-link text-primary active h5 text-stroke bg-transparent border-0">Излез</button>
+                        <button type="submit" class="nav-link text-light active h5 text-stroke bg-transparent border-0">Излез</button>
                     </form>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-dark my-2 my-sm-0" type="submit">Search</button>
+                <button class="btn btn-light my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
     </nav>
@@ -129,7 +129,7 @@
 </header>
 <footer class="footer bg-transparent  py-2">
     <div class="container-fluid text-center">
-        <div class="footer-background h5 text-primary text-stroke fixed-bottom">
+        <div class="footer-background h5 text-light text-stroke fixed-bottom">
             &copy;Exclusive Service 2024. All rights reserved.
         </div>
     </div>

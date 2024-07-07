@@ -64,15 +64,8 @@ public class UserController {
             model.addAttribute("registrationFailed", true);
             return "register";
         }
-        return "redirect:/";
+        return "redirect:/login";
     }
-//    @GetMapping("/users/register-error")
-//    public ModelAndView viewLoginError(RegisterDTO data) {
-//        ModelAndView modelAndView = new ModelAndView("register");
-//        modelAndView.addObject("loginData", data);
-//        modelAndView.addObject("showErrorMessage", true);
-//        return modelAndView;
-//    }
     @GetMapping("/users/login")
     public String viewLogin() {
         return "login";

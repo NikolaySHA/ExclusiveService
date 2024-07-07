@@ -68,4 +68,5 @@ public class AppointmentController {
         }
         return "redirect:/home";
     }
+    
 }

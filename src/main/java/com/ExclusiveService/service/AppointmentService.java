@@ -48,6 +48,15 @@ public class AppointmentService {
         }
         return appointments;
     }
+    
+    public List<Appointment> getAppointmentsForCar(String email, String licenseNumber) {
+        List<Appointment> appointments = new ArrayList<>();
+        List<Appointment> byCustomerEmailForCar = this.appointmentRepository.findByUser_EmailAndCar_LicensePlate(email, licenseNumber);
+        if (!byCustomerEmailForCar.isEmpty()) {
+            appointments = byCustomerEmailForCar;
+        }
+        return appointments;
+    }
 
 //    public Map<CategoryName, List<Appointment>> getAllByCategory() {
 //        Map<CategoryName, List<Appointment>> result = new HashMap<>();
