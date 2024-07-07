@@ -1,18 +1,17 @@
 package com.ExclusiveService.model;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class CustomerUserDetails implements UserDetails {
+public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
     
     private final String username;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
     private final String name;
     
-    public CustomerUserDetails(String email, String password, Collection<? extends GrantedAuthority> authorities, String name) {
+    public UserDetails(String email, String password, Collection<? extends GrantedAuthority> authorities, String name) {
         this.username = email;
         this.password = password;
         this.authorities = authorities;
