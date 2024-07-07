@@ -23,11 +23,14 @@ public class Car {
     private String color;
     @OneToMany(mappedBy = "car")
     private List<Appointment> appointments;
+    @OneToMany(mappedBy = "car")
+    private List<Repair> repairs;
     @ManyToOne
     private User owner;
     
     public Car() {
         this.appointments = new ArrayList<>();
+        this.repairs = new ArrayList<>();
     }
     
     public Long getId() {
@@ -88,6 +91,14 @@ public class Car {
     
     public User getOwner() {
         return owner;
+    }
+    
+    public List<Repair> getRepairs() {
+        return repairs;
+    }
+    
+    public void setRepairs(List<Repair> repairs) {
+        this.repairs = repairs;
     }
     
     public void setOwner(User owner) {

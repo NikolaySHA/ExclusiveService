@@ -1,7 +1,7 @@
 package com.ExclusiveService.service;
 
-import com.ExclusiveService.impl.UserDetailsServiceImpl;
-import com.ExclusiveService.model.dto.UserRegisterDTO;
+import com.ExclusiveService.util.UserDetailsService;
+import com.ExclusiveService.model.dto.RegisterDTO;
 import com.ExclusiveService.model.entity.Role;
 import com.ExclusiveService.model.entity.User;
 import com.ExclusiveService.model.enums.UserRoles;
@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,18 +22,18 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final UserDetailsService userDetailsService;
     private final RoleRepository roleRepository;
     
     
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserDetailsServiceImpl userDetailsServiceImpl, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.userDetailsServiceImpl = userDetailsServiceImpl;
+        this.userDetailsService = userDetailsService;
         this.roleRepository = roleRepository;
     }
     
-    public boolean register(UserRegisterDTO data){
+    public boolean register(RegisterDTO data){
         Optional<User> optionalUser = userRepository.findByEmail(data.getEmail());
         if (optionalUser.isPresent()){
             return false;
@@ -42,15 +43,17 @@ public class UserService {
         user.setName(data.getName());
         user.setViberNumber(data.getViberNumber());
         user.setPassword(passwordEncoder.encode(data.getPassword()));
-        List<Role> roles = user.getRoles();
+        
+        List<Role> roles = new ArrayList<>();
         if (userRepository.count() == 0){
-            Role adminRole = this.roleRepository.findByName(UserRoles.ADMIN);
+            Role adminRole = roleRepository.findByName(UserRoles.ADMIN);
             roles.add(adminRole);
         }
-        Role customerRole = this.roleRepository.findByName(UserRoles.CUSTOMER);
+        Role customerRole = roleRepository.findByName(UserRoles.CUSTOMER);
         roles.add(customerRole);
         user.setRoles(roles);
-        this.userRepository.save(user);
+        
+        userRepository.save(user);
         return true;
     }
     

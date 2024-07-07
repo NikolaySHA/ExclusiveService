@@ -13,22 +13,6 @@
           th:action="@{/add-appointment}"
           th:object="${appointmentData}">
 
-
-
-<!--        <div class="form-group">-->
-<!--            <div class="label-holder text-white textCol d-flex justify-content-center">-->
-<!--                <label for="ingredients" class="h4 mb-2">Ingredients</label>-->
-<!--            </div>-->
-<!--            <textarea type="text"-->
-<!--                      class="form-control"-->
-<!--                      id="ingredients"-->
-<!--                      name="ingredients"-->
-<!--                      th:field="*{ingredients}"-->
-<!--                      th:errorclass="'is-invalid alert-danger'"-->
-<!--            ></textarea>-->
-<!--            <small class="invalid-feedback text-danger">Ingredients error message</small>-->
-<!--        </div>-->
-
         <div class="form-group">
             <div class="text-white label-holder d-flex justify-content-center">
                 <label for="car" class="h4 mb-2">Автомобил</label>
@@ -37,14 +21,12 @@
                     id="car"
                     name="car"
                     th:field="*{car}"
-                    th:errorclass="'is-invalid alert-danger'"
-            >
+                    th:errorclass="'is-invalid alert-danger'">
                 <option value="">Изберете автомобил</option>
                 <option th:each="car : ${myCarsData}"
-                        th:value="${car.id}"
-                        th:text="${car.licensePlate}">
+                        th:value="${car.getId()}"
+                        th:text="${car.getLicensePlate()}">
                 </option>
-
             </select>
 
             <small class="invalid-feedback text-danger">Трябва да имате регистриран автомобил за да запазите час.</small>
@@ -57,15 +39,12 @@
                     id="paymentMethod"
                     name="paymentMethod"
                     th:field="*{paymentMethod}"
-                    th:errorclass="'is-invalid alert-danger'"
-            >
+                    th:errorclass="'is-invalid alert-danger'">
                 <option value="">Изберете начин за плащане</option>
-                <option value="ASSIGMENT_LETTER">Възлагателно писмо (само за АСЕТ ИНШЪРАНС)</option>
-                <option value="ANOTHER_INSURER_CLAIM">Щета по каско (по съгласувана Фактура)</option>
+                <option value="ASSIGMENT_LETTER">Възлагателно писмо / само за АСЕТ ИНШЪРАНС</option>
+                <option value="ANOTHER_INSURER_CLAIM">Щета по каско / по съгласувана Фактура</option>
                 <option value="PRIVATE_ORDER">Частна поръчка</option>
-
             </select>
-
             <small class="invalid-feedback text-danger">Моля изберете тип начин за плащане</small>
         </div>
         <div class="form-group">
@@ -91,6 +70,7 @@
                 <option value="10">10</option>
                 <option value="11">11</option>
                 <option value="12">12</option>
+                <option value="13">Цялостно боядисване</option>
             </select>
 
             <small class="invalid-feedback text-danger">Моля изберете брой детайли за боядисване</small>
@@ -105,9 +85,20 @@
                    name="date"
                    th:field="*{date}"
                    th:errorclass="'is-invalid alert-danger'">
-            <small class="invalid-feedback text-danger">Моля изберете дата за записване</small>
+            <small class="invalid-feedback text-danger">Моля изберете бъдеща дата за записване</small>
         </div>
-
+        <div class="form-group">
+            <div class="text-white label-holder d-flex justify-content-center">
+                <label for="comment" class="h4 mb-2">Коментар</label>
+            </div>
+            <textarea class="form-control"
+                      id="comment"
+                      name="comment"
+                      rows="4"
+                      th:field="*{comment}"
+                      th:errorclass="'is-invalid alert-danger'"></textarea>
+            <small class="invalid-feedback text-danger">Моля добавете коментар, ако е необходимо</small>
+        </div>
 
 
 

@@ -2,6 +2,7 @@ package com.ExclusiveService.service;
 
 import com.ExclusiveService.model.entity.Car;
 import com.ExclusiveService.model.dto.AddCarDataDTO;
+import com.ExclusiveService.model.entity.User;
 import com.ExclusiveService.repo.CarRepository;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,8 @@ public class CarService {
         return true;
         
     }
-    public List<Car> findCarsByUser(String email) {
-        return this.carRepository.findByOwner_Email(email);
+    public List<Car> findCarsByUser() {
+        User loggedUser = userService.findLoggedUser();
+        return this.carRepository.findByOwner_Email(loggedUser.getEmail());
     }
 }

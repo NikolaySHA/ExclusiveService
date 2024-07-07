@@ -27,6 +27,7 @@ public class Appointment {
     private PaymentMethod paymentMethod;
     @Enumerated(EnumType.STRING)
     private Status status;
+    private String comment;
     
     public Appointment() {
     }
@@ -85,5 +86,13 @@ public class Appointment {
     
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+    
+    public String getComment() {
+        return comment;
+    }
+    
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

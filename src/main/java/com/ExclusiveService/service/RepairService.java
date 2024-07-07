@@ -1,2 +1,8 @@
-package com.ExclusiveService.service;public class RepairService {
+package com.ExclusiveService.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class RepairService {
+
 }

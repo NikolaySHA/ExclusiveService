@@ -1,6 +1,6 @@
 package com.ExclusiveService.controller;
 
-import com.ExclusiveService.model.CustomerUserDetails;
+import com.ExclusiveService.util.UserDetails;
 import com.ExclusiveService.model.entity.Appointment;
 import com.ExclusiveService.model.entity.Car;
 import com.ExclusiveService.model.entity.User;
@@ -26,21 +26,26 @@ public class HomeController {
         this.userService = userService;
         this.carService = carService;
     }
-    
-    
     @GetMapping("/")
-    public String home(@AuthenticationPrincipal CustomerUserDetails userDetails, Model model) {
-        
-        if (userDetails instanceof CustomerUserDetails) {
+    public String nonLoggedIndex(){
+        User loggedUser = userService.findLoggedUser();
+        if (loggedUser != null) {
+            return "redirect:/home";
+        }
+        return "index";
+    }
+    
+    @GetMapping("/home")
+    public String loggedIn(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        User loggedUser = userService.findLoggedUser();
+        if (loggedUser != null) {
             model.addAttribute("welcomeMessage", userDetails.getName());
             List<Appointment> appointmentsForCustomer = appointmentService.getAppointments(userDetails.getUsername());
             model.addAttribute("appointmentsData", appointmentsForCustomer);
-            User loggedIn = userService.findLoggedUser();
-            List<Car> myCars = carService.findCarsByUser(loggedIn.getEmail());
+            List<Car> myCars = carService.findCarsByUser();
             model.addAttribute("myCarsData", myCars);
-            return "redirect:/home";
+            return "home";
         } else {
-           // model.addAttribute("welcomeMessage", "Anonymous ");
             return "index";
         }
     }

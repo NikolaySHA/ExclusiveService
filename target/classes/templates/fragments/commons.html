@@ -13,8 +13,9 @@
 </head>
 <body>
 <header>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-transparent">
-        <a class="navbar-brand text-white"  th:href="@{/}">Ексклузив Сервиз</a>
+    <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-dar">
+        <a class="navbar-brand text-white"
+           th:href="@{/}"><img class="mx-auto" src="/images/Logo.jpg" alt="Exclusive Service" width="120rem" height="60rem"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -22,12 +23,12 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-primary active h5 text-stroke" th:href="@{/gallery}">Галерия</a>
+                    <a class="nav-link text-primary active h5 text-stroke"
+                       th:href="@{/gallery}">Галерия</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-primary" th:href="@{/services}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Услуги
-                    </a>
+                    <a class="nav-link dropdown-toggle text-primary active h5 text-stroke" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                       th:href="@{/services}">Услуги</a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="#">Боядисване на автомобили</a>
                         <a class="dropdown-item" href="#">Възстановяване на джанти</a>
@@ -36,20 +37,29 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-primary active h5 text-stroke">Контакти</a>
+                    <a class="nav-link text-primary active h5 text-stroke"
+                       th:href="@{/contacts}">Контакти</a>
                 </li>
+                <li class="nav-item"
+                    sec:authorize="hasRole('ROLE_ADMIN')">
+                <a class="nav-link text-primary active h5 text-stroke"
+                   th:href="@{/admin}">Admin</a>
+            </li>
+
                 <li class="nav-item">
                     <a class="nav-link text-primary active h5 text-stroke"
                        th:href="@{/add-appointment}">Запази час</a>
                 </li>
                 <li class="nav-item"
                     sec:authorize="!isAuthenticated()">
-                    <a class="nav-link text-primary active h5 text-stroke" th:href="@{/users/login}">Вход</a>
+                    <a class="nav-link text-primary active h5 text-stroke"
+                       th:href="@{/users/login}">Вход</a>
                 </li>
 
                 <li class="nav-item active"
                     sec:authorize="!isAuthenticated()">
-                    <a class="nav-link text-primary active h5 text-stroke" th:href="@{/users/register}">Регистрация</a>
+                    <a class="nav-link text-primary active h5 text-stroke"
+                       th:href="@{/users/register}">Регистрация</a>
                 </li>
 
                 <li sec:authorize="isAuthenticated()"

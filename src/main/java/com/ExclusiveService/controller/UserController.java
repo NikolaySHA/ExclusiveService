@@ -1,14 +1,17 @@
 package com.ExclusiveService.controller;
 
-import com.ExclusiveService.model.dto.UserLoginDTO;
-import com.ExclusiveService.model.dto.UserRegisterDTO;
+import com.ExclusiveService.model.dto.LoginDTO;
+import com.ExclusiveService.model.dto.RegisterDTO;
 import com.ExclusiveService.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UserController {
@@ -22,12 +25,12 @@ public class UserController {
     }
     
     @ModelAttribute("registerData")
-    public UserRegisterDTO customerRegisterDTO(){
-        return new UserRegisterDTO();
+    public RegisterDTO registerDTO(){
+        return new RegisterDTO();
     }
     @ModelAttribute("loginData")
-    public UserLoginDTO customerLoginDTO(){
-        return new UserLoginDTO();
+    public LoginDTO loginDTO(){
+        return new LoginDTO();
     }
     
     
@@ -39,28 +42,46 @@ public class UserController {
     }
     
     @PostMapping("/users/register")
-    public String doRegister(@Valid UserRegisterDTO data){
-        
-        if (!data.getPassword().equals(data.getConfirmPassword())){
+    public String doRegister(@Valid RegisterDTO data,
+                             BindingResult bindingResult,
+                             Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("org.springframework.validation.BindingResult.registerData", bindingResult);
+            model.addAttribute("registerData", data);
             return "register";
         }
+        
+        if (!data.getPassword().equals(data.getConfirmPassword())) {
+            model.addAttribute("registerData", data);
+            model.addAttribute("passwordMismatch", true);
+            model.addAttribute("org.springframework.validation.BindingResult.registerData", bindingResult);
+            return "register";
+        }
+        
         boolean success = userService.register(data);
         if (!success) {
-            return "redirect:/users/register";
+            model.addAttribute("registerData", data);
+            model.addAttribute("registrationFailed", true);
+            return "register";
         }
-        return "redirect:/users/login";
+        return "redirect:/";
     }
+//    @GetMapping("/users/register-error")
+//    public ModelAndView viewLoginError(RegisterDTO data) {
+//        ModelAndView modelAndView = new ModelAndView("register");
+//        modelAndView.addObject("loginData", data);
+//        modelAndView.addObject("showErrorMessage", true);
+//        return modelAndView;
+//    }
     @GetMapping("/users/login")
-    public ModelAndView viewLogin() {
-        ModelAndView modelAndView = new ModelAndView("login");
-        modelAndView.addObject("loginData", new UserLoginDTO());
-        return modelAndView;
+    public String viewLogin() {
+        return "login";
     }
     @GetMapping("/users/login-error")
-    public ModelAndView viewLoginError() {
+    public ModelAndView viewLoginError(@ModelAttribute("loginData") LoginDTO loginDTO) {
         ModelAndView modelAndView = new ModelAndView("login");
         
-        modelAndView.addObject("loginData", new UserLoginDTO());
+        modelAndView.addObject("loginData", loginDTO);
         modelAndView.addObject("showErrorMessage", true);
         return modelAndView;
     }

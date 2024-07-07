@@ -1,4 +1,4 @@
-package com.ExclusiveService.model;
+package com.ExclusiveService.util;
 
 import org.springframework.security.core.GrantedAuthority;
 

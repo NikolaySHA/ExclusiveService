@@ -1,11 +1,11 @@
 package com.ExclusiveService.model.dto;
 
-public class UserLoginDTO {
+public class LoginDTO {
     private String email;
     
     private String password;
     
-    public UserLoginDTO() {
+    public LoginDTO() {
     }
     
     public String getEmail() {

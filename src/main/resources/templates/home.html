@@ -7,7 +7,7 @@
 <header th:replace="~{fragments/commons::nav}"></header>
 <main>
     <div class="container bg-blur rounded mt-1 mb-4">
-        <h6 class="bg-gray text-dark mb-0 mt-0">Добре дошъл, <span sec:authorized="isAuthenticated()" sec:authenticated='name'></span></h6>
+        <h6 class="bg-gray text-dark mb-0 mt-0">Добре дошъл, <span th:text="${welcomeMessage}"></span></h6>
         <div class="row mt-1 mb-2">
             <div class="col-6 mt-1 mb-1">
                 <div>
@@ -31,7 +31,7 @@
                                 <td>
                                     <form th:method="POST"
                                           th:action="@{/delete-car/{id}(id=${car.id})}">
-                                        <button href="/"><i class="fa-regular fa-calendar-check">премахни</i></button>
+                                        <button href="/" class="bg-transparent"><i class="fa-regular fa-calendar-check text-danger">премахни</i></button>
                                     </form>
                                 </td>
                             </tr>
@@ -61,7 +61,7 @@
                                 <td>
                                     <form th:method="POST"
                                           th:action="@{/delete-appointment/{id}(id=${appointment.id})}">
-                                        <button type="submit"><img class="mr-2 " src="/images/delete-512.png" alt="Appointments" width="25px" height="25px"></button>
+                                        <button class="bg-transparent" type="submit"><img class="mx-auto" src="/images/delete-512.png" alt="Appointments" width="25px" height="25px"></button>
                                     </form>
                                 </td>
                             </tr>

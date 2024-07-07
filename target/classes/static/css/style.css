@@ -5,16 +5,6 @@
 .bg-gray {
     background-color: #e9ecef;
 }
-
-.bg-nav{
-    background-color: rgba(1, 141, 8, 0);
-    /*background-color: #e0a800;*/
-}
-/*.nav-link:hover{*/
-/*    background-color: darkgray !important;*/
-/*}*/
-
-
 body {
     background-image: url(/images/Porsche.jpg);
     background-position: center;
@@ -58,18 +48,9 @@ footer {
     left: 0;
 }
 
-.container{
-
+body > main {
+    margin-top: 6rem;
 }
-
-/*.text-stroke{*/
-/*    text-shadow:*/
-/*            0.07em 0 white,*/
-/*            0 0.07em white,*/
-/*            -0.07em 0 white,*/
-/*            0 -0.07em white;*/
-/*}*/
-
 .text-primary{
     color: silver!important;
 }

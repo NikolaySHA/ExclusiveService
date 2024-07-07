@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public class UserRegisterDTO {
+public class RegisterDTO {
     
     @Email
     @NotBlank
@@ -25,7 +25,7 @@ public class UserRegisterDTO {
     private String viberNumber;
     
     
-    public UserRegisterDTO() {
+    public RegisterDTO() {
     }
     
     public String getViberNumber() {

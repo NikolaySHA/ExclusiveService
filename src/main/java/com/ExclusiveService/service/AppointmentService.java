@@ -2,6 +2,7 @@ package com.ExclusiveService.service;
 
 import com.ExclusiveService.model.dto.AddAppointmentDTO;
 import com.ExclusiveService.model.entity.Appointment;
+import com.ExclusiveService.model.entity.Car;
 import com.ExclusiveService.model.entity.User;
 import com.ExclusiveService.model.enums.Status;
 import com.ExclusiveService.repo.AppointmentRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AppointmentService {
@@ -26,11 +28,10 @@ public class AppointmentService {
     
     public boolean create(AddAppointmentDTO data) {
         User user = userService.findLoggedUser();
-       // Optional<Car> optionalCar = carRepository.findByLicensePlate(data.getCar().getLicensePlate());
         Appointment appointment = new Appointment();
         appointment.setPaymentMethod(data.getPaymentMethod());
         appointment.setDate(data.getDate());
-     //   appointment.setCar(optionalCar.get());
+        appointment.setCar(data.getCar());
         appointment.setUser(user);
         appointment.setStatus(Status.SCHEDULED);
         appointment.setPaintDetails(data.getPaintDetails());
@@ -41,10 +42,10 @@ public class AppointmentService {
     public List<Appointment> getAppointments(String email) {
        
         List<Appointment> appointments = new ArrayList<>();
-//        List<Appointment> byCustomerEmail = this.appointmentRepository.findByCustomer_Email(email);
-//        if (!byCustomerEmail.isEmpty()) {
-//            appointments = byCustomerEmail;
-//        }
+        List<Appointment> byCustomerEmail = this.appointmentRepository.findByUser_Email(email);
+        if (!byCustomerEmail.isEmpty()) {
+            appointments = byCustomerEmail;
+        }
         return appointments;
     }
 

@@ -1,6 +1,6 @@
-package com.ExclusiveService.impl;
+package com.ExclusiveService.util;
 
-import com.ExclusiveService.model.UserDetails;
+import com.ExclusiveService.util.UserDetails;
 import com.ExclusiveService.model.entity.User;
 import com.ExclusiveService.repo.UserRepository;
 import org.hibernate.Hibernate;
