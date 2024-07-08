@@ -19,7 +19,7 @@ public class SecurityConfig {
                                 // Permit all static resources
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 // Permit access to specific paths for all users
-                                .requestMatchers("/", "/users/login", "/users/register", "/gallery","/users/login-error").permitAll()
+                                .requestMatchers("/", "/users/login", "/users/register", "/gallery","/users/login-error", "/contacts", "/services").permitAll()
                                 // All other requests need to be authenticated
                                 .anyRequest().authenticated()
                 )

@@ -54,4 +54,12 @@ public class HomeController {
     public String gallery(){
         return "gallery";
     }
+    @GetMapping("/services")
+    public String services(){
+        return "services";
+    }
+    @GetMapping("/contacts")
+    public String contacts(){
+        return "services";
+    }
 }
