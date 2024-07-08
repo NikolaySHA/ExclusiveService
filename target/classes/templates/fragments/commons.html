@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-          >
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -10,30 +10,48 @@
     <link rel="stylesheet" href="/css/reset-css.css"/>
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/style.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/8c77968f69.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
 <header>
     <nav class="navbar fixed-top navbar-expand-sm navbar-light">
         <a class="navbar-brand text-white" th:href="@{/}">
-            <img class="mx-auto" src="/images/Logo.jpg" alt="Exclusive Service" width="120rem" height="60rem">
+            <img class="mx-auto" src="/images/Logo.jpg" alt="Exclusive Service" width="120" height="60">
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
+<!--                <li class="nav-item dropdown">-->
+<!--                    <a class="nav-link dropdown-toggle text-light active h5 text-stroke" id="navbarDropdown" role="button"-->
+<!--                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:href="@{/services}">Услуги</a>-->
+<!--                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+<!--                        <a class="dropdown-item" href="#">Боядисване на автомобили</a>-->
+<!--                        <a class="dropdown-item" href="#">Възстановяване на джанти</a>-->
+<!--                        <div class="dropdown-divider"></div>-->
+<!--                        <a class="dropdown-item" href="#">Подмяна на стъкла</a>-->
+<!--                    </div>-->
+<!--                </li>-->
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle text-light active h5 text-stroke" th:href="@{/services}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Услуги
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Боядисване на автомобили</a></li>
+                        <li><a class="dropdown-item" href="#">Възстановяване на джанти</a></li>
+                        <li><a class="dropdown-item" href="#">Подмяна на стъкла</a></li>
+                    </ul>
+                </div>
                 <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/gallery}">Gallery</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-light active h5 text-stroke" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:href="@{/services}">Услуги</a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Боядисване на автомобили</a>
-                        <a class="dropdown-item" href="#">Възстановяване на джанти</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Подмяна на стъкла</a>
-                    </div>
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/gallery}">Галерия</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light active h5 text-stroke" th:href="@{/contacts}">Контакти</a>
@@ -41,37 +59,62 @@
                 <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
                     <a class="nav-link text-light active h5 text-stroke" th:href="@{/admin}">Admin</a>
                 </li>
-
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke border border-warning rounded" th:href="@{/add-appointment}">Запази час</a>
-                </li>
-                <li class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/users/login}">Вход</a>
-                </li>
-                <li class="nav-item active" sec:authorize="!isAuthenticated()">
-                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/users/register}">Регистрация</a>
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/add-appointment}">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <span class="button-text">Запази час</span>
+                    </a>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/add-car}">Добави автомобил</a>
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/add-car}"><i class="fa-solid fa-car"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://www.instagram.com/exclusiveservice.sofia/'}">
+                        <i class="fa-brands fa-square-instagram"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://www.facebook.com/eurolinkservice/'}">
+                        <i class="fa-brands fa-square-facebook"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://maps.app.goo.gl/cFwKBYrQBYPQYKCKA'}">
+                        <i class="fa-solid fa-map"></i>
+                    </a>
+                </li>
+                <li class="nav-item active" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/users/login}">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span class="button-text">Вход</span>
+                    </a>
+                </li>
+                <li class="nav-item active" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/users/register}">
+                        <i class="fa-solid fa-user"></i>
+                        <span class="button-text">Регистрация</span>
+                    </a>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <form th:action="@{/users/logout}" method="post">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                        <button type="submit" class="nav-link text-light active h5 text-stroke bg-transparent border-0">Излез</button>
+                        <button type="submit" class="nav-link text-light active h5 text-stroke bg-transparent border-0"><i class="fa-solid fa-right-from-bracket"></i></button>
                     </form>
                 </li>
             </ul>
         </div>
     </nav>
 </header>
-<footer class="footer bg-transparent  py-2">
+<footer class="footer bg-transparent py-2">
     <div class="container-fluid text-center">
         <div class="footer-background h5 text-light text-stroke fixed-bottom">
             &copy;Exclusive Service 2024. All rights reserved.
         </div>
     </div>
 </footer>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

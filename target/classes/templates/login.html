@@ -7,10 +7,11 @@
 <main>
     <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Вход</span></h1>
     <hr class="hr-3 w-25 bg-white"/>
-    <form class="mx-auto w-25 bg-blur"
+    <form class="mx-auto w-75 bg-blur col-xl-3 col-md-4 col-sm-5"
           th:action="@{/users/login}"
           th:method="POST"
-          th:object="${loginData}">
+          th:object="${loginData}"
+          style="padding: 20px;">
         <div class="form-group">
             <div class="alert alert-danger alert-dismissible" th:if="${showErrorMessage}">
                 <a class="close" data-dismiss="alert" aria-label="close"></a>
@@ -32,13 +33,16 @@
             <div class="label-holder text-white d-flex justify-content-center">
                 <label for="password" class="h3 mb-2">Парола</label>
             </div>
-            <input type="password" class="form-control" id="password" name="password"
+            <input type="password"
+                   class="form-control"
+                   id="password"
+                   name="password"
                    th:field="*{password}"
                    autocomplete="current-password"/>
         </div>
 
         <div class="button-holder d-flex justify-content-center">
-            <button type="submit" class="btn btn-warning  mb-3">Влез</button>
+            <button type="submit" class="btn btn-warning mb-3">Влез</button>
         </div>
     </form>
 </main>

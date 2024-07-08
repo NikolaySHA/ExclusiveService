@@ -8,19 +8,18 @@
     <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Регистрация</span></h1>
     <hr class="hr-3 w-25 bg-white"/>
 
-    <form class="mx-auto w-25 bg-blur rounded"
+    <form class="mx-auto w-75 bg-blur col-xl-3 col-md-4 col-sm-5"
           th:method="POST"
           th:action="@{/users/register}"
           th:object="${registerData}"
     >
 
         <div class="form-group">
-            <div class="alert alert-danger alert-dismissible" th:if="${passwordMismatch}">
-                <a class="close" data-dismiss="alert" aria-label="close"></a>
+            <div class="alert alert-danger" th:if="${passwordMismatch}">
                 <strong>Неуспешна регистраця!</strong>
                 Паролите не съвпадат!
             </div>
-            <div class="label-holder text-white textCol d-flex justify-content-center">
+            <div class="label-holder text-white d-flex justify-content-center">
                 <label for="email" class="h4 mb-2">Имейл</label>
             </div>
             <input type="email"
@@ -30,10 +29,8 @@
                    th:field="*{email}"
                    th:errorclass="'is-invalid alert-danger'"/>
             <small class="invalid-feedback text-danger">Моля въведете валиден имейл!</small>
-        </div>
 
-        <div class="form-group">
-            <div class="label-holder text-white textCol d-flex justify-content-center">
+            <div class="label-holder text-white d-flex justify-content-center">
                 <label for="password" class="h4 mb-2">Парола</label>
             </div>
             <input type="password"
@@ -42,9 +39,8 @@
                    name="password"
                    th:errorclass="'is-invalid alert-danger'"/>
             <small class="invalid-feedback text-danger">Моля въведете парола между 3 и 20 символа!</small>
-        </div>
-        <div class="form-group">
-            <div class="label-holder text-white textCol d-flex justify-content-center">
+
+            <div class="label-holder text-white d-flex justify-content-center">
                 <label for="confirmPassword" class="h4 mb-2">Повтори парола</label>
             </div>
             <input type="password"
@@ -53,10 +49,8 @@
                    name="confirmPassword"
                    th:errorclass="'is-invalid alert-danger'"/>
             <small class="invalid-feedback text-danger">Моля въведете парола между 3 и 20 символа!</small>
-        </div>
 
-        <div class="form-group">
-            <div class="label-holder text-white textCol d-flex justify-content-center">
+            <div class="label-holder text-white d-flex justify-content-center">
                 <label for="name" class="h4 mb-2">Име</label>
             </div>
             <input type="text"
@@ -66,9 +60,8 @@
                    th:field="*{name}"
                    th:errorclass="'is-invalid alert-danger'"/>
             <small class="invalid-feedback text-danger">Моля въведете име между 3 и 20 символа!</small>
-        </div>
-        <div class="form-group">
-            <div class="label-holder text-white textCol d-flex justify-content-center">
+
+            <div class="label-holder text-white d-flex justify-content-center">
                 <label for="viberNumber" class="h4 mb-2">Вайбър</label>
             </div>
             <input type="number"
@@ -78,9 +71,8 @@
                    th:field="*{viberNumber}"
                    th:errorclass="'is-invalid alert-danger'"/>
             <small class="invalid-feedback text-danger">Моля въведете актуален вайбър номер съдържащ между 8 и 20 символа!</small>
+
         </div>
-
-
         <div class="button-holder d-flex justify-content-center">
             <button type="submit" class="btn btn-warning  mb-3" value="Register">Регистрирай ме</button>
         </div>
