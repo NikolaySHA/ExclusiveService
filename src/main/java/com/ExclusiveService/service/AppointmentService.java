@@ -57,27 +57,10 @@ public class AppointmentService {
         }
         return appointments;
     }
+    
+    public List<Appointment> getAllAppointments() {
+        return this.appointmentRepository.findAll();
+    }
 
-//    public Map<CategoryName, List<Appointment>> getAllByCategory() {
-//        Map<CategoryName, List<Appointment>> result = new HashMap<>();
-//
-//        List<Car> allCar = categoryRepository.findAll();
-//        for (Car car : allCar) {
-//            List<Appointment> allByCategory = recipeRepository.findAllByCategory(car);
-//            result.put(car.getName(), allByCategory);
-//        }
-//        return result;
-  //  }
-//    @Transactional
-//    public void addToFavourites(Long id, long recipeId) {
-//        Optional<User> optionalUser = userRepository.findById(id);
-//        Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
-//        if (optionalUser.isEmpty() || optionalRecipe.isEmpty()){
-//            return;
-//        }
-//        optionalUser.get().addFavourite(optionalRecipe.get());
-//
-//        userRepository.save(optionalUser.get());
-//    }
     
 }

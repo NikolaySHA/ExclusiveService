@@ -3,7 +3,9 @@ package com.ExclusiveService.service;
 import com.ExclusiveService.model.entity.Car;
 import com.ExclusiveService.model.dto.AddCarDataDTO;
 import com.ExclusiveService.model.entity.User;
+import com.ExclusiveService.model.enums.UserRoles;
 import com.ExclusiveService.repo.CarRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +15,6 @@ import java.util.Optional;
 public class CarService {
     private final UserService userService;
     private final CarRepository carRepository;
-    
     
     
     public CarService(UserService userService, CarRepository carRepository) {
@@ -53,4 +54,9 @@ public class CarService {
     public void delete(Car car) {
         carRepository.delete(car);
     }
+    
+    public List<Car> findAllCars() {
+        return carRepository.findAll();
+    }
+    
 }

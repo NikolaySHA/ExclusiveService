@@ -60,6 +60,6 @@ public class HomeController {
     }
     @GetMapping("/contacts")
     public String contacts(){
-        return "services";
+        return "contacts";
     }
 }

@@ -58,6 +58,7 @@ public class CarController {
         boolean success = carService.addCar(data);
         if (!success) {
             redirectAttributes.addFlashAttribute("addCarData", data);
+            redirectAttributes.addFlashAttribute("showErrorMessageExistingCar", true);
             return "redirect:/add-car";
         }
         return "redirect:/";
