@@ -106,6 +106,23 @@ footer {
     box-shadow: none; /* Премахване на shadow при фокус */
 }
 
+/*.lang-select {*/
+/*    position: relative;*/
+/*    display: inline-block;*/
+/*}*/
+
+/*.lang-select select {*/
+/*    display: none; !* Initially hide the select element *!*/
+/*    position: absolute;*/
+/*    top: 20px; !* Adjust this value based on your needs *!*/
+/*    left: 0;*/
+/*    z-index: 10;*/
+/*}*/
+
+/*.lang-select:hover select {*/
+/*    display: block; !* Show the select element on hover *!*/
+/*}*/
+
 .card {
     background-color: #343a40; /* За да е в синхрон с текстовете в картите */
     border-radius: 0; /* Премахва заоблените граници на картите */

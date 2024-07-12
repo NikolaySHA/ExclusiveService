@@ -51,10 +51,11 @@
                     </ul>
                 </div>
                 <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/gallery}">Галерия</a>
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/gallery}" th:text="#{nav_bar_gallery}"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/contacts}">Контакти</a>
+
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/contacts}" th:text="#{nav_bar_contact_us}"></a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -88,7 +89,7 @@
                 <li class="nav-item active" sec:authorize="!isAuthenticated()">
                     <a class="nav-link text-light active h5 text-stroke" th:href="@{/users/login}">
                         <i class="fa-solid fa-right-to-bracket"></i>
-                        <span class="button-text">Вход</span>
+                        <span class="button-text" th:text="#{nav_bar_login}"></span>
                     </a>
                 </li>
                 <li class="nav-item active" sec:authorize="!isAuthenticated()">
@@ -103,6 +104,18 @@
                         <button type="submit" class="nav-link text-light active h5 text-stroke bg-transparent border-0"><i class="fa-solid fa-right-from-bracket"></i></button>
                     </form>
                 </li>
+                <li class="nav-item">
+                    <div class="lang-select">
+                        <i class="fa-solid fa-language"></i>
+                        <form th:method="get" for="lang">
+                            <select id="lang" name="lang" onchange="this.form.submit()">
+                                <option value="en_US" th:selected="${#locale.toString()} == 'en_US'">English</option>
+                                <option value="bg_BG" th:selected="${#locale.toString()} == 'bg_BG'">Български</option>
+                            </select>
+                        </form>
+                    </div>
+                </li>
+
             </ul>
         </div>
     </nav>
