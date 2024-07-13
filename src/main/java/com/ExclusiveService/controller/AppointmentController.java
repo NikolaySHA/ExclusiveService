@@ -5,7 +5,7 @@ import com.ExclusiveService.model.dto.AddAppointmentDTO;
 import com.ExclusiveService.model.entity.Car;
 import com.ExclusiveService.service.AppointmentService;
 import com.ExclusiveService.service.CarService;
-import com.ExclusiveService.service.UserHelperService;
+import com.ExclusiveService.service.impl.UserHelperService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

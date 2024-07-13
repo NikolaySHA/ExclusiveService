@@ -1,4 +1,4 @@
-package com.ExclusiveService.service;
+package com.ExclusiveService.service.impl;
 
 import com.ExclusiveService.model.entity.User;
 import com.ExclusiveService.repo.UserRepository;
@@ -7,7 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-@Service
+
 public class UserHelperService {
     private static final String ROLE_PREFIX = "ROLE_";
     private final UserRepository userRepository;

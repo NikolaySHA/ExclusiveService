@@ -18,59 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class UserService {
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final UserDetailsService userDetailsService;
-    private final RoleRepository roleRepository;
+
+public interface UserService {
+   
+    
+    boolean register(RegisterDTO data);
     
     
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, RoleRepository roleRepository) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.userDetailsService = userDetailsService;
-        this.roleRepository = roleRepository;
-    }
-    
-    public boolean register(RegisterDTO data){
-        Optional<User> optionalUser = userRepository.findByEmail(data.getEmail());
-        if (optionalUser.isPresent()){
-            return false;
-        }
-        User user = new User();
-        user.setEmail(data.getEmail());
-        user.setName(data.getName());
-        user.setViberNumber(data.getViberNumber());
-        user.setPassword(passwordEncoder.encode(data.getPassword()));
-        
-        List<Role> roles = new ArrayList<>();
-        if (userRepository.count() == 0){
-            Role adminRole = roleRepository.findByName(UserRoles.ADMIN);
-            roles.add(adminRole);
-        }
-        Role customerRole = roleRepository.findByName(UserRoles.CUSTOMER);
-        roles.add(customerRole);
-        user.setRoles(roles);
-        
-        userRepository.save(user);
-        return true;
-    }
-    
-    
-    public User findLoggedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            Object principal = authentication.getPrincipal();
-            if (principal instanceof UserDetails) {
-                Optional<User> user = userRepository.findByEmail(((UserDetails) principal).getUsername());
-                if (user.isPresent()){
-                    return user.get();
-                }
-            }
-        }
-        return null;
-    }
+    User findLoggedUser();
 
     
     //    @Transactional
