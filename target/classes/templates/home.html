@@ -7,19 +7,21 @@
 <header th:replace="~{fragments/commons::nav}"></header>
 <main>
     <div class="container bg-blur rounded mt-1 mb-4">
-        <h6 class="bg-gray text-light mb-0 mt-0"><span class="badge badge-pill badge-warning">Добре дошъл, <span th:text="${welcomeMessage}"></span></span></h6>
+        <h6 class="bg-gray text-light mb-0 mt-0"><span class="badge badge-pill badge-warning">
+        <span th:text="#{welcome_message}"></span>, <span th:text="${userName}"></span>
+    </span></h6>
         <div class="row mt-1 mb-2">
             <div class="col-md-6 col-12 mt-1 mb-1">
                 <div>
-                    <h3 class="mySticky bg-gray text-light  mb-0 mt-2">Моите автомобили</h3>
+                    <h3 class="mySticky bg-gray text-light  mb-0 mt-2" th:text="#{my_cars}"></h3>
                     <div class="bg-dark rounded m-auto" style="height: 31vh; overflow: auto">
                         <table class="table table-striped table-dark">
                             <tr>
                                 <td></td>
-                                <td>Марка</td>
-                                <td>Модел</td>
-                                <td>Рег. номер</td>
-                                <td>Премахни</td>
+                                <td th:text="#{vehicle_license_plate}"></td>
+                                <td th:text="#{vehicle_make}"></td>
+                                <td th:text="#{vehicle_model}"></td>
+                                <td th:text="#{remove}"></td>
                             </tr>
                             <tr th:each="car : ${myCarsData}">
                                 <td class="bg-warning-container" style="width: 4%">
@@ -48,15 +50,15 @@
             </div>
             <div class="col-md-6 col-12 mt-1 mb-1">
                 <div>
-                    <h3 class="mySticky bg-gray text-light  mb-0 mt-2">Ремонти</h3>
+                    <h3 class="mySticky bg-gray text-light  mb-0 mt-2" th:text="#{my_appointments}"></h3>
                     <div class="bg-dark rounded m-auto" style="height: 31vh; overflow: auto">
                         <table class="table table-striped table-dark">
                             <tr>
                                 <td></td>
-                                <td>Дата</td>
-                                <td>Рег. номер</td>
-                                <td>Статус</td>
-                                <td>Бр. детайли</td>
+                                <td th:text="#{date}">Дата</td>
+                                <td th:text="#{vehicle_license_plate}">Рег. номер</td>
+                                <td th:text="#{status}">Статус</td>
+                                <td th:text="#{details_count}">Бр. детайли</td>
                             </tr>
                             <tr th:each="appointment : ${appointmentsData}">
                                 <td class="bg-warning" scope="row" style="width: 5%">

@@ -141,7 +141,6 @@ public class UserController {
             return "form-user";
         }
         
-        // Гарантираме, че имейлът не се променя
         user.setEmail(existingUser.getEmail());
         
         boolean success = userService.updateUser(id, user);

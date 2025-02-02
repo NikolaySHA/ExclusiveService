@@ -10,7 +10,7 @@
 <header th:replace="fragments/commons::nav"></header>
 <main>
     <h1 class="text-center mt-2">
-        <span class="badge badge-pill badge-warning" th:text="${isEdit} ? 'Промени назначен ремонт' : #{nav_bar_add_appointment}"></span>
+        <span class="badge badge-pill badge-warning" th:text="${isEdit} ? #{edit_appointment} : #{nav_bar_add_appointment}"></span>
     </h1>
     <hr class="hr-3 w-25 bg-white"/>
 
@@ -130,7 +130,7 @@
                       th:field="*{comment}"></textarea>
         </div>
         <div class="button-holder d-flex justify-content-center">
-            <button type="submit" class="btn btn-warning mb-3" th:text="${isEdit} ? 'Запази промени' : #{save}"></button>
+            <button type="submit" class="btn btn-warning mb-3" th:text="${isEdit} ? #{save_changes} : #{save}"></button>
         </div>
     </form>
 </main>

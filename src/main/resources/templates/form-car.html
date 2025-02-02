@@ -5,7 +5,7 @@
 <header th:replace="fragments/commons::nav"></header>
 <main>
     <h1 class="text-center mt-2">
-        <span class="badge badge-pill badge-warning" th:text="${isEdit} ? 'Промени автомобил' : #{add_car}"></span>
+        <span class="badge badge-pill badge-warning" th:text="${isEdit} ? #{edit_car} : #{add_car}"></span>
     </h1>
     <hr class="hr-3 w-25 bg-white"/>
     <form class="mx-auto w-75 bg-blur col-xl-3 col-md-4 col-sm-5"
@@ -83,7 +83,7 @@
             <small th:errors="*{color}" class="invalid-feedback text-danger"></small>
         </div>
         <div class="button-holder d-flex justify-content-center">
-            <button type="submit" class="btn btn-warning mb-3" th:text="${isEdit} ? 'Запази' : #{add_car}"></button>
+            <button type="submit" class="btn btn-warning mb-3" th:text="${isEdit} ? #{save_changes} : #{add_car}"></button>
         </div>
     </form>
 </main>
