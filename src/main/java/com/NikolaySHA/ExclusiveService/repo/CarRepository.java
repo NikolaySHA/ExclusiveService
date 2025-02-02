@@ -21,4 +21,6 @@ public interface CarRepository extends JpaRepository<Car, Long> {
     List<Car> searchCarsByFilter(@Param("licensePlate") String licensePlate,
                                  @Param("make") String make,
                                  @Param("customer") String customer);
+    
+    Optional<Car> findByVin(String vin);
 }

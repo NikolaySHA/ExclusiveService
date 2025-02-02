@@ -65,14 +65,14 @@
                                 <tr>
                                     <th class="w-50">Име</th> <!-- 5/8 ширина -->
                                     <th class="w-25">Цена</th> <!-- 2/8 ширина -->
-                                    <th class="w-12">Действия</th> <!-- 1/8 ширина -->
+                                    <th sec:authorize="hasRole('ROLE_ADMIN')" class="w-12">Действия</th> <!-- 1/8 ширина -->
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="expense : ${expenses}">
                                     <td th:text="${expense.name}"></td>
                                     <td th:text="${expense.price}"></td>
-                                    <td sec:authorize="hasRole('ROLE_ADMIN')">
+                                    <td sec:authorize="hasRole('ADMIN')">
                                         <form th:method="POST" th:action="@{/expenses/{id}(id=${expense.id})}">
                                             <input type="hidden" name="appointmentId" th:value="${id}"/>
                                             <button class="bg-transparent border-0" type="submit">

@@ -1,7 +1,6 @@
 package com.NikolaySHA.ExclusiveService.web.controller;
 
-import com.NikolaySHA.ExclusiveService.model.dto.ExpenseInDTO;
-import com.NikolaySHA.ExclusiveService.model.dto.ExpenseOutDTO;
+import com.NikolaySHA.ExclusiveService.model.dto.expenseDTO.ExpenseOutDTO;
 import com.NikolaySHA.ExclusiveService.service.AppointmentService;
 import com.NikolaySHA.ExclusiveService.service.ExpenseService;
 import org.springframework.stereotype.Controller;

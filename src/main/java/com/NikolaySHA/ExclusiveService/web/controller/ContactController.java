@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -34,7 +35,7 @@ public class ContactController {
             @RequestParam(required = false) String phone,
             @RequestParam String subject,
             @RequestParam String message,
-            Model model) throws MessagingException, GeneralSecurityException, IOException {
+            RedirectAttributes redirectAttributes) throws MessagingException, GeneralSecurityException, IOException {
         
         
         String to = "exclautoservice@gmail.com";
@@ -43,8 +44,8 @@ public class ContactController {
                 "Име: %s\nEmail: %s\nТелефон: %s\nТема: %s\nСъобщение: %s",
                 name, email, phone, subject, message
         );
-        model.addAttribute("successContactMessage", true);
+        redirectAttributes.addFlashAttribute("successContactMessage", true);
         emailSender.sendMail(emailSubject, emailText, "exclautoservice@gmail.com");
-        return "home-contacts";
+        return "redirect:/contacts";
     }
 }

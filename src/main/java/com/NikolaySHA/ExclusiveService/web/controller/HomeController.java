@@ -58,6 +58,10 @@ public class HomeController {
     public String gallery(){
         return "home-gallery";
     }
+    @GetMapping("/insurance")
+    public String insurance(){
+        return "home-insurance";
+    }
     @GetMapping("/services")
     public String services(){
         return "home-services";

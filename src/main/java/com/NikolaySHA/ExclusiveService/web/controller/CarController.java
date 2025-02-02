@@ -73,12 +73,12 @@ public class CarController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.carData", bindingResult);
             return "redirect:/cars/add";
         }
-        boolean success = carService.addCar(data);
-        if (!success) {
+        if (carService.findByLicensePlate(data.getLicensePlate()) || carService.findByVin(data.getVin())){
             redirectAttributes.addFlashAttribute("carData", data);
             redirectAttributes.addFlashAttribute("showErrorMessageExistingCar", true);
             return "redirect:/cars/add";
         }
+        carService.addCar(data);
         return "redirect:/";
     }
     
@@ -119,6 +119,10 @@ public class CarController {
             model.addAttribute("id", id);
             model.addAttribute("isEdit", true);
             return "form-car";
+        }
+        if (!appointmentService.findByLicensePlate(car.getLicensePlate()).isEmpty()){
+            redirectAttributes.addFlashAttribute("errorEditingCar", true);
+            return "redirect:/error/contact-admin";
         }
         carService.updateCar(id, car);
         return "redirect:/cars/" + id;

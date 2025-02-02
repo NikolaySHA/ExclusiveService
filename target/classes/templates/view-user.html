@@ -107,7 +107,7 @@
                                         <th>Дата</th>
                                         <th>Рег. номер</th>
                                         <th>Бр. детайли</th>
-                                        <th sec:authorize="hasRole('ADMIN')">Премахни</th>
+                                        <th sec:authorize="hasRole('ROLE_ADMIN')">Премахни</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -118,7 +118,7 @@
                                         <td th:href="@{/appointments/{id}(id=${appointment.id})}" th:text="${appointment.date}">Дата</td>
                                         <td th:href="@{/appointments/{id}(id=${appointment.id})}" th:text="${appointment.car.licensePlate}">Рег. Номер</td>
                                         <td th:href="@{/appointments/{id}(id=${appointment.id})}" th:text="${appointment.paintDetails}">Детайли за боя</td>
-                                        <td sec:authorize="hasRole('ADMIN')">
+                                        <td sec:authorize="hasRole('ROLE_ADMIN')">
                                             <form th:method="POST" th:action="@{/appointments/delete/{id}(id=${appointment.id})}">
                                                 <button class="bg-transparent border-0" type="submit">
                                                     <i class="fa-solid fa-trash-can text-yellow"></i>

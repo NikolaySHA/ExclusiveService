@@ -5,6 +5,7 @@ import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserRegisterDTO;
 import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserViewDTO;
 import com.NikolaySHA.ExclusiveService.model.entity.User;
 import com.NikolaySHA.ExclusiveService.service.UserService;
+import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,6 +19,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -79,7 +82,7 @@ public class UserControllerIT {
     }
     
     @Test
-    void testDoRegisterUserWhenPasswordsMismatch() {
+    void testDoRegisterUserWhenPasswordsMismatch() throws MessagingException, GeneralSecurityException, IOException {
         UserRegisterDTO userDTO = new UserRegisterDTO();
         userDTO.setPassword("password");
         userDTO.setConfirmPassword("different");
@@ -91,7 +94,7 @@ public class UserControllerIT {
     }
     
     @Test
-    void testDoRegisterUserWhenHasErrors() {
+    void testDoRegisterUserWhenHasErrors() throws MessagingException, GeneralSecurityException, IOException {
         UserRegisterDTO userDTO = new UserRegisterDTO();
         userDTO.setEmail("test@tes.tes");
         userDTO.setName("");

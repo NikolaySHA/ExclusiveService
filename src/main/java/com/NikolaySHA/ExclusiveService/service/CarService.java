@@ -20,4 +20,8 @@ public interface CarService {
     List<Car> searchCars(String licensePlate, String make, String customer);
     
     void updateCar(Long id, CarDataDTO car);
+    
+    boolean findByLicensePlate(String licensePlate);
+    
+    boolean findByVin(String vin);
 }

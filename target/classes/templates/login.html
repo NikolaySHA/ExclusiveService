@@ -19,6 +19,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div class="alert alert-danger alert-dismissible fade show" th:if="${showRegisteredErrorMessage}">
+                <span th:text="#{error_message_registered_and_login}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
             <div class="alert alert-success alert-dismissible fade show" th:if="${successfulRegistration}">
                 <span th:text="#{success_registration_message}"></span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">

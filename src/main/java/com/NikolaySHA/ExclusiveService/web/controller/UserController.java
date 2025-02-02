@@ -6,6 +6,8 @@ import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserRegisterDTO;
 import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserViewDTO;
 import com.NikolaySHA.ExclusiveService.model.entity.User;
 import com.NikolaySHA.ExclusiveService.service.UserService;
+import com.NikolaySHA.ExclusiveService.service.impl.GmailSender;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -16,6 +18,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -24,8 +28,8 @@ import java.util.Optional;
 public class UserController {
     
     private final UserService userService;
-    
     private final ModelMapper modelMapper;
+    private final GmailSender emailService;
     
     @ModelAttribute("userData")
     public UserRegisterDTO userDTO() {
@@ -55,9 +59,10 @@ public class UserController {
     }
     @PostMapping("/register")
     public String doRegisterUser(@Valid @ModelAttribute("userData") UserRegisterDTO data, BindingResult bindingResult,
-                                 RedirectAttributes redirectAttributes) {
+                                 RedirectAttributes redirectAttributes) throws MessagingException, GeneralSecurityException, IOException {
         
         if (!data.getPassword().equals(data.getConfirmPassword())) {
+            redirectAttributes.addFlashAttribute("userData", data);
             redirectAttributes.addFlashAttribute("passwordMismatch", true);
             return "redirect:/users/register";
         }
@@ -67,12 +72,16 @@ public class UserController {
             return "redirect:/users/register";
         }
         if (!userService.register(data)) {
+            redirectAttributes.addFlashAttribute("userData", data);
             redirectAttributes.addFlashAttribute("registrationFailed", true);
             return "redirect:/users/register";
             }
+       
+       
+        emailService.sendMail("Успешна регистрация", "Вие се регистрирахте успешно в апликацията на 'Екслкузив сервиз'. Може да добавите своя автомобил и да запишете час за него. До скоро!", data.getEmail());
+        emailService.sendMail("Нова регистрация.", String.format("Потребител с име: %s и имейл: %s се регистрира в приложението.", data.getName(), data.getEmail()), "exclautoservice@gmail.com");
+        
         redirectAttributes.addFlashAttribute("successfulRegistration", true);
-//        emailService.sendSimpleEmail(data.getEmail(), "Успешна регистрация", "Вие се регистрирахте успешно в апликацията на 'Екслкузив сервиз'. Може да добавите своя автомобил и да запишете час за него. До скоро!");
-//        emailService.sendSimpleEmail("exclautoservice@gmail.com", "Нова регистрация.", String.format("Потребител с име %s и %s се регистрира в приложението.", data.getName(), data. getEmail()));
         return "redirect:/users/login";
     }
     @GetMapping("/{id}")

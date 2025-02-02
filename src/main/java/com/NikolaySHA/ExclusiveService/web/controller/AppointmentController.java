@@ -1,6 +1,6 @@
 package com.NikolaySHA.ExclusiveService.web.controller;
 
-import com.NikolaySHA.ExclusiveService.model.dto.ExpenseInDTO;
+import com.NikolaySHA.ExclusiveService.model.dto.expenseDTO.ExpenseInDTO;
 import com.NikolaySHA.ExclusiveService.model.dto.appointmentDTO.AddAppointmentDTO;
 import com.NikolaySHA.ExclusiveService.model.dto.appointmentDTO.EditAppointmentDTO;
 import com.NikolaySHA.ExclusiveService.model.dto.appointmentDTO.ShowAppointmentDTO;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Optional;
@@ -68,6 +67,12 @@ public class AppointmentController {
     
     @GetMapping("/add")
     public String addAppointment(Model model, RedirectAttributes redirectAttributes) {
+        if (userService.findLoggedUser() == null) {
+            redirectAttributes.addFlashAttribute("showRegisteredErrorMessage", true);
+            return "redirect:/users/login";  // Пренасочване към страницата за вход
+        }
+        //TODO: show error mesage on login page when non registered and logged user try to make an appointment
+        
         List<Car> carsData = getCarList();
         if (carsData.isEmpty()) {
             redirectAttributes.addFlashAttribute("showErrorMessage", true);

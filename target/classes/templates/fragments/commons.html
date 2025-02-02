@@ -90,6 +90,9 @@
                     <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/gallery}" th:text="#{nav_bar_gallery}">Gallery</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/insurance}" th:text="#{nav_bar_insurance}">Insurance</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/contacts}" th:text="#{nav_bar_contact_us}">Contact Us</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
@@ -101,18 +104,18 @@
                 <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
                     <a class="nav-link text-light active h5 text-stroke" th:href="@{/garage/users}" th:text="#{nav_bar_customers}">Customers</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://maps.app.goo.gl/cFwKBYrQBYPQYKCKA'}">
+                <li class="nav-item" sec:authorize="!hasRole('ROLE_ADMIN')">
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://maps.app.goo.gl/cFwKBYrQBYPQYKCKA'}" target="_blank">
                         <i class="fa-solid fa-map"></i>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://www.instagram.com/exclusiveservice.sofia/'}">
+                <li class="nav-item" sec:authorize="!hasRole('ROLE_ADMIN')">
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://www.instagram.com/exclusiveservice.sofia/'}" target="_blank">
                         <i class="fa-brands fa-square-instagram"></i>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://www.facebook.com/eurolinkservice/'}">
+                <li class="nav-item" sec:authorize="!hasRole('ROLE_ADMIN')">
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://www.facebook.com/eurolinkservice/'}" target="_blank">
                         <i class="fa-brands fa-square-facebook"></i>
                     </a>
                 </li>

@@ -36,4 +36,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 //    int findTotalDetailsForWeek(@Param("startOfWeek") LocalDate startOfWeek, @Param("endOfWeek") LocalDate endOfWeek);
 @Query("SELECT COALESCE(SUM(a.paintDetails), 0) FROM Appointment a WHERE a.date BETWEEN :startOfWeek AND :endOfWeek AND a.status != :completedStatus")
 int findTotalDetailsForWeek(@Param("startOfWeek") LocalDate startOfWeek, @Param("endOfWeek") LocalDate endOfWeek, @Param("completedStatus") Status completedStatus);
+    
+    List<Appointment> findByCar_LicensePlate(String licensePlate);
 }

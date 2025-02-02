@@ -78,4 +78,14 @@ public class CarServiceImpl implements CarService {
         editedCar.setColor(car.getColor());
         this.carRepository.save(editedCar);
     }
+    
+    @Override
+    public boolean findByLicensePlate(String licensePlate) {
+        return this.carRepository.findByLicensePlate(licensePlate).isPresent();
+    }
+    
+    @Override
+    public boolean findByVin(String vin) {
+        return this.carRepository.findByVin(vin).isPresent();
+    }
 }

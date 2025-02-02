@@ -1,9 +1,8 @@
 package com.NikolaySHA.ExclusiveService.service;
 
-import com.NikolaySHA.ExclusiveService.model.dto.ExpenseInDTO;
-import com.NikolaySHA.ExclusiveService.model.dto.ExpenseOutDTO;
+import com.NikolaySHA.ExclusiveService.model.dto.expenseDTO.ExpenseInDTO;
+import com.NikolaySHA.ExclusiveService.model.dto.expenseDTO.ExpenseOutDTO;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface ExpenseService {

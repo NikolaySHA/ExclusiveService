@@ -1,7 +1,7 @@
 package com.NikolaySHA.ExclusiveService.service.impl;
 
-import com.NikolaySHA.ExclusiveService.model.dto.ExpenseInDTO;
-import com.NikolaySHA.ExclusiveService.model.dto.ExpenseOutDTO;
+import com.NikolaySHA.ExclusiveService.model.dto.expenseDTO.ExpenseInDTO;
+import com.NikolaySHA.ExclusiveService.model.dto.expenseDTO.ExpenseOutDTO;
 import com.NikolaySHA.ExclusiveService.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;

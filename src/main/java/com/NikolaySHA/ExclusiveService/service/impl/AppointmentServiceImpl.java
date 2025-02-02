@@ -139,4 +139,10 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void saveAll(List<Appointment> appointments) {
         appointmentRepository.saveAll(appointments);
     }
+    
+    @Override
+    public List<Appointment> findByLicensePlate(String licensePlate) {
+        List<Appointment> list = this.appointmentRepository.findByCar_LicensePlate(licensePlate);
+        return list;
+    }
 }
