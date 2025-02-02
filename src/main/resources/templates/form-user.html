@@ -35,7 +35,8 @@
                        id="email"
                        name="email"
                        th:field="*{email}"
-                       th:errorclass="'is-invalid alert-danger'"/>
+                       th:errorclass="'is-invalid alert-danger'"
+                       th:readonly="${isEdit}"/>
                 <small th:errors="*{email}" class="invalid-feedback text-danger"></small>
             </div>
             <div>

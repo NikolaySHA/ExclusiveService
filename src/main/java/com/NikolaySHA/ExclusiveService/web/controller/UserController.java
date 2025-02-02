@@ -121,24 +121,36 @@ public class UserController {
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes, Model model) {
         
-        if (!userService.findLoggedUser().getId().equals(id)) {
-            if (!userService.loggedUserHasRole("ADMIN")){
-                redirectAttributes.addFlashAttribute("notFoundErrorMessage", true);
-                return "redirect:/error/contact-admin";
-            }
+        Optional<User> optionalUser = userService.findById(id);
+        if (optionalUser.isEmpty()) {
+            redirectAttributes.addFlashAttribute("notFoundErrorMessage", true);
+            return "redirect:/error/contact-admin";
         }
+        
+        User existingUser = optionalUser.get();
+        
+        if (!userService.findLoggedUser().getId().equals(id) && !userService.loggedUserHasRole("ADMIN")) {
+            redirectAttributes.addFlashAttribute("noPrivilegeMessage", true);
+            return "redirect:/error/contact-admin";
+        }
+        
         if (bindingResult.hasErrors()) {
             model.addAttribute("userData", user);
             model.addAttribute("org.springframework.validation.BindingResult.userData", bindingResult);
             model.addAttribute("isEdit", true);
             return "form-user";
         }
+        
+        // Гарантираме, че имейлът не се променя
+        user.setEmail(existingUser.getEmail());
+        
         boolean success = userService.updateUser(id, user);
-        if (!success){
+        if (!success) {
             return "redirect:/users/edit/" + id;
         }
         return "redirect:/";
     }
+    
     @PostMapping("/add-admin/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String addAdmin(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
