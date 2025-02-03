@@ -14,6 +14,7 @@ import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -67,12 +68,12 @@ public class AppointmentController {
     
     @GetMapping("/add")
     public String addAppointment(Model model, RedirectAttributes redirectAttributes) {
+        System.out.println("Проба");
         if (userService.findLoggedUser() == null) {
             redirectAttributes.addFlashAttribute("showRegisteredErrorMessage", true);
-            return "redirect:/users/login";  // Пренасочване към страницата за вход
+            return "redirect:/users/login";
         }
-        //TODO: show error mesage on login page when non registered and logged user try to make an appointment
-        
+        //TODO: show error message on login page when non registered and logged user try to make an appointment
         List<Car> carsData = getCarList();
         if (carsData.isEmpty()) {
             redirectAttributes.addFlashAttribute("showErrorMessage", true);

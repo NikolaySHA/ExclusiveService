@@ -59,9 +59,9 @@ public class UserControllerIT {
     @Test
     void testViewLoginWhenNoUserIsLoggedIn() {
         when(userService.findLoggedUser()).thenReturn(null);
-        
+
         String viewName = userController.viewLogin();
-        
+
         assertEquals("login", viewName);
     }
     
@@ -76,7 +76,7 @@ public class UserControllerIT {
     @Test
     void testShowRegistrationForm() {
         String viewName = userController.showRegistrationForm(model);
-        
+
         assertEquals("form-user", viewName);
         verify(model).addAttribute("isEdit", false);
     }
