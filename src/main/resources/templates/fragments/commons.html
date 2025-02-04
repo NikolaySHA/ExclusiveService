@@ -104,9 +104,6 @@
                 <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
                     <a class="nav-link text-light active h5 text-stroke" th:href="@{/garage/users}" th:text="#{nav_bar_customers}"></a>
                 </li>
-                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/garage/insurance}" th:text="#{nav_bar_insurance}"></a>
-                </li>
                 <li class="nav-item" sec:authorize="!hasRole('ROLE_ADMIN')">
                     <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://maps.app.goo.gl/cFwKBYrQBYPQYKCKA'}" target="_blank">
                         <i class="fa-solid fa-map"></i>

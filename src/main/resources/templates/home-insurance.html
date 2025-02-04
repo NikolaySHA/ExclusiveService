@@ -30,6 +30,7 @@
                 </ul>
                 <p class="mt-3">
                     Гарантирайте спокойствието си още днес! 🚘 💼
+                    Потърсете ни на тел: <a href="tel:+359878343343" class="text-warning font-weight-bold">+359 878 343 343</a>
                 </p>
             </div>
 
@@ -85,6 +86,10 @@
                         </form>
                         <!-- Резултат -->
                         <div id="result" class="mt-3 text-light"></div>
+                        <div id="bonusMalusInfo" class="mt-2 text-warning" style="display: none;">
+                            ⚠️ Калкулаторът не начислява бонус и малус. За по-точна оферта не се колебайте да се свържете с нас на
+                            <a href="tel:+359878343343" class="text-warning font-weight-bold">+359 878 343 343</a>.
+                        </div>
 
                         <script>
                             function updateFields() {
@@ -109,6 +114,7 @@
                                 let engineCapacity = document.getElementById("engineCapacity").value;
                                 let registration = document.getElementById("registration").value;
                                 let resultDiv = document.getElementById("result");
+                                let bonusMalusInfo = document.getElementById("bonusMalusInfo");
 
                                 // Проверка за попълнени полета
                                 if (!vehicleType || (vehicleType === "car" && !engineCapacity) || ((vehicleType === "car" || vehicleType === "electric") && !registration)) {
@@ -163,6 +169,7 @@
                                 }
 
                                 resultDiv.innerHTML = `💰 Дължима сума, с вкл. ГФ, ОФ, стикер и данък: <strong>${price.toFixed(2)} лв.</strong>`;
+                                bonusMalusInfo.style.display = "block";
                             }
                         </script>
                     </div>
