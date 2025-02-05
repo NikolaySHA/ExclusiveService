@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+<html lang="bg" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/commons::head}">
     <style>
-
+        /* Може да добавите CSS стилове тук */
     </style>
 </head>
 <body>
@@ -11,24 +11,23 @@
 <main>
     <div class="header-image">
         <div class="header-text">
-            <h1>Welcome to Exclusive Service</h1>
-            <p>Your trusted partner in automotive excellence</p>
+            <h1 class="badge badge-pill badge-warning" th:text="#{about_h1}"></h1>
+            <h3 th:text="#{about_h3}"></h3>
         </div>
     </div>
-
     <!-- Content Section -->
     <div class="container content-section col-xl-12">
         <div class="row">
             <div class="col-md-6 about">
-                <img src="https://wallpapercave.com/wp/wp1911240.jpg" class="gallery-img" alt="Image 1">
+                <img src="https://images6.alphacoders.com/105/1050465.jpg" class="gallery-img" alt="Image 1">
             </div>
             <div class="col-md-6 align-content-lg-center about bg-blur border-0">
-                <h2>Our History</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut libero nec risus vehicula tincidunt.</p>
+                <h2 th:text="#{about_history}"></h2>
+                <p th:text="#{about_history_p}"></p>
             </div>
             <div class="col-md-6 align-content-lg-center about bg-blur border-0">
-                <h2>Our Mission</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut libero nec risus vehicula tincidunt.</p>
+                <h2 th:text="#{about_mission}"></h2>
+                <p th:text="#{about_mission_p}"></p>
             </div>
             <div class="col-md-6 about">
                 <img src="https://www.hdcarwallpapers.com/walls/ferrari_458_italia_tailor_made_army_4k-HD.jpg" class="gallery-img" alt="Image 2">
@@ -37,16 +36,25 @@
                 <img src="https://www.hdcarwallpapers.com/walls/lamborghini_aventador_rear-HD.jpg" class="gallery-img" alt="Image 3">
             </div>
             <div class="col-md-6 align-content-lg-center about bg-blur border-0">
-                <h2>Our Vision</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut libero nec risus vehicula tincidunt.</p>
+                <h2 th:text="#{about_vision}"></h2>
+                <p th:text="#{about_vision_p}"></p>
             </div>
             <div class="col-md-6 align-content-lg-center about bg-blur border-0">
-                <h2>Our Team</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut libero nec risus vehicula tincidunt.</p>
+                <h2 th:text="#{about_team}"></h2>
+                <p th:text="#{about_team_p}"></p>
             </div>
             <div class="col-md-6 about">
                 <img src="https://r4.wallpaperflare.com/wallpaper/269/1018/533/lamborghini-aventador-wallpaper-6fa1a9b9c655479918a2e9ad5c787512.jpg" class="gallery-img" alt="Image 4">
             </div>
+            <!-- Новата секция: Нашите партньори -->
+            <div class="col-md-6 about">
+                <img src="https://wallpapercave.com/wp/wp1911240.jpg" class="gallery-img" alt="Image 4">
+            </div>
+            <div class="col-md-6 align-content-lg-center about bg-blur border-0">
+                <h2 th:text="#{about_partners}"></h2>
+                <p th:text="#{about_partners_p}"></p>
+            </div>
+
         </div>
     </div>
 </main>
