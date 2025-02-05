@@ -12,83 +12,82 @@
             <!-- Лява колона с текст -->
             <div class="col-lg-5 text-light p-4">
                 <h2 class="text-center mt-2">
-                    <span class="badge badge-pill badge-warning">Каско и Гражданска отговорност</span>
+                    <span class="badge badge-pill badge-warning" th:text="#{casco_civil}"></span>
                 </h2>
-                <p class="lead">
-                    Предлагаме Каско и Гражданска отговорност в партньорство с
-                    <strong>Асет Иншуранс</strong> – водещ и надежден застраховател през последните години.
-                </p>
-                <p class="lead">
-                    Доверете се на сигурността и професионализма, които заслужавате!
-                    За ваше удобство разполагаме с онлайн калкулатор, с който можете
-                    <strong>бързо и лесно</strong> да изчислите стойността на вашата застраховка.
-                </p>
+                <p class="lead" th:text="#{insurance_paragraph}"></p>
+                <p class="lead" th:text="#{insurance_paragraph_2}"></p>
                 <ul class="list lead">
-                    <li>✅ <strong>Сигурност</strong></li>
-                    <li>✅ <strong>Доверен застраховател</strong></li>
-                    <li>✅ <strong>Лесно изчисление с нашия калкулатор</strong></li>
+                    <li th:text="#{insurance_security}"></li>
+                    <li th:text="#{trusted_insurer}"></li>
+                    <li th:text="#{easy_calc}"></li>
                 </ul>
+                <p class="mt-3" th:text="#{insurance_guarantee}">
                 <p class="mt-3">
-                    Гарантирайте спокойствието си още днес! 🚘 💼
-                    Потърсете ни на тел: <a href="tel:+359878343343" class="text-warning font-weight-bold">+359 878 343 343</a>
+                    <span th:text="#{insurance_contact_us}"></span>
+                    <a href="tel:+359878343343" class="text-warning font-weight-bold">+359 878 343 343</a>
                 </p>
             </div>
 
             <!-- Дясна колона с калкулатора -->
             <div class="col-lg-7 text-light p-4">
                 <h2 class="text-center mt-2">
-                    <span class="badge badge-pill badge-warning">Калкулатор</span>
+                    <span class="badge badge-pill badge-warning" th:text="#{calc}"></span>
                 </h2>
                 <div class="row">
                     <div class="col-lg-6 text-light p-4">
                         <span class="badge badge-pill badge-warning"
-                              style="font-size: 1rem;">Гражданска отговорност</span>
+                              style="font-size: 1rem;" th:text="#{liability}"></span>
                         <form id="insuranceCalculator">
                             <!-- Вид на МПС -->
                             <div class="form-group">
-                                <label for="vehicleType">Вид на МПС</label>
+                                <label for="vehicleType" th:text="#{car_type}"></label>
                                 <select id="vehicleType" class="form-control" onchange="updateFields()">
-                                    <option value="">Моля, изберете</option>
-                                    <option value="car">Лек автомобил</option>
-                                    <option value="moped">Мотопед</option>
-                                    <option value="electric">Електромобил</option>
+                                    <option value="" th:text="#{choose}"></option>
+                                    <option value="car" th:text="#{passenger_car}"></option>
+                                    <option value="moped" th:text="#{moped}"></option>
+                                    <option value="electric" th:text="#{ev}"></option>
                                 </select>
                             </div>
 
                             <!-- Кубатура (появява се само при "Лек автомобил") -->
                             <div class="form-group" id="engineCapacityGroup" style="display: none;">
-                                <label for="engineCapacity">Кубатура</label>
+                                <label for="engineCapacity" th:text="#{engine_capacity}"></label>
                                 <select id="engineCapacity" class="form-control">
-                                    <option value="">Моля, изберете</option>
-                                    <option value="1400">До 1400 куб. см. вкл.</option>
-                                    <option value="1600">От 1401 - 1600 куб. см. вкл.</option>
-                                    <option value="1800">От 1601 - 1800 куб. см. вкл.</option>
-                                    <option value="2000">От 1801 - 2000 куб. см. вкл.</option>
-                                    <option value="2500">От 2001 - 2500 куб. см. вкл.</option>
-                                    <option value="2501">Над 2500 куб. см.</option>
+                                    <option value="" th:text="#{choose}"></option>
+                                    <option value="1400" th:text="#{1400_cc}"></option>
+                                    <option value="1600" th:text="#{1600_cc}"></option>
+                                    <option value="1800" th:text="#{1800_cc}"></option>
+                                    <option value="2000" th:text="#{2000_cc}"></option>
+                                    <option value="2500" th:text="#{2500_cc}"></option>
+                                    <option value="2501" th:text="#{2501_cc}"></option>
                                 </select>
                             </div>
 
                             <!-- Адресна регистрация (появява се при "Лек автомобил" и "Електромобил") -->
                             <div class="form-group" id="registrationGroup" style="display: none;">
-                                <label for="registration">Адресна регистрация на собственика</label>
+                                <label for="registration" th:text="#{owners_address}"></label>
                                 <select id="registration" class="form-control">
-                                    <option value="">Моля, изберете</option>
-                                    <option value="sofia">София</option>
-                                    <option value="bigCities">Пловдив, Варна, Бургас или Софийска област</option>
-                                    <option value="other">Останали населени места</option>
+                                    <option value="" th:text="#{choose}"></option>
+                                    <option value="sofia" th:text="#{sofia}">София</option>
+                                    <option value="bigCities" th:text="#{big_cities}"></option>
+                                    <option value="other" th:text="#{other_cities}"></option>
                                 </select>
                             </div>
 
-                            <!-- Бутон за изчисление -->
-                            <button type="button" class="btn btn-warning mt-3" onclick="calculateInsurance()">Изчисли
+                            <button type="button" class="btn btn-warning mt-3" onclick="calculateInsurance()" th:text="#{calculate}">
                             </button>
                         </form>
+                        <!-- Липсващи полета -->
+                        <div id="missingFieldsWarning" class="mt-3 text-light" style="display: none;" th:text="#{missing_fields}"></div>
                         <!-- Резултат -->
-                        <div id="result" class="mt-3 text-light"></div>
+                        <div id="result" class="mt-3 text-light" style="display: none;">
+                            <div th:text="#{liability_result}"></div>
+                            <span><strong id="calculatedLiabilityAmount"></strong></span>
+                            <span th:text="#{bgn}"></span>
+                        </div>
                         <div id="bonusMalusInfo" class="mt-2 text-warning" style="display: none;">
-                            ⚠️ Калкулаторът не начислява бонус и малус. За по-точна оферта не се колебайте да се свържете с нас на
-                            <a href="tel:+359878343343" class="text-warning font-weight-bold">+359 878 343 343</a>.
+                            <span th:text="#{bonus_malus}"></span>
+                            <a href="tel:+359878343343" class="badge badge-pill badge-warning">+359 878 343 343</a>
                         </div>
 
                         <script>
@@ -113,15 +112,15 @@
                                 let vehicleType = document.getElementById("vehicleType").value;
                                 let engineCapacity = document.getElementById("engineCapacity").value;
                                 let registration = document.getElementById("registration").value;
-                                let resultDiv = document.getElementById("result");
                                 let bonusMalusInfo = document.getElementById("bonusMalusInfo");
+                                let missingFieldsWarning = document.getElementById("missingFieldsWarning");  // добавено за съобщението
 
                                 // Проверка за попълнени полета
                                 if (!vehicleType || (vehicleType === "car" && !engineCapacity) || ((vehicleType === "car" || vehicleType === "electric") && !registration)) {
-                                    resultDiv.innerHTML = "⚠️ Моля, попълнете всички полета!";
+                                    missingFieldsWarning.style.display = "block";  // показваме съобщението
                                     return;
                                 }
-
+                                missingFieldsWarning.style.display = "none";
                                 let price = 0;
 
                                 // Определяне на базова цена спрямо типа МПС
@@ -168,34 +167,37 @@
                                     }
                                 }
 
-                                resultDiv.innerHTML = `💰 Дължима сума, с вкл. ГФ, ОФ, стикер и данък: <strong>${price.toFixed(2)} лв.</strong>`;
+                                let calculatedAmountDiv = document.getElementById("calculatedLiabilityAmount");
+                                let resultDiv = document.getElementById("result");
+                                calculatedAmountDiv.innerHTML = `${price.toFixed(2)}`;
+                                resultDiv.style.display = "block";
                                 bonusMalusInfo.style.display = "block";
                             }
                         </script>
                     </div>
                     <!--            Каско-->
                     <div class="col-lg-6 text-light p-4">
-                        <span class="badge badge-pill badge-warning" style="font-size: 1rem;">Каско</span>
+                        <span class="badge badge-pill badge-warning" style="font-size: 1rem;" th:text="#{casco}"></span>
                         <form id="cascoCalculator">
                             <div class="form-group">
-                                <label for="age">Възраст на автомобила</label>
+                                <label for="age" th:text="#{vehicle_age}"></label>
                                 <select id="age" class="form-control" onchange="updateFields()">
-                                    <option value="">Моля, изберете</option>
-                                    <option value="5">До 5 год.</option>
-                                    <option value="8">До 8 год.</option>
-                                    <option value="11">До 11 год.</option>
-                                    <option value="12">Над 11 год.</option>
+                                    <option value="" th:text="#{choose}"></option>
+                                    <option value="5" th:text="#{5_years}"></option>
+                                    <option value="8" th:text="#{8_years}"></option>
+                                    <option value="11" th:text="#{11_years}"></option>
+                                    <option value="12" th:text="#{12_years}"></option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="insuranceSum">Застрахователна сума</label>
+                                <label for="insuranceSum" th:text="#{insurance_amount}"></label>
                                 <input type="number" id="insuranceSum" class="form-control" min="0"
-                                       placeholder="Въведете сума">
+                                       th:placeholder="#{enter_amount}">
                             </div>
                             <div class="form-group">
-                                <label for="NumberOfInstallments">Брой вноски</label>
+                                <label for="NumberOfInstallments" th:text="#{installments}"></label>
                                 <select id="NumberOfInstallments" class="form-control">
-                                    <option value="">Моля, изберете</option>
+                                    <option value="" th:text="#{choose}"></option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="4">4</option>
@@ -203,27 +205,38 @@
                             </div>
                             <div class="form-group form-check">
                                 <input type="checkbox" id="newlyInsured" class="form-check-input">
-                                <label class="form-check-label" for="newlyInsured">Новозастраховани МПС към ЗАД "Асет
-                                    Иншурънс" АД</label>
+                                <label class="form-check-label" for="newlyInsured" th:text="#{newly_insured}"></label>
                             </div>
                             <!-- Бутон за изчисление -->
-                            <button type="button" class="btn btn-warning mt-3" onclick="calculateCasco()">Изчисли
-                            </button>
+                            <button type="button" class="btn btn-warning mt-3" onclick="calculateCasco()" th:text="#{calculate}"></button>
                         </form>
                         <!-- Резултат -->
-                        <div id="cascoResult" class="mt-3 text-light"></div>
-
+                        <div id="missingFieldsWarningCasco" class="mt-3 text-light" style="display: none;" th:text="#{missing_fields}"></div>
+                        <div id="cascoResult" class="mt-3 text-light" style="display: none;">
+                            <div th:text="#{casco_result}"></div>
+                            <span><strong id="calculatedAmount"></strong></span>
+                            <span th:text="#{bgn}"></span>
+                        </div>
+                        <div id="moreDiscounts" class="mt-2 text-warning" style="display: none;">
+                            <span th:text="#{discounts}"></span>
+                            <a href="tel:+359878343343" class="badge badge-pill badge-warning">+359 878 343 343</a>
+                        </div>
                         <script>
                             function calculateCasco() {
                                 let age = document.getElementById("age").value;
                                 let insuranceSum = document.getElementById("insuranceSum").value;
                                 let numberOfInstallments = document.getElementById("NumberOfInstallments").value; // Поправено ID
                                 let newlyInsured = document.getElementById("newlyInsured").checked;
-                                let cascoResultDiv = document.getElementById("cascoResult");
+                                let missingFieldsWarning = document.getElementById("missingFieldsWarningCasco");
+
+                                // Проверка за попълнени полета
                                 if (!age || !insuranceSum || !numberOfInstallments) {
-                                    cascoResultDiv.innerHTML = "⚠️ Моля, попълнете всички полета!";
+                                    missingFieldsWarning.style.display = "block";
                                     return;
                                 }
+                                missingFieldsWarning.style.display = "none";
+
+                                // Изчисляване на коефициента на застраховката
                                 let rate = 0;
                                 if (age === "5") {
                                     if (newlyInsured) {
@@ -250,13 +263,20 @@
                                         rate = 7.6;
                                     }
                                 }
+
                                 // Изчисление на крайната сума
                                 let result = (insuranceSum * rate) / 100;
                                 if (result < 300) result = 300;
                                 let tax = (result * 2) / 100;
                                 let finalAmount = result + tax;
-                                // Показване на резултата
-                                cascoResultDiv.innerHTML = `💰 Дължима сума с вкл. 2% данък: <strong>${finalAmount.toFixed(2)} лв.</strong>`;
+
+                                // Показване на резултата в div
+                                let calculatedAmountDiv = document.getElementById("calculatedAmount");
+                                let cascoResultDiv = document.getElementById("cascoResult");
+                                calculatedAmountDiv.innerHTML = `${finalAmount.toFixed(2)}`;
+                                cascoResultDiv.style.display = "block";
+                                let moreDiscountsDiv = document.getElementById("moreDiscounts");
+                                moreDiscountsDiv.style.display = "block";
                             }
                         </script>
                     </div>

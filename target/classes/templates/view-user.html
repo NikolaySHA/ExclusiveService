@@ -21,7 +21,7 @@
                             <h4 th:text="${userViewData.name}"></h4>
                             <label class="text-yellow" th:text="#{email}"></label>
                             <p class="text-secondary mb-1" th:text="${userViewData.email}"></p>
-                            <label class="text-yellow" th:text="#{phone}"></label>
+                            <label class="text-yellow" th:text="#{contact-phone}"></label>
                             <p class="text-secondary mb-1" th:text="${userViewData.phoneNumber}"></p>
                             <div class="d-flex flex-column align-items-center">
                                 <form th:action="@{/users/edit/{id}(id=${id})}" method="get">
