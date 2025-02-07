@@ -70,7 +70,7 @@
 <header>
     <nav class="navbar fixed-top navbar-expand-sm navbar-light">
         <a class="navbar-brand text-white" th:href="@{/}">
-            <img class="mx-auto" src="/images/Logo.jpg" alt="Exclusive Service" width="120" height="60">
+            <img class="mx-auto" src="/images/logo_yellow.png" alt="Exclusive Service" width="160" height="40">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,15 +86,6 @@
                 <li class="nav-item">
                     <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/about}" th:text="#{nav_bar_about_us}"></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/gallery}" th:text="#{nav_bar_gallery}"></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/insurance}" th:text="#{nav_bar_insurance}"></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/contacts}" th:text="#{nav_bar_contact_us}"></a>
-                </li>
                 <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
                     <a class="nav-link text-light active h5 text-stroke" th:href="@{/garage/appointments}" th:text="#{nav_bar_repairs}"></a>
                 </li>
@@ -103,6 +94,16 @@
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
                     <a class="nav-link text-light active h5 text-stroke" th:href="@{/garage/users}" th:text="#{nav_bar_customers}"></a>
+
+                <li class="nav-item">
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/gallery}" th:text="#{nav_bar_gallery}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/insurance}" th:text="#{nav_bar_insurance}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/contacts}" th:text="#{nav_bar_contact_us}"></a>
+                </li>
                 </li>
                 <li class="nav-item" sec:authorize="!hasRole('ROLE_ADMIN')">
                     <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://maps.app.goo.gl/cFwKBYrQBYPQYKCKA'}" target="_blank">

@@ -10,6 +10,7 @@ import com.NikolaySHA.ExclusiveService.repo.ProtocolRepository;
 import com.NikolaySHA.ExclusiveService.service.AppointmentService;
 import com.NikolaySHA.ExclusiveService.service.ProtocolService;
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
@@ -71,36 +72,60 @@ public class ProtocolServiceImpl implements ProtocolService {
         PdfWriter.getInstance(document, response.getOutputStream());
         document.open();
         
-        Font font = FontFactory.getFont(FontFactory.COURIER_BOLD, 12, Font.NORMAL, BaseColor.BLACK);
-        Font checkboxFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL, BaseColor.BLACK);
+        String fontPath = "src/main/resources/fonts/ARIBLK.TTF"; // Заменете с реалния път до шрифта
+        Font fontH1 = FontFactory.getFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18);
+        Font font = FontFactory.getFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12);
+        Font checkboxFont = FontFactory.getFont(FontFactory.HELVETICA, 20, Font.NORMAL, BaseColor.BLACK);
         
-        document.add(new Paragraph("                              Vehicle Transfer Protocol", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18)));
+        document.add(new Paragraph("                    Приемо-предавателен протокол", fontH1));
         document.add(Chunk.NEWLINE);
         document.add(Chunk.NEWLINE);
-        document.add(new Paragraph("Today - " + transferProtocol.getDate().toString() + " in Sofia", font));
         document.add(Chunk.NEWLINE);
-        document.add(new Paragraph("between 'Exclusive Service' OOD and " + transferProtocol.getCustomerName(), font));
+        document.add(new Paragraph("Днес - " + transferProtocol.getDate().toString() + " в гр. София", font));
         document.add(Chunk.NEWLINE);
-        document.add(new Paragraph("was signed this protocol in relation with an appointment for vehicle - ", font));
+        if (!transferProtocol.isFinished()) {
+            document.add(new Paragraph("между 'Ексклузив Сервиз' ООД и " + transferProtocol.getCustomerName(), font));
+        }
+        else {
+            document.add(new Paragraph("между " + transferProtocol.getCustomerName() + " и 'Ексклузив Сервиз' ООД", font));
+        }
         document.add(Chunk.NEWLINE);
-        document.add(new Paragraph("                    License plate - " + transferProtocol.getLicensePlate(), font));
-        document.add(new Paragraph("                             Make - " + transferProtocol.getMake(), font));
-        document.add(new Paragraph("                            Model - " + transferProtocol.getModel(), font));
+        document.add(new Paragraph("се подписа настоящият протокол за л.а.:", font));
+        document.add(Chunk.NEWLINE);
+        document.add(Chunk.NEWLINE);
+        document.add(new Paragraph("                    Регистрационен номер - " + transferProtocol.getLicensePlate(), font));
+        document.add(new Paragraph("                    Марка - " + transferProtocol.getMake(), font));
+        document.add(new Paragraph("                    Модел - " + transferProtocol.getModel(), font));
         document.add(Chunk.NEWLINE);
         document.add(Chunk.NEWLINE);
         
-        if (transferProtocol.isFinished()) {
-            document.add(new Paragraph("\u25A1 The repair was carried out to a high standard and the car was accepted without objection", font));
+        if (!transferProtocol.isFinished()) {
+            document.add(new Paragraph("Собственика на горепосоченото МПС или неговият представител удостоверяват с подписа си че:", font));
             document.add(Chunk.NEWLINE);
-            document.add(new Paragraph("\u25A1 There are the following objections regarding the repair carried out: ................................................................................................................................", font));
+            document.add(new Paragraph("\u25A1 Ремонта е извършен качествено и автомобила е приет без възражения", font));
+            document.add(Chunk.NEWLINE);
+            document.add(new Paragraph("\u25A1 Има следните възражения относно извършения ремонт:", font));
+            document.add(Chunk.NEWLINE);
+            document.add(new Paragraph("              .................................................................................", font));
+            document.add(Chunk.NEWLINE);
+            document.add(new Paragraph("              .................................................................................", font));
+            document.add(Chunk.NEWLINE);
+            document.add(new Paragraph("              .................................................................................", font));
             document.add(Chunk.NEWLINE);
             document.add(Chunk.NEWLINE);
             document.add(Chunk.NEWLINE);
-            document.add(new Paragraph("Accepted by :" + "                          Delivered by : ", font));
-            document.add(new Paragraph("              " + transferProtocol.getCustomerName() + "                       Exclusive Service", font));
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(new Paragraph("Приел :" + "                                              Предал : ", font));
+            document.add(new Paragraph("                 " + transferProtocol.getCustomerName() + "                                'Ексклузив Сервиз' ООД", font));
         } else {
-            document.add(new Paragraph("Accepted by :" + "                          Delivered by : ", font));
-            document.add(new Paragraph("              Exclusive Service                       " + transferProtocol.getCustomerName(), font));
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+            document.add(new Paragraph("Приел :" + "                                              Предал : ", font));
+            document.add(new Paragraph("              'Ексклузив Сервиз' ООД                       " + transferProtocol.getCustomerName(), font));
         }
         document.close();
     }

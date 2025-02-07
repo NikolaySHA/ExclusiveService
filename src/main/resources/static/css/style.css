@@ -32,20 +32,13 @@ body > main {
     text-align: center;
 }
 
-/*.mySticky {*/
-/*    position: sticky;*/
-/*    left: 0;*/
-/*}*/
-
 .navbar .nav-link:hover,
 .text-yellow{
     color: #F2CD13!important;
 }
 
-
 .table td, .table th {
     padding: 0.15rem;
-
 }
 .nav-link .button-text {
     display: none; /* По подразбиране текстът е скрит */
@@ -53,17 +46,12 @@ body > main {
 .nav-link:hover .button-text {
     display: inline-block; /* Показва текстът при ховър */
     font-size: 15px;
-
 }
-
 .navbar-nav .nav-link {
     position: relative;
     display: inline-block;
     padding: 10px 20px;
-    /*color: #F2CD13;*/
-    /*text-decoration: none;*/
 }
-
 .navbar-nav .nav-link::before {
     content: '';
     position: absolute;
@@ -75,7 +63,6 @@ body > main {
     transition: width 0.3s ease;
     transform: translateX(-50%);
 }
-
 .navbar-nav .nav-link:hover::before {
     width: calc(100%); /* Ширина на подчертаването */
 }
@@ -105,14 +92,6 @@ body > main {
 .navbar-toggler {
     transition: background-color 0.3s; /* Плавен преход за ховър ефектите */
 }
-.navbar-toggler-icon {
-
-}
-/* Стил при ховър на бутона */
-.navbar-toggler:hover {
-
-}
-
 .rounded-flag {
     width: 100%;
     height: 100%;
@@ -130,7 +109,6 @@ body > main > div > p:nth-child(5) > a {
 .text-white {
     text-decoration-color: white;
 }
-
 .card-img-top {
     width: 100%;
     height: 300px;
@@ -181,7 +159,6 @@ body > main > div > p:nth-child(5) > a {
 .header-text p {
     font-size: 1.5rem;
 }
-
 .about {
     padding-right: 0;
     padding-left: 0;
@@ -196,4 +173,7 @@ body > main > div > p:nth-child(5) > a {
            src: url('https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap') format('truetype');
            font-weight: 500;
            font-style: normal;
+}
+.navbar.fixed-top + main {
+    margin-top: 70px !important; /* Настрой според височината на navbar */
 }

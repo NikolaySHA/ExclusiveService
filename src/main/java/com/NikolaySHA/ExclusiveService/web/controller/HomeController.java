@@ -54,10 +54,6 @@ public class HomeController {
     public String aboutUs(){
         return "home-about";
     }
-    @GetMapping("/gallery")
-    public String gallery(){
-        return "home-gallery";
-    }
     @GetMapping("/insurance")
     public String insurance(){
         return "home-insurance";

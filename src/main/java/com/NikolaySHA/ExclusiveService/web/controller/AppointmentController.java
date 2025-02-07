@@ -68,7 +68,6 @@ public class AppointmentController {
     
     @GetMapping("/add")
     public String addAppointment(Model model, RedirectAttributes redirectAttributes) {
-        System.out.println("Проба");
         if (userService.findLoggedUser() == null) {
             redirectAttributes.addFlashAttribute("showRegisteredErrorMessage", true);
             return "redirect:/users/login";

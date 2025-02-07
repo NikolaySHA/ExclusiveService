@@ -1,28 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+      xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/commons::head}"></head>
 <body>
 <header th:replace="~{fragments/commons::nav}"></header>
 <main>
-<!--    <div class="row no-gutters">-->
-<!--        <div class="row-lg-4 col-md-4 col-sm-12 mb-4 mb-lg-0">-->
-<!--            <div class="gallery-container">-->
-<!--                <img src="/images/gallery/1.jpg" class="gallery-img img-fluid" alt="Audi Q8">-->
-<!--                <div class="text-overlay text-light">Audi Q8</div>-->
-<!--            </div>-->
-<!--       </div>-->
-<!--    </div>-->
-    <div class="container bg-blur contacts-panel" sec:authorize="hasRole('ROLE_ADMIN')">
-        <form id="uploadForm" enctype="multipart/form-data">
-            <input type="file" id="imageFile" name="image">
-            <input type="text" id="imageTitle" name="title" placeholder="Въведете име">
-            <button class="btn btn-warning m-3" type="submit">Качи</button>
-        </form>
-    </div>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="imageFile" name="image">
+        <input type="text" id="imageTitle" name="title" placeholder="Въведете име">
+        <button type="submit">Качи</button>
+    </form>
 
     <div id="gallery">
-
+        <!-- Тук ще се визуализират качените снимки -->
     </div>
 
     <script>
@@ -33,7 +23,7 @@
             formData.append("image", document.getElementById("imageFile").files[0]);
             formData.append("title", document.getElementById("imageTitle").value);
 
-            fetch("/gallery/upload", {
+            fetch("/admin/gallery/upload", {
                 method: "POST",
                 body: formData
             })
