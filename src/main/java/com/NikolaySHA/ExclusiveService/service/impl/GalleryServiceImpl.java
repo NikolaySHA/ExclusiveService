@@ -27,6 +27,19 @@ public class GalleryServiceImpl implements GalleryService {
     
     @Override
     public void deleteImage(Long id) {
-        repository.deleteById(id);
+        try {
+            repository.deleteById(id);
+            System.out.println("Изображението с ID " + id + " е успешно изтрито.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Грешка при изтриването на изображението с ID " + id);
+        }
     }
+    
+    
+    @Override
+    public Image getImageById(Long id) {
+        return repository.findById(id).orElse(null);
+    }
+    
 }

@@ -26,8 +26,8 @@ public class SecurityConfig {
                                 // Permit all static resources
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 // Permit access to specific paths for all users
-                                .requestMatchers("/", "/users/login", "/users/register", "/gallery","/users/login-error", "/contacts", "/services", "/about", "/insurance").permitAll()
-                                .requestMatchers("/protocols", "/garage/cars", "/garage/appointments","/garage/users").hasRole("ADMIN")
+                                .requestMatchers("/", "/users/login", "/users/register", "/gallery","/users/login-error", "/contacts", "/services", "/about", "/insurance", "/uploads/**").permitAll()
+                                .requestMatchers("/protocols", "/garage/cars", "/garage/appointments", "/garage/users", "/gallery/upload").hasRole("ADMIN")
                                 // All other requests need to be authenticated
                                 .anyRequest().authenticated()
                 )

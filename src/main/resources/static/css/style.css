@@ -137,7 +137,17 @@ body > main > div > p:nth-child(5) > a {
     padding: 5px 10px;
     border-radius: 5px;
 }
-
+.button-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+#gallery .col-12, #gallery .col-sm-6, #gallery .col-md-4, #gallery .col-lg-3 {
+    padding-left: 0;
+    padding-right: 0;
+}
 .header-image {
     background: url('https://www.hdcarwallpapers.com/walls/mansory_lamborghini_huracan_sterrato_2024_rear-HD.jpg') no-repeat center center;
     background-size: cover;
@@ -177,3 +187,30 @@ body > main > div > p:nth-child(5) > a {
 .navbar.fixed-top + main {
     margin-top: 70px !important; /* Настрой според височината на navbar */
 }
+.modal-content {
+    background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачен черен фон */
+    color: white;
+}
+
+.modal-dialog {
+    display: flex;
+    justify-content: center;  /* Центрира модала хоризонтално */
+    align-items: center;      /* Центрира модала вертикално */
+    max-width: 80vh;  /* Може да промените на нужното за вас */
+    max-height: 80vh; /* Ограничаване на височината */
+    margin: 150px auto;  /* Центрира модала, когато е по-малък от екран */
+}
+
+/* За правилното позициониране на изображението в модала */
+.modal-body {
+    display: flex;
+    justify-content: center;  /* Центрира изображението хоризонтално */
+    align-items: center;      /* Центрира изображението вертикално */
+}
+
+.modal-body img {
+    max-width: 100%;   /* Ограничаване на ширината на изображението */
+    max-height: 80vh;  /* Ограничаване на височината на изображението */
+    object-fit: contain;  /* Запазване на пропорциите на изображението */
+}
+

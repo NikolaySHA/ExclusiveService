@@ -18,13 +18,19 @@ public class Image {
     private Long id;
     
     @Column(nullable = false)
-    private String imageUrl;
-    
-    @Column(nullable = false)
     private String title;
     
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date uploadedAt = new Date();
+    @Column(nullable = false)
+    private String url;
     
+    @Lob
+    @Column(nullable = false, columnDefinition = "MEDIUMBLOB")
+    private byte[] data;
+    
+    @Column(nullable = false)
+    private String contentType;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false, updatable = false)
+    private Date uploadedAt = new Date();
 }

@@ -11,5 +11,6 @@ public interface GalleryService {
     public Image saveImage(Image image);
     
     public void deleteImage(Long id);
-
+    
+    Image getImageById(Long id);
 }
