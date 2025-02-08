@@ -1,10 +1,9 @@
 package com.NikolaySHA.ExclusiveService.web.controller;
 
-import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserEditDTO;
-import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserLoginDTO;
-import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserRegisterDTO;
-import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserViewDTO;
+import com.NikolaySHA.ExclusiveService.model.dto.userDTO.*;
+import com.NikolaySHA.ExclusiveService.model.entity.PasswordResetToken;
 import com.NikolaySHA.ExclusiveService.model.entity.User;
+import com.NikolaySHA.ExclusiveService.service.PasswordResetService;
 import com.NikolaySHA.ExclusiveService.service.UserService;
 import com.NikolaySHA.ExclusiveService.service.impl.GmailSender;
 import jakarta.mail.MessagingException;
@@ -30,6 +29,7 @@ public class UserController {
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final GmailSender emailService;
+    private final PasswordResetService passwordResetService;
     
     @ModelAttribute("userData")
     public UserRegisterDTO userDTO() {
@@ -183,5 +183,49 @@ public class UserController {
             redirectAttributes.addFlashAttribute("removeAdminMessage", true);
         }
         return "redirect:/users/" + id;
+    }
+    @GetMapping("/forgot-password")
+    public String showForgotPasswordPage(Model model) {
+        model.addAttribute("forgotPasswordData", new ForgotPasswordDTO());
+        return "forgot-password";
+    }
+    
+    @PostMapping("/forgot-password")
+    public String processForgotPassword(@ModelAttribute("forgotPasswordData") ForgotPasswordDTO forgotPasswordDTO,
+                                        RedirectAttributes redirectAttributes) throws MessagingException, GeneralSecurityException, IOException {
+        boolean emailExists = userService.sendPasswordResetLink(forgotPasswordDTO.getEmail());
+        if (emailExists) {
+            redirectAttributes.addFlashAttribute("successMessage", true);
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", true);
+        }
+        return "redirect:/users/forgot-password";
+    }
+    @GetMapping("/reset-password")
+    public String showResetPasswordPage(@RequestParam(required = false) String token, Model model) {
+        ResetPasswordDTO dto = new ResetPasswordDTO();
+        dto.setToken(token);  // Прехвърляне на токена от URL в DTO
+        model.addAttribute("resetPasswordDTO", dto);  // Добавяне на DTO в модела
+        return "reset-password";
+    }
+    
+    @PostMapping("/reset-password")
+    public String handleResetPassword(@ModelAttribute ResetPasswordDTO resetPasswordDTO, Model model) {
+        // Проверка дали паролите съвпадат
+        if (!resetPasswordDTO.getPassword().equals(resetPasswordDTO.getConfirmPassword())) {
+            model.addAttribute("error_mismatch", true);
+            return "reset-password";
+        }
+        
+        // Възстановяване на паролата
+        boolean success = passwordResetService.resetPassword(resetPasswordDTO.getToken(), resetPasswordDTO.getPassword());
+        if (!success) {
+            model.addAttribute("error_token", true);
+            return "reset-password";
+        }
+        
+        // Съобщение за успешно сменена парола
+        model.addAttribute("successfulPasswordChange", true);
+        return "login";
     }
 }

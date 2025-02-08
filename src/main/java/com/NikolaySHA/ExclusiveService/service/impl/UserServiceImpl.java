@@ -2,12 +2,15 @@ package com.NikolaySHA.ExclusiveService.service.impl;
 
 import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserEditDTO;
 import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserRegisterDTO;
+import com.NikolaySHA.ExclusiveService.model.entity.PasswordResetToken;
 import com.NikolaySHA.ExclusiveService.model.entity.UserRole;
 import com.NikolaySHA.ExclusiveService.model.entity.User;
 import com.NikolaySHA.ExclusiveService.model.enums.UserRolesEnum;
+import com.NikolaySHA.ExclusiveService.repo.PasswordResetTokenRepository;
 import com.NikolaySHA.ExclusiveService.repo.RoleRepository;
 import com.NikolaySHA.ExclusiveService.repo.UserRepository;
 import com.NikolaySHA.ExclusiveService.service.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -16,9 +19,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Service
@@ -28,6 +35,8 @@ public class UserServiceImpl implements UserService {
     private final ExclusiveUserDetailsService exclusiveUserDetailsService;
     private final RoleRepository roleRepository;
     private final ModelMapper modelMapper;
+    private final GmailSender emailSender;
+    private final PasswordResetTokenRepository tokenRepository;
     
     @Override
     public boolean register(UserRegisterDTO data) {
@@ -144,5 +153,34 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+    
+    @Override
+    public boolean sendPasswordResetLink(String email) throws MessagingException, GeneralSecurityException, IOException {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            
+            // Генериране на нов токен
+            String resetToken = UUID.randomUUID().toString();
+            
+            // Създаване на нов запис за токен в таблицата tokens
+            PasswordResetToken token = new PasswordResetToken();
+            token.setUser(user);  // Свързваме токена с потребителя
+            token.setToken(resetToken); // Задаваме самия токен
+            token.setExpiryDate(LocalDateTime.now().plusHours(1));  // Задаваме валидност на токена (например 1 час)
+            
+            // Записваме токена в таблицата tokens
+            tokenRepository.save(token);
+            
+            // Създаване на линк за възстановяване на парола
+            String resetLink = "http://localhost:8080/users/reset-password?token=" + resetToken;
+            
+            // Изпращане на имейл с линк за възстановяване на парола
+            emailSender.sendMail("Възстановяване на парола", "Моля натиснете линка: \n" + resetLink + "\nза да възстановите паролата си.", email);
+            
+            return true;
+        }
+        return false;
     }
 }

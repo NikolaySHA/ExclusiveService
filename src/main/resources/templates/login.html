@@ -32,6 +32,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div class="alert alert-success alert-dismissible fade show" th:if="${successfulPasswordChange}">
+                <span th:text="#{success_password_change}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <div class="label-holder text-white d-flex justify-content-center">
                 <label for="email" class="h4 mb-2" th:text="#{email}"></label>
             </div>
@@ -58,9 +64,15 @@
         <div class="button-holder d-flex justify-content-center">
             <button type="submit" class="btn btn-warning mb-3" th:text="#{login_btn}"></button>
         </div>
+        <a href="#" th:href="@{/users/forgot-password}" class="text-warning">
+            <span th:text="#{forgot_password}"></span>
+            <span>?</span>
+        </a>
     </form>
     <div class="text-center mt-3">
         <p class="text-white"><span th:text="#{login_message} + ' '"> </span><a href="#" th:href="@{/users/register}" class="text-yellow"><span th:text="#{login_link}"></span></a></p>
+        <p class="text-white mt-2">
+        </p>
     </div>
 </main>
 <footer th:replace="fragments/commons::footer"></footer>
