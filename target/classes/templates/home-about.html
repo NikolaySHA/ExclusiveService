@@ -2,14 +2,11 @@
 <html lang="bg" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/commons::head}">
-    <style>
-        /* Може да добавите CSS стилове тук */
-    </style>
 </head>
 <body>
 <header th:replace="~{fragments/commons::nav}"></header>
 <main>
-    <div class="header-image col-xl-12">
+    <div class="header-image col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <div class="header-text">
             <h1 class="badge badge-pill badge-warning" th:text="#{about_h1}"></h1>
             <h3 th:text="#{about_h3}"></h3>

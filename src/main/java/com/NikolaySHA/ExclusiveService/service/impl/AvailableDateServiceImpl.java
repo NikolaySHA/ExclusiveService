@@ -18,7 +18,7 @@ public class AvailableDateServiceImpl implements AvailableDateService {
     @Override
     public LocalDate calculateNextAvailableDate(int detailsCount) {
         LocalDate tomorowDate = LocalDate.now().plusDays(1);
-        int weeklyLimit = 30;
+        int weeklyLimit = 25;
         
         while (true) {
             if (tomorowDate.getDayOfWeek() == DayOfWeek.SATURDAY || tomorowDate.getDayOfWeek() == DayOfWeek.SUNDAY) {

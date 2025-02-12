@@ -50,9 +50,9 @@
                     th:field="*{paymentMethod}"
                     th:errorclass="'is-invalid alert-danger'">
                 <option value="" th:text="#{choose_payment_method}"></option>
-                <option value="ASSIGMENT_LETTER">Възлагателно писмо / само за АСЕТ ИНШЪРАНС</option>
-                <option value="ANOTHER_INSURER_CLAIM">Щета по каско / по съгласувана Фактура</option>
-                <option value="PRIVATE_ORDER">Частна поръчка</option>
+                <option value="ASSIGMENT_LETTER" th:text="#{payment_options_1}"></option>
+                <option value="ANOTHER_INSURER_CLAIM" th:text="#{payment_options_2}"></option>
+                <option value="PRIVATE_ORDER" th:text="#{payment_options_3}"></option>
             </select>
             <small th:errors="*{paymentMethod}" class="invalid-feedback text-danger"></small>
         </div>
