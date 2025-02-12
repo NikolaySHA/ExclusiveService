@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/commons::head}"></head>
+<body>
+<header th:replace="~{fragments/commons::nav}"></header>
+<main>
+    <div class="container bg-blur rounded mt-1 mb-4">
+        <form method="get" th:action="@{/garage/cars}" th:object="${searchCriteria}">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="licensePlate">Рег. номер</label>
+                            <input type="text" class="form-control" id="licensePlate" name="licensePlate" placeholder="Рег. номер" th:field="*{licensePlate}">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="make">Марка</label>
+                            <input type="text" class="form-control" id="make" name="make" placeholder="Марка" th:field="*{make}">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="client">Клиент</label>
+                            <input type="text" class="form-control" id="client" name="client" placeholder="Клиент" th:field="*{customer}">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-2 d-flex flex-column justify-content-center">
+                    <a th:href="@{/garage/cars}" class="btn btn-secondary mb-2 btn-sm">Изчисти</a>
+                    <button type="submit" class="btn btn-warning btn-sm">Търси</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="container bg-blur rounded mt-1 mb-4">
+        <h3 class="bg-gray text-light mb-0 mt-0"><span class="badge badge-pill badge-warning">Резултати [<span th:text="${carsData.size()}"></span>]</span></h3>
+        <div class="row mt-1 mb-2">
+            <div class="col-12 mt-1 mb-1">
+                <div>
+                    <h3 class="mySticky bg-gray text-light mb-0 mt-2"></h3>
+                    <div class="bg-dark rounded m-auto" style="height: 31vh; overflow: auto">
+                        <table class="table table-striped table-dark">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Регистрационен номер</th>
+                                <th>Марка</th>
+                                <th>Модел</th>
+                                <th>Клиент</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="car : ${carsData}">
+                                <a th:href="@{/cars/{id}(id=${car.id})}" style="display: table-row; color: inherit; text-decoration: none;">
+                                    <td class="bg-warning-container" style="width: 4%">
+                                        <div class="bg-warning">
+                                            <img class="appointment-icon" src="/images/p911.png" alt="Appointments" width="35px" height="35px">
+                                        </div>
+                                    </td>
+                                    <td><a class="text-light" th:href="@{/cars/{id}(id=${car.id})}" th:text="${car.getLicensePlate()}"></a></td>
+                                    <td><a class="text-light" th:href="@{/cars/{id}(id=${car.id})}" th:text="${car.getMake()}"></a></td>
+                                    <td><a class="text-light" th:href="@{/cars/{id}(id=${car.id})}" th:text="${car.getModel()}"></a></td>
+                                    <td><a class="text-light" th:href="@{/users/{id}(id=${car.getOwner().id})}" th:text="${car.getOwner().getName()}"></a></td>
+
+                                </a>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragments/commons::footer}"></footer>
+</body>
+</html>

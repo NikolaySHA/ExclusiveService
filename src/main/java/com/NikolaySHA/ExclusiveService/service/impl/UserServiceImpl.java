@@ -14,6 +14,8 @@ import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -70,10 +72,18 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean loggedUserHasRole(String role) {
-        UserDetails userDetails = (UserDetails) exclusiveUserDetailsService.getAuthentication().getPrincipal();
-        return userDetails.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_" + role));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
+            return userDetails.getAuthorities().stream()
+                    .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(role));
+        }
+        return false;
     }
+//    public boolean loggedUserHasRole(String role) {
+//        UserDetails userDetails = (UserDetails) exclusiveUserDetailsService.getAuthentication().getPrincipal();
+//        return userDetails.getAuthorities().stream()
+//                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_" + role));
+//    }
     
     @Override
     public List<User> findAllUsersWithRoles() {
@@ -160,19 +170,15 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            
-            // Генериране на нов токен
             String resetToken = UUID.randomUUID().toString();
-            
-            // Създаване на нов запис за токен в таблицата tokens
             PasswordResetToken token = new PasswordResetToken();
-            token.setUser(user);  // Свързваме токена с потребителя
-            token.setToken(resetToken); // Задаваме самия токен
-            token.setExpiryDate(LocalDateTime.now().plusHours(1));  // Задаваме валидност на токена (например 1 час)
+            token.setUser(user);
+            token.setToken(resetToken);
+            token.setExpiryDate(LocalDateTime.now().plusHours(1));
             
             // Записваме токена в таблицата tokens
             tokenRepository.save(token);
-            
+            //TODO: промяна на линка при пускнане на сайта
             // Създаване на линк за възстановяване на парола
             String resetLink = "http://localhost:8080/users/reset-password?token=" + resetToken;
             
