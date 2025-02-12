@@ -205,7 +205,7 @@ public class UserController {
     public String showResetPasswordPage(@RequestParam(required = false) String token, Model model) {
         ResetPasswordDTO dto = new ResetPasswordDTO();
         dto.setToken(token);  // Прехвърляне на токена от URL в DTO
-        model.addAttribute("resetPasswordDTO", dto);  // Добавяне на DTO в модела
+        model.addAttribute("resetPasswordDTO", dto);
         return "reset-password";
     }
     
