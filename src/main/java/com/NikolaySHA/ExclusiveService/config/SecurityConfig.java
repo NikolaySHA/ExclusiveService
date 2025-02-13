@@ -2,33 +2,39 @@ package com.NikolaySHA.ExclusiveService.config;
 
 import com.NikolaySHA.ExclusiveService.repo.UserRepository;
 import com.NikolaySHA.ExclusiveService.service.impl.ExclusiveUserDetailsService;
+import com.NikolaySHA.ExclusiveService.util.LoginAttemptFilter;
+import com.NikolaySHA.ExclusiveService.util.LoginAttemptService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
+    
+    private final LoginAttemptService loginAttemptService;
     
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                // Permit all static resources
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                                // Permit access to specific paths for all users
-                                .requestMatchers("/", "/users/login", "/users/register", "/gallery","/users/login-error", "/contacts", "/services", "/about", "/insurance", "/uploads/**", "/users/forgot-password", "/users/reset-password").permitAll()
-                                .requestMatchers("/protocols", "/garage/cars", "/garage/appointments", "/garage/users", "/gallery/upload").hasRole("ADMIN")
-                                // All other requests need to be authenticated
+                                .requestMatchers("/", "/users/login", "/users/register", "/gallery",
+                                        "/users/login-error", "/contacts", "/services", "/about",
+                                        "/insurance", "/uploads/**", "/users/forgot-password", "/users/reset-password").permitAll()
+                                .requestMatchers("/protocols", "/garage/cars", "/garage/appointments",
+                                        "/garage/users", "/gallery/upload").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->
@@ -37,7 +43,22 @@ public class SecurityConfig {
                                 .usernameParameter("email")
                                 .passwordParameter("password")
                                 .defaultSuccessUrl("/home", true)
-                                .failureUrl("/users/login-error")
+                                .failureHandler((request, response, exception) -> {
+                                    String email = request.getParameter("email");
+                                    
+                                    if (loginAttemptService.isBlocked(email)) {
+                                        response.sendRedirect("/users/login-error?blocked=true");
+                                        return;
+                                    }
+                                    
+                                    loginAttemptService.loginFailed(email);
+                                    response.sendRedirect("/users/login-error");
+                                })
+                                .successHandler((request, response, authentication) -> {
+                                    String email = request.getParameter("email");
+                                    loginAttemptService.loginSucceeded(email);
+                                    response.sendRedirect("/home");
+                                })
                 )
                 .logout(logout ->
                         logout
@@ -46,18 +67,28 @@ public class SecurityConfig {
                                 .invalidateHttpSession(true)
                                 .deleteCookies("JSESSIONID")
                                 .permitAll()
-                ).csrf(csrf -> csrf // This enables CSRF protection
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // Example of using a custom CSRF token repository
+                ).csrf(csrf -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 )
+                .addFilterBefore(new LoginAttemptFilter(loginAttemptService), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+    
     @Bean
-    public ExclusiveUserDetailsService userDetailsService(UserRepository userRepository){
+    public ExclusiveUserDetailsService userDetailsService(UserRepository userRepository) {
         return new ExclusiveUserDetailsService(userRepository);
     }
+    
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return Pbkdf2PasswordEncoder
-                .defaultsForSpringSecurity_v5_8();
+        return Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+    }
+    
+    @Bean
+    public AuthenticationManager authenticationManager(ExclusiveUserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return new ProviderManager(provider);
     }
 }

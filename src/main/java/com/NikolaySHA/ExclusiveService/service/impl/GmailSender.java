@@ -49,8 +49,7 @@ public class GmailSender {
                 .build();
     }
     
-    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
-            throws IOException {
+    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         InputStream in = GmailSender.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
             throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
@@ -63,19 +62,46 @@ public class GmailSender {
                 .setDataStoreFactory(new FileDataStoreFactory(Paths.get(TOKENS_DIRECTORY_PATH).toFile()))
                 .setAccessType("offline")  // Ensure offline access
                 .build();
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
-        return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+        
+        Credential credential = flow.loadCredential("user");
+        
+        if (credential != null && credential.getAccessToken() != null) {
+            // Проверка дали access_token е изтекъл
+            if (credential.getExpiresInSeconds() != null && credential.getExpiresInSeconds() <= 60) {
+                System.out.println("Access token expired. Refreshing...");
+                if (credential.refreshToken()) {
+                    System.out.println("Token refreshed successfully.");
+                } else {
+                    System.err.println("Failed to refresh token!");
+                }
+            }
+        } else {
+            System.out.println("No existing credentials found. Requesting new authorization.");
+            LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
+            credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+        }
+        
+        return credential;
     }
     
+    
     public void sendMail(String subject, String message, String recipient) throws IOException, GeneralSecurityException, MessagingException {
+        
+        // Увери се, че токенът е валиден
+        if (service.getRequestFactory() != null) {
+            Credential credential = getCredentials(GoogleNetHttpTransport.newTrustedTransport());
+            if (credential.getExpiresInSeconds() != null && credential.getExpiresInSeconds() <= 60) {
+                System.out.println("Refreshing token before sending email...");
+                credential.refreshToken();
+            }
+        }
         
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
         
         MimeMessage email = new MimeMessage(session);
-        
         email.setFrom(new InternetAddress(SENDER));
-        email.addRecipient(TO, new InternetAddress(recipient));  // Correct the recipient address
+        email.addRecipient(TO, new InternetAddress(recipient));
         email.setSubject(subject);
         email.setText(message);
         
@@ -87,10 +113,8 @@ public class GmailSender {
         msg.setRaw(encodedEmail);
         
         try {
-            // Create send message
             msg = service.users().messages().send("me", msg).execute();
             System.out.println("Message id: " + msg.getId());
-            System.out.println(msg.toPrettyString());
         } catch (GoogleJsonResponseException e) {
             GoogleJsonError error = e.getDetails();
             if (error.getCode() == 403) {

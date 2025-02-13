@@ -6,6 +6,7 @@ import com.NikolaySHA.ExclusiveService.model.entity.User;
 import com.NikolaySHA.ExclusiveService.service.PasswordResetService;
 import com.NikolaySHA.ExclusiveService.service.UserService;
 import com.NikolaySHA.ExclusiveService.service.impl.GmailSender;
+import com.NikolaySHA.ExclusiveService.util.LoginAttemptService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class UserController {
     private final ModelMapper modelMapper;
     private final GmailSender emailService;
     private final PasswordResetService passwordResetService;
+    private final LoginAttemptService loginAttemptService;
     
     @ModelAttribute("userData")
     public UserRegisterDTO userDTO() {
@@ -46,6 +48,10 @@ public class UserController {
             return "redirect:/home";
         }
         return "login";
+    }
+    @PostMapping("/login")
+    public String login() {
+        return "redirect:/home";
     }
     @GetMapping("/login-error")
     public String viewLoginError(Model model) {
