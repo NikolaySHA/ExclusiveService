@@ -65,8 +65,8 @@ public class GalleryController {
         
         return "redirect:/gallery";
     }
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    public String deleteImage(@PathVariable Long id, @RequestParam("_method") String method) {
+    @PostMapping(value = "/delete/{id}")
+    public String deleteImage(@PathVariable Long id) {
         try {
             Image image = service.getImageById(id);
             if (image != null) {

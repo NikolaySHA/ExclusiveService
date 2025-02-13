@@ -22,9 +22,9 @@
             <div class="gallery-container">
                 <img th:src="@{${image.url}}" th:alt="${image.title}" class="gallery-img"/>
                 <div class="text-overlay text-light" th:text="${image.title}"></div>
-                <form th:action="@{/gallery/delete/{id}(id=${image.id})}" method="post" style="display:inline;">
-                    <input type="hidden" name="_method" value="DELETE"/>
-                    <button type="submit" class="button-overlay btn btn-danger btn-sm" sec:authorize="hasRole('ROLE_ADMIN')">Изтрий</button>
+                <form th:method="POST" th:action="@{/gallery/delete/{id}(id=${image.id})}">
+                    <input type="hidden" name="imageId" th:value="${id}"/>
+                    <button class="button-overlay btn btn-danger btn-sm" type="submit" sec:authorize="hasRole('ROLE_ADMIN')">Изтрий</button>
                 </form>
             </div>
         </div>
@@ -37,6 +37,7 @@
                 <div class="modal-header">
                     <!-- Затваряне на модала -->
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+
                 </div>
                 <div class="modal-body">
                     <!-- Добавяме контейнер за заглавието на изображението -->
