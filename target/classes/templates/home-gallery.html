@@ -93,7 +93,7 @@
         document.getElementById("prevImage").addEventListener("click", showPreviousImage);
 
         // Добавяне на събитие за клик върху снимките в галерията
-        document.querySelectorAll('.gallery-img').forEach(function (imageElement, index) {
+        document.querySelectorAll('.gallery-img').forEach(function (imageElement) {
             const imageTitle = imageElement.getAttribute('alt');  // Вземаме заглавието на изображението (може да бъде в атрибут 'alt')
             imagesArray.push(imageElement.src);  // Записваме адресите на всички снимки
             titlesArray.push(imageTitle);  // Записваме заглавията на всички снимки
@@ -114,7 +114,6 @@
             if (imageTitle === "") {
                 alert("Моля, въведете заглавие на снимката.");
                 event.preventDefault();
-                return;
             }
         });
     </script>
