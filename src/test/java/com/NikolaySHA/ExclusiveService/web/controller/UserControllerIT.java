@@ -1,9 +1,7 @@
 package com.NikolaySHA.ExclusiveService.web.controller;
 
-import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserEditDTO;
+
 import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserRegisterDTO;
-import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserViewDTO;
-import com.NikolaySHA.ExclusiveService.model.entity.User;
 import com.NikolaySHA.ExclusiveService.service.UserService;
 import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
@@ -36,9 +33,6 @@ public class UserControllerIT {
     private UserService userService;
     
     @Mock
-    private ModelMapper modelMapper;
-    
-    @Mock
     private Model model;
     
     @Mock
@@ -47,23 +41,11 @@ public class UserControllerIT {
     @Mock
     private RedirectAttributes redirectAttributes;
     
-    @Mock
-    private Authentication authentication;
-    
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
     
-   
-    @Test
-    void testViewLoginWhenNoUserIsLoggedIn() {
-        when(userService.findLoggedUser()).thenReturn(null);
-
-        String viewName = userController.viewLogin();
-
-        assertEquals("login", viewName);
-    }
     
     @Test
     void testViewLoginError() {

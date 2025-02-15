@@ -19,7 +19,7 @@ public class LoginAttemptService {
             return;
         }
         
-        attemptsCache.put(email, attemptsCache.getOrDefault(email, 0) + 1);
+        attemptsCache.put(email, attemptsCache.getOrDefault(email, 1) + 1);
         
         if (attemptsCache.get(email) >= MAX_ATTEMPTS) {
             blockedUsers.put(email, Instant.now().plusMillis(BLOCK_DURATION_MS));

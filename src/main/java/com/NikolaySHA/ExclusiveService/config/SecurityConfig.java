@@ -32,7 +32,9 @@ public class SecurityConfig {
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .requestMatchers("/", "/users/login", "/users/register", "/gallery",
                                         "/users/login-error", "/contacts", "/services", "/about",
-                                        "/insurance", "/uploads/**", "/users/forgot-password", "/users/reset-password").permitAll()
+                                        "/insurance", "/uploads/**", "/users/forgot-password",
+                                        "/users/reset-password", "/error-contact-admin")
+                                .permitAll()
                                 .requestMatchers("/protocols", "/garage/cars", "/garage/appointments",
                                         "/garage/users", "/gallery/upload").hasRole("ADMIN")
                                 .anyRequest().authenticated()
@@ -71,6 +73,21 @@ public class SecurityConfig {
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 )
                 .addFilterBefore(new LoginAttemptFilter(loginAttemptService), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling
+                                .authenticationEntryPoint((request, response, authException) -> {
+                                    String requestURI = request.getRequestURI();
+                                    if (requestURI.contains("/appointments/add")) {
+                                        // Ако заявката е за /appointments/add, пренасочваме към login
+                                        request.getSession().setAttribute("showRegisteredErrorMessage", true);
+                                        response.sendRedirect("/users/login");
+                                    } else {
+                                        // За всички останали неоторизирани заявки, пренасочваме към error-contact-admin.html
+                                        response.sendRedirect("/error-contact-admin");
+                                    }
+                                })
+                                .accessDeniedPage("/error-contact-admin")  // за достъп от забранени потребители
+                )
                 .build();
     }
     

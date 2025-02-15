@@ -1,13 +1,13 @@
 package com.NikolaySHA.ExclusiveService.web.controller;
 
 import com.NikolaySHA.ExclusiveService.model.dto.userDTO.*;
-import com.NikolaySHA.ExclusiveService.model.entity.PasswordResetToken;
 import com.NikolaySHA.ExclusiveService.model.entity.User;
 import com.NikolaySHA.ExclusiveService.service.PasswordResetService;
 import com.NikolaySHA.ExclusiveService.service.UserService;
 import com.NikolaySHA.ExclusiveService.service.impl.GmailSender;
 import com.NikolaySHA.ExclusiveService.util.LoginAttemptService;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -31,7 +31,6 @@ public class UserController {
     private final ModelMapper modelMapper;
     private final GmailSender emailService;
     private final PasswordResetService passwordResetService;
-    private final LoginAttemptService loginAttemptService;
     
     @ModelAttribute("userData")
     public UserRegisterDTO userDTO() {
@@ -43,10 +42,17 @@ public class UserController {
     }
     
     @GetMapping("/login")
-    public String viewLogin() {
+    public String viewLogin(HttpSession session, Model model) {
         if (userService.findLoggedUser() != null) {
             return "redirect:/home";
         }
+        Boolean showRegisteredErrorMessage = (Boolean) session.getAttribute("showRegisteredErrorMessage");
+        
+        if (showRegisteredErrorMessage != null && showRegisteredErrorMessage) {
+            model.addAttribute("showRegisteredErrorMessage", true);
+            session.removeAttribute("showRegisteredErrorMessage");
+        }
+        
         return "login";
     }
     @PostMapping("/login")

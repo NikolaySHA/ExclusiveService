@@ -26,7 +26,7 @@
                 updateDate();
             });
             function updateDate() {
-                var detailsCount = $('#paintDetails').val();
+                let detailsCount = $('#paintDetails').val();
                 if(detailsCount) {
                     $.ajax({
                         url: '/next-available-date',
@@ -35,8 +35,8 @@
                             detailsCount: detailsCount
                         },
                         success: function(response) {
-                            var earliestDate = new Date(response);
-                            var formattedDate = earliestDate.toISOString().split('T')[0];
+                            let earliestDate = new Date(response);
+                            let formattedDate = earliestDate.toISOString().split('T')[0];
                             $('#date').attr('min', formattedDate);
                             $('#date').val(formattedDate);
                         },
@@ -53,7 +53,7 @@
             // Function to automatically close alert messages after a delay
             function autoCloseAlerts() {
                 $('.alert').each(function() {
-                    var alert = $(this);
+                    let alert = $(this);
                     if (alert.hasClass('fade') && alert.hasClass('show')) {
                         setTimeout(function() {
                             alert.alert('close');  // Close the alert after 5 seconds
@@ -104,7 +104,6 @@
                 <li class="nav-item">
                     <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/contacts}" th:text="#{nav_bar_contact_us}"></a>
                 </li>
-                </li>
                 <li class="nav-item" sec:authorize="!hasRole('ROLE_ADMIN')">
                     <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://maps.app.goo.gl/cFwKBYrQBYPQYKCKA'}" target="_blank">
                         <i class="fa-solid fa-map"></i>
@@ -134,7 +133,6 @@
                         <span class="button-text" th:text="#{add_car}"></span>
                     </a>
                 </li>
-
                 <li class="nav-item" sec:authorize="!isAuthenticated()">
                     <a class="nav-link text-light active h5 text-stroke" th:href="@{/users/login}">
                         <i class="fa-solid fa-right-to-bracket"></i>
@@ -178,10 +176,8 @@
         </div>
     </nav>
 </header>
-
 <main>
 </main>
-
 <footer class="footer bg-transparent py-2">
     <div class="container-fluid text-center fixed-bottom">
         <h1 class="text-center text-white mt-2 h4">

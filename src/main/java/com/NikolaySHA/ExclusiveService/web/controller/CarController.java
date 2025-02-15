@@ -44,10 +44,6 @@ public class CarController {
     public String viewCar(@PathVariable("id") Long id, RedirectAttributes redirectAttributes, Model model) {
         
         Optional<Car> car = carService.findById(id);
-        if (car.isEmpty()){
-            redirectAttributes.addFlashAttribute("notFoundErrorMessage", true);
-            return "redirect:/error/contact-admin";
-        }
         if (!car.get().getOwner().equals(userService.findLoggedUser()) && !userService.loggedUserHasRole("ADMIN")) {
             redirectAttributes.addFlashAttribute("noPrivilegeMessage", true);
             return "redirect:/error/contact-admin";

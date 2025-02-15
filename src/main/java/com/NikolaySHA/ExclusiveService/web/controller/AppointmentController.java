@@ -14,7 +14,6 @@ import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,15 +34,13 @@ public class AppointmentController {
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final ExpenseService expenseService;
-    private final ProtocolService protocolService;
     
-    public AppointmentController(AppointmentService appointmentService, CarService carService, UserService userService, ModelMapper modelMapper, ExpenseService expenseService, ProtocolService protocolService) {
+    public AppointmentController(AppointmentService appointmentService, CarService carService, UserService userService, ModelMapper modelMapper, ExpenseService expenseService) {
         this.appointmentService = appointmentService;
         this.carService = carService;
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.expenseService = expenseService;
-        this.protocolService = protocolService;
     }
     
     @ModelAttribute("appointmentData")
@@ -65,14 +62,9 @@ public class AppointmentController {
     public List<User> users() {
         return userService.findAll();
     }
-    
     @GetMapping("/add")
     public String addAppointment(Model model, RedirectAttributes redirectAttributes) {
-        if (userService.findLoggedUser() == null) {
-            redirectAttributes.addFlashAttribute("showRegisteredErrorMessage", true);
-            return "redirect:/users/login";
-        }
-        //TODO: show error message on login page when non registered and logged user try to make an appointment
+        
         List<Car> carsData = getCarList();
         if (carsData.isEmpty()) {
             redirectAttributes.addFlashAttribute("showErrorMessage", true);
