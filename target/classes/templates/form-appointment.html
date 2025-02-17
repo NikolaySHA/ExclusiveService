@@ -15,10 +15,10 @@
     <hr class="hr-3 w-25 bg-white"/>
 
     <form class="mx-auto w-75 bg-blur col-xl-3 col-md-4 col-sm-5"
-          th:method="POST"
+          style="padding: 20px;"
           th:action="@{${isEdit} ? '/appointments/edit/' + ${id} : '/appointments/add'}"
-          th:object="${appointmentData}"
-          style="padding: 20px;">
+          th:method="POST"
+          th:object="${appointmentData}">
         <div class="form-group" th:if="${isEdit}">
             <input type="hidden" th:field="*{user.id}" />
         </div>
@@ -86,7 +86,7 @@
                     name="paintDetails"
                     th:field="*{paintDetails}"
                     th:errorclass="'is-invalid alert-danger'">
-                <option value=""th:text="#{choose-details}"></option>
+                <option value="" th:text="#{choose-details}"></option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -99,8 +99,8 @@
                 <option value="10">10</option>
                 <option value="11">11</option>
                 <option value="12">12</option>
-                <option value="13"th:text="#{changing_windscreen}"></option>
-                <option value="14"th:text="#{full_repair}"></option>
+                <option value="13" th:text="#{changing_windscreen}"></option>
+                <option value="14" th:text="#{full_repair}"></option>
             </select>
             <small th:errors="*{paintDetails}" class="invalid-feedback text-danger"></small>
         </div>

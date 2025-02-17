@@ -86,6 +86,9 @@ public class CarServiceImpl implements CarService {
     
     @Override
     public boolean findByVin(String vin) {
+        if (vin.isEmpty()){
+            return false;
+        }
         return this.carRepository.findByVin(vin).isPresent();
     }
 }
