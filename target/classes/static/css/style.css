@@ -215,4 +215,28 @@ body > main > div > p:nth-child(5) > a {
     max-height: 80vh;  /* Ограничаване на височината на изображението */
     object-fit: contain;  /* Запазване на пропорциите на изображението */
 }
-
+@media (max-width: 1050px) {
+    .navbar-expand-lg .navbar-collapse {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.9); /* Тъмен фон за по-добра видимост */
+        max-height: 80vh; /* Ограничава височината */
+        overflow-y: auto; /* Позволява скролване */
+        visibility: hidden;
+        opacity: 0;
+        height: 0;
+        transition: opacity 0.3s ease, height 0.3s ease;
+        z-index: 1000;
+    }
+    .navbar-expand-lg .navbar-toggler {
+        display: block !important;
+        margin-left: auto;
+    }
+    .navbar-expand-lg .navbar-collapse.show {
+        visibility: visible;
+        opacity: 1;
+        height: auto;
+    }
+}

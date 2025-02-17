@@ -17,6 +17,9 @@
             <div th:if="${noSuchCarErrorMessage}">
                 <p class="lead" th:text="#{no_such_car}"></p>
             </div>
+            <div th:if="${cantUpdateAppointment}">
+                <p class="lead" th:text="#{cant_update_appointment}"></p>
+            </div>
             <div th:if="${notFoundErrorMessage}">
                 <p class="lead" th:text="#{no_such_page}"></p>
             </div>
