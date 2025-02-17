@@ -115,7 +115,10 @@ public class AppointmentController {
     public String editAppointmentForm(@PathVariable("id") Long id, RedirectAttributes redirectAttributes, Model model) {
         model.addAttribute("isEdit", true);
         Appointment appointment = getValidatedAppointment(id, redirectAttributes);
-        if (appointment == null) return "redirect:/error/contact-admin";
+        if (appointment == null || appointment.getStatus().equals(Status.COMPLETED) || appointment.getStatus().equals(Status.IN_PROGRESS) || appointment.getStatus().equals(Status.PENDING)) {
+            redirectAttributes.addFlashAttribute("cantUpdateAppointment", true);
+            return "redirect:/error/contact-admin";
+        }
         
         EditAppointmentDTO appointmentDTO = modelMapper.map(appointment, EditAppointmentDTO.class);
         model.addAttribute("id", id);
@@ -130,6 +133,7 @@ public class AppointmentController {
             redirectAttributes.addFlashAttribute("notFoundErrorMessage", true);
             return "redirect:/error/contact-admin";
         }
+        
         if (bindingResult.hasErrors()) {
             model.addAttribute("appointmentData", appointment);
             model.addAttribute("org.springframework.validation.BindingResult.appointmentData", bindingResult);
