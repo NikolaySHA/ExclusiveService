@@ -150,12 +150,14 @@ body > main > div > p:nth-child(5) > a {
     padding-left: 0;
     padding-right: 0;
 }
+/* Стил за header-image и текст */
 .header-image {
     background: url('https://www.hdcarwallpapers.com/walls/mansory_lamborghini_huracan_sterrato_2024_rear-HD.jpg') no-repeat center center;
     background-size: cover;
-    height: 100vh;
+    height: 100vh; /* Използваме 100% височина на екрана */
     position: relative;
 }
+
 .header-text {
     position: absolute;
     top: 50%;
@@ -163,14 +165,38 @@ body > main > div > p:nth-child(5) > a {
     transform: translate(-50%, -50%);
     color: white;
     text-align: center;
+    width: 80%; /* Ограничаваме ширината на текста */
 }
+
+/* Стилове за заглавието */
 .header-text h1 {
     font-size: 4rem;
     font-weight: bold;
+    line-height: 1.2; /* Добавяме малко разстояние между редовете */
 }
+
+/* Стилове за подзаглавието */
 .header-text p {
     font-size: 1.5rem;
 }
+
+/* Медийна заявка за екрани под 800px */
+@media (max-width: 800px) {
+    .header-image {
+        height: 300px; /* Намаляваме височината на изображението */
+    }
+
+    .header-text h1 {
+        font-size: 2rem; /* Намаляваме размера на заглавието */
+        white-space: normal; /* Позволяваме на заглавието да се пренася на нов ред */
+        word-wrap: break-word; /* Принуждаваме думите да се пренасят */
+    }
+
+    .header-text p {
+        font-size: 1rem; /* Намаляваме размера на подзаглавието */
+    }
+}
+
 .about {
     padding-right: 0;
     padding-left: 0;
