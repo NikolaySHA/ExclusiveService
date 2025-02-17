@@ -22,7 +22,8 @@
             <div class="gallery-container">
                 <img th:src="@{${image.url}}" th:alt="${image.title}" class="gallery-img"/>
                 <div class="text-overlay text-light" th:text="${image.title}"></div>
-                <form th:method="POST" th:action="@{/gallery/delete/{id}(id=${image.id})}">
+                <!-- Формата за изтриване с потвърждение -->
+                <form th:method="POST" th:action="@{/gallery/delete/{id}(id=${image.id})}" onsubmit="return confirmDelete()">
                     <input type="hidden" name="imageId" th:value="${id}"/>
                     <button class="button-overlay btn btn-danger btn-sm" type="submit" sec:authorize="hasRole('ROLE_ADMIN')">Изтрий</button>
                 </form>
@@ -53,7 +54,12 @@
         </div>
     </div>
 
-        <script>
+    <script>
+        // Функция за потвърждение при изтриване на изображение
+        function confirmDelete() {
+            return confirm("Сигурни ли сте, че искате да изтриете това изображение?");
+        }
+
         // Променлива за индекса на текущата снимка в галерията
         let currentImageIndex = 0;
         let imagesArray = [];

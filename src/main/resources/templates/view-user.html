@@ -84,7 +84,7 @@
                                     <td><a class="text-light" th:href="@{/cars/{id}(id=${car.id})}" th:text="${car.getMake()}"></a></td>
                                     <td><a class="text-light" th:href="@{/cars/{id}(id=${car.id})}" th:text="${car.getModel()}"></a></td>
                                     <td>
-                                        <form th:method="POST" th:action="@{/cars/delete/{id}(id=${car.id})}">
+                                        <form th:method="POST" th:action="@{/cars/delete/{id}(id=${car.id})}" data-type="car">
                                             <button class="bg-transparent border-0" type="submit">
                                                 <i class="fa-solid fa-trash-can text-yellow"></i>
                                             </button>
@@ -119,11 +119,12 @@
                                         <td th:href="@{/appointments/{id}(id=${appointment.id})}" th:text="${appointment.car.licensePlate}"></td>
                                         <td th:href="@{/appointments/{id}(id=${appointment.id})}" th:text="${appointment.paintDetails}"></td>
                                         <td sec:authorize="hasRole('ROLE_ADMIN')">
-                                            <form th:method="POST" th:action="@{/appointments/delete/{id}(id=${appointment.id})}">
+                                            <form th:method="POST" th:action="@{/appointments/delete/{id}(id=${appointment.id})}" data-type="appointment">
                                                 <button class="bg-transparent border-0" type="submit">
                                                     <i class="fa-solid fa-trash-can text-yellow"></i>
                                                 </button>
                                             </form>
+                                        </td>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -134,6 +135,37 @@
             </div>
         </div>
     </div>
+    <span id="deleteCarMessage" th:text="#{delete_car_message}" style="display:none"></span>
+    <span id="deleteAppointmentMessage" th:text="#{delete_appointment_message}" style="display:none"></span>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Селектираме всички форми за изтриване на коли
+            const deleteCarForms = document.querySelectorAll('form[action^="/cars/delete/"]');
+            const deleteCarMessage = document.getElementById('deleteCarMessage').textContent;
+
+            deleteCarForms.forEach(form => {
+                form.addEventListener('submit', function (event) {
+                    var confirmation = confirm(deleteCarMessage);
+                    if (!confirmation) {
+                        event.preventDefault(); // Спира изпращането на формата, ако потребителят откаже
+                    }
+                });
+            });
+
+            // Селектираме всички форми за изтриване на записани часове
+            const deleteAppointmentForms = document.querySelectorAll('form[action^="/appointments/delete/"]');
+            const deleteAppointmentMessage = document.getElementById('deleteAppointmentMessage').textContent;
+
+            deleteAppointmentForms.forEach(form => {
+                form.addEventListener('submit', function (event) {
+                    var confirmation = confirm(deleteAppointmentMessage);
+                    if (!confirmation) {
+                        event.preventDefault(); // Спира изпращането на формата, ако потребителят откаже
+                    }
+                });
+            });
+        });
+    </script>
 </main>
 <footer th:replace="~{fragments/commons::footer}"></footer>
 </body>

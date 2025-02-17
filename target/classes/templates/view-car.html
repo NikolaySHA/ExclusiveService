@@ -30,9 +30,8 @@
                                 <form th:action="@{/cars/edit/{id}(id=${id})}" method="get">
                                     <button class="btn btn-warning btn-sm mb-2" style="width: 150px;" type="submit" th:text="#{edit}"></button>
                                 </form>
-                                <form th:action="@{/cars/delete/{id}(id=${id})}"th:method="POST">
+                                <form th:action="@{/cars/delete/{id}(id=${id})}" method="POST" id="deleteCarForm">
                                     <button class="btn btn-danger btn-sm mb-2" style="width: 150px;" type="submit" th:text="#{delete}">
-
                                     </button>
                                 </form>
 
@@ -78,6 +77,21 @@
             </div>
         </div>
     </div>
+    <span id="deleteCarMessage" th:text="#{delete_car_message}" style="display:none"></span>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('deleteCarForm');
+            const confirmationMessage = document.getElementById('deleteCarMessage').textContent;
+
+            form.addEventListener('submit', function (event) {
+                var confirmation = confirm(confirmationMessage);
+
+                if (!confirmation) {
+                    event.preventDefault(); // Предотвратяваме изпращането на формата, ако не е потвърдено
+                }
+            });
+        });
+    </script>
 </main>
 <footer th:replace="~{fragments/commons::footer}"></footer>
 </body>
