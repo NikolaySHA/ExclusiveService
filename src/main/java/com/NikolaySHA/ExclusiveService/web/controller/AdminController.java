@@ -49,7 +49,7 @@ public class AdminController {
 public String searchAppointments(@AuthenticationPrincipal UserDetails userDetails, Model model,
                                  @ModelAttribute("searchCriteria") AppointmentSearchDTO searchCriteria,
                                  @RequestParam(defaultValue = "0") int page,
-                                 @RequestParam(defaultValue = "10") int size) {
+                                 @RequestParam(defaultValue = "8") int size) {
     model.addAttribute("statuses", Status.values());
     
     Page<Appointment> appointmentPage;
@@ -77,7 +77,7 @@ public String searchAppointments(@AuthenticationPrincipal UserDetails userDetail
         appointmentPage = appointmentService.getAllAppointmentsPaginated(pageable);
     }
     
-    model.addAttribute("appointmentsData", appointmentPage.getContent());
+    model.addAttribute("appointmentsData", appointmentPage);
     model.addAttribute("currentPage", appointmentPage.getNumber());
     model.addAttribute("totalPages", appointmentPage.getTotalPages());
     model.addAttribute("searchCriteria", searchCriteria);
