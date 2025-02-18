@@ -26,13 +26,11 @@ public class CarController {
     
     private final UserService userService;
     private final CarService carService;
-    private final AppointmentService appointmentService;
     private final ModelMapper modelMapper;
     
-    public CarController(UserService userService, CarService carService, AppointmentService appointmentService, ModelMapper modelMapper) {
+    public CarController(UserService userService, CarService carService, ModelMapper modelMapper) {
         this.userService = userService;
         this.carService = carService;
-        this.appointmentService = appointmentService;
         this.modelMapper = modelMapper;
     }
     
@@ -69,7 +67,7 @@ public class CarController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.carData", bindingResult);
             return "redirect:/cars/add";
         }
-        if (carService.findByLicensePlate(data.getLicensePlate()) || carService.findByVin(data.getVin())){
+        if (carService.findByLicensePlate(data.getLicensePlate()) || carService.existByVin(data.getVin())){
             redirectAttributes.addFlashAttribute("carData", data);
             redirectAttributes.addFlashAttribute("showErrorMessageExistingCar", true);
             return "redirect:/cars/add";
@@ -103,12 +101,35 @@ public class CarController {
     @Transactional
     public String updateCar(@PathVariable("id") Long id, @Valid @ModelAttribute("carData") CarDataDTO car,
                             BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        Car existingCar = carService.findById(id).orElse(null);
         User loggedUser = userService.findLoggedUser();
-        Long id1 = carService.findById(id).get().getOwner().getId();
-        if (!loggedUser.getId().equals(id1) && !userService.loggedUserHasRole("ADMIN")) {
+        
+        if (existingCar == null) {
             redirectAttributes.addFlashAttribute("notFoundErrorMessage", true);
             return "redirect:/error/contact-admin";
         }
+        
+        Long ownerId = existingCar.getOwner().getId();
+        if (!loggedUser.getId().equals(ownerId) && !userService.loggedUserHasRole("ADMIN")) {
+            redirectAttributes.addFlashAttribute("notFoundErrorMessage", true);
+            return "redirect:/error/contact-admin";
+        }
+        
+        String vin = car.getVin();
+        if (vin != null && vin.trim().isEmpty()) {
+            vin = null;
+        }
+        
+        if (vin != null) {
+            Optional<Car> carWithSameVin = carService.findByVin(vin);
+            if (carWithSameVin.isPresent() && !carWithSameVin.get().getId().equals(id)) {
+                redirectAttributes.addFlashAttribute("vinExist", true);
+                return "redirect:/error/contact-admin";
+            }
+        }
+        
+        car.setVin(vin);
+        
         if (bindingResult.hasErrors()) {
             model.addAttribute("carData", car);
             model.addAttribute("org.springframework.validation.BindingResult.carData", bindingResult);
@@ -116,13 +137,11 @@ public class CarController {
             model.addAttribute("isEdit", true);
             return "form-car";
         }
-        if (!appointmentService.findByLicensePlate(car.getLicensePlate()).isEmpty()){
-            redirectAttributes.addFlashAttribute("errorEditingCar", true);
-            return "redirect:/error/contact-admin";
-        }
+        
         carService.updateCar(id, car);
         return "redirect:/cars/" + id;
     }
+    
     
     @PostMapping("/delete/{id}")
     public String deleteCar(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {

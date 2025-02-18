@@ -61,7 +61,7 @@
             <div class="col-12 mt-1 mb-1">
                 <div>
                     <h3 class="mySticky bg-gray text-light mb-0 mt-2"></h3>
-                    <div class="bg-dark rounded m-auto" style="height: 45vh; overflow: auto">
+                    <div class="bg-dark rounded m-auto" style="height: 48vh; overflow: auto">
                         <table class="table table-striped table-dark">
                             <thead>
                             <tr>
@@ -76,7 +76,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="appointment : ${appointmentsData}">
-                                <td class="bg-warning" scope="row" style="width: 3%">
+                                <td class="bg-warning" style="width: 3%">
                                     <i class="fa-solid fa-square-parking fa-xl" style="color: #0a0a0a;"></i>
                                 </td>
                                 <td><a class="text-light" th:href="@{/appointments/{id}(id=${appointment.id})}" th:text="${appointment.getDate()}"></a></td>
@@ -107,7 +107,6 @@
                                 Следваща
                             </a>
                         </div>
-
                     </div>
                 </div>
             </div>

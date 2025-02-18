@@ -33,7 +33,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     
     @Override
     public boolean create(AddAppointmentDTO data) throws MessagingException, GeneralSecurityException, IOException {
-        User user = data.getCar().getOwner();
         Appointment appointment = modelMapper.map(data, Appointment.class);
         appointment.setUser(data.getCar().getOwner());
         appointment.setStatus(Status.SCHEDULED);
@@ -64,20 +63,10 @@ public class AppointmentServiceImpl implements AppointmentService {
     public Page<Appointment> getAllAppointmentsPaginated(Pageable pageable) {
         return appointmentRepository.findAll(pageable);
     }
-    
     @Override
     public Page<Appointment> searchAppointmentsPaginated(LocalDate date, String licensePlate, String make, String client, Status status, Pageable pageable) {
         return appointmentRepository.searchAppointmentsPaginated(date, licensePlate, make, client, status, pageable);
     }
-//    @Override
-//    public Page<Appointment> searchAppointmentsPaginated(LocalDate date, String licensePlate,
-//                                                         String make, String customer,
-//                                                         Status status, Pageable pageable) {
-//        return appointmentRepository.searchAppointmentsPaginated(date, licensePlate, make, customer, status, pageable);
-//    }
-    
-    
-    
     @Override
     public List<Appointment> findByDate(LocalDate today) {
         return appointmentRepository.findByDate(today);
@@ -142,7 +131,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     
     @Override
     public List<Appointment> findByLicensePlate(String licensePlate) {
-        List<Appointment> list = this.appointmentRepository.findByCar_LicensePlate(licensePlate);
-        return list;
+        return this.appointmentRepository.findByCar_LicensePlate(licensePlate);
     }
 }

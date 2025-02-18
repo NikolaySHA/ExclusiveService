@@ -11,7 +11,6 @@ import lombok.Setter;
 public class CarSearchDTO {
     private String licensePlate;
     private String make;
+    private String vin;
     private String customer;
-    
-
 }

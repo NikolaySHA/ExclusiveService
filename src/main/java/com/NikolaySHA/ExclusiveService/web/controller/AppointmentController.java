@@ -14,6 +14,9 @@ import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -171,13 +174,19 @@ public class AppointmentController {
         return appointment;
     }
     
+    
     private List<Car> getCarList() {
         List<Car> carsData;
+        
         if (!userService.loggedUserHasRole("ADMIN")) {
             carsData = carService.findCarsByUser(userService.findLoggedUser().getId());
         } else {
-            carsData = carService.findAllCars();
+            Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);  // Връща всички коли, без странициране
+            Page<Car> carPage = carService.findAllCars(pageable);
+            carsData = carPage.getContent();
         }
+        
         return carsData;
     }
+
 }

@@ -9,7 +9,7 @@
 <main>
     <div class="jumbotron container bg-blur rounded mt-5 ">
         <div>
-            <img src="https://hips.hearstapps.com/hmg-prod/images/check-engine-light-icon-1616189100.jpg?crop=1.00xw:0.891xh;0,0.0295xh&resize=980:*" width="200rem" height="160rem">
+            <img src="https://hips.hearstapps.com/hmg-prod/images/check-engine-light-icon-1616189100.jpg?crop=1.00xw:0.891xh;0,0.0295xh&resize=980:*" alt="contact admin" width="200rem" height="160rem">
 
             <div th:if="${deleteCarErrorMessage}">
                 <p class="lead" th:text="#{error_car_have_appointment}"></p>
@@ -19,6 +19,9 @@
             </div>
             <div th:if="${cantUpdateAppointment}">
                 <p class="lead" th:text="#{cant_update_appointment}"></p>
+            </div>
+            <div th:if="${vinExist}">
+                <p class="lead" th:text="#{car_existing_vin}"></p>
             </div>
             <div th:if="${notFoundErrorMessage}">
                 <p class="lead" th:text="#{no_such_page}"></p>

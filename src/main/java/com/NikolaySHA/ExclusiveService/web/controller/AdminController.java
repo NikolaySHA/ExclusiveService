@@ -23,9 +23,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Controller
 public class AdminController {
@@ -46,7 +45,7 @@ public class AdminController {
     
 @GetMapping("/garage/appointments")
 @PreAuthorize("hasRole('ADMIN')")
-public String searchAppointments(@AuthenticationPrincipal UserDetails userDetails, Model model,
+public String searchAppointments(Model model,
                                  @ModelAttribute("searchCriteria") AppointmentSearchDTO searchCriteria,
                                  @RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "8") int size) {
@@ -86,24 +85,43 @@ public String searchAppointments(@AuthenticationPrincipal UserDetails userDetail
 }
     @GetMapping("/garage/cars")
     @PreAuthorize("hasRole('ADMIN')")
-    public String searchCars(@AuthenticationPrincipal UserDetails userDetails, Model model,
-                                     @ModelAttribute("searchCriteria") CarSearchDTO searchCriteria) {
-        List<Car> cars;
-        if (searchCriteria.getLicensePlate() != null || searchCriteria.getMake() != null || searchCriteria.getCustomer() != null) {
-            cars = carService.searchCars(searchCriteria.getLicensePlate(), searchCriteria.getMake(), searchCriteria.getCustomer());
+    public String searchCars(Model model,
+                             @ModelAttribute("searchCriteria") CarSearchDTO searchCriteria,
+                             @RequestParam(defaultValue = "0") int page,
+                             @RequestParam(defaultValue = "8") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("licensePlate"));
+        Page<Car> carPage;
+        if (searchCriteria.getVin() == null || searchCriteria.getVin().isEmpty()) {
+            carPage = carService.searchCars(
+                    searchCriteria.getLicensePlate(),
+                    searchCriteria.getMake(),
+                    null,
+                    searchCriteria.getCustomer(),
+                    pageable
+            );
         } else {
-            cars = carService.findAllCars();
+            carPage = carService.searchCars(
+                    searchCriteria.getLicensePlate(),
+                    searchCriteria.getMake(),
+                    searchCriteria.getVin(),
+                    searchCriteria.getCustomer(),
+                    pageable
+            );
         }
-        
-        model.addAttribute("carsData", cars);
+        model.addAttribute("carsData", carPage.getContent());
+        model.addAttribute("count", carPage.getTotalElements());
+        model.addAttribute("currentPage", carPage.getNumber());
+        model.addAttribute("totalPages", carPage.getTotalPages());
         model.addAttribute("searchCriteria", searchCriteria);
         
         return "garage-cars";
     }
-   
+    
+    
+    
     @GetMapping("/garage/users")
     @PreAuthorize("hasRole('ADMIN')")
-    public String searchCustomers(@AuthenticationPrincipal UserDetails userDetails, Model model,
+    public String searchCustomers(Model model,
                                      @ModelAttribute("searchCriteria") UserSearchDTO searchCriteria) {
         model.addAttribute("userRoles", UserRolesEnum.values());
         List<User> users;

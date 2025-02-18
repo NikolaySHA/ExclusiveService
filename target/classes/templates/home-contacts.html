@@ -8,7 +8,7 @@
         <div class="row">
             <!-- Contact Information Section -->
             <div class="col-12 col-lg-7 mb-4 mb-lg-0">
-                <div class="bg-contact-info h-100" style="background-image: url('./assets/img/contact-img-1.webp');">
+                <div class="bg-contact-info h-100">
                     <div class="contact-info-content p-4">
                         <div class="alert alert-success alert-dismissible fade show mt-3" th:if="${successContactMessage}">
                             <span th:text="#{success_send_message}"></span>
@@ -16,7 +16,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <h2 class="text-center mt-2"><span class="badge badge-pill badge-warning" th:text="#{contact-form-heading}"></h2>
+                        <h2 class="text-center mt-2"><span class="badge badge-pill badge-warning" th:text="#{contact-form-heading}"></span></span></h2>
                         <hr class="hr-3 w-25 bg-white"/>
                         <p class="lead fs-4 text-light opacity-75 mb-4" th:text="#{contact-info}"></p>
                         <!-- Address -->
@@ -28,7 +28,7 @@
                             </div>
                             <h4 class="text-light" th:text="#{contact-address}"></h4>
                             <a th:href="@{'https://maps.app.goo.gl/cFwKBYrQBYPQYKCKA'}" target="_blank">
-                                <address class="badge badge-pill badge-warning" th:text="#{contact-address-info}"></address>
+                                <address class="badge badge-pill badge-warning" style="font-size: 15px;" th:text="#{contact-address-info}"></address>
                             </a>
                         </div>
                         <!-- Phone -->
@@ -40,11 +40,11 @@
                             </div>
                             <h4 class="text-light" th:text="#{phone_service}"></h4>
                             <p class="mb-0">
-                                <a class="badge badge-pill badge-warning" th:href="'tel:+359894646769'">+359 894 646 769</a>
+                                <a class="badge badge-pill badge-warning" style="font-size: 15px;" th:href="'tel:+359894646769'">+359 894 646 769</a>
                             </p>
                             <h4 class="text-light" th:text="#{phone_insurance}"></h4>
                             <p class="mb-0">
-                                <a class="badge badge-pill badge-warning" th:href="'tel:+359878343343'">+359 878 343 343</a>
+                                <a class="badge badge-pill badge-warning" style="font-size: 15px;" th:href="'tel:+359878343343'">+359 878 343 343</a>
                             </p>
                         </div>
                         <!-- Contact Form -->

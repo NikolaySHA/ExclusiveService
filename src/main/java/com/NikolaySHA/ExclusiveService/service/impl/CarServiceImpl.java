@@ -6,6 +6,8 @@ import com.NikolaySHA.ExclusiveService.repo.CarRepository;
 import com.NikolaySHA.ExclusiveService.service.CarService;
 import com.NikolaySHA.ExclusiveService.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,13 +57,22 @@ public class CarServiceImpl implements CarService {
     }
     
     @Override
-    public List<Car> findAllCars() {
-        return carRepository.findAll();
+    public Page<Car> findAllCars(Pageable pageable) {
+        return carRepository.findAll(pageable);
     }
     
     @Override
-    public List<Car> searchCars(String licensePlate, String make, String customer) {
-        return carRepository.searchCarsByFilter(licensePlate, make, customer);
+    public Page<Car> searchCars(String licensePlate, String make, String vin, String customer, Pageable pageable) {
+        Page<Car> cars;
+        if (vin == null || vin.isEmpty()) {
+            cars = carRepository.searchCarsWithoutVin(
+                    licensePlate, make, customer, pageable);
+        } else {
+            cars = carRepository.searchCarsByFilter(
+                    licensePlate, make, vin, customer, pageable);
+        }
+        
+        return cars;
     }
     
     @Override
@@ -85,10 +96,17 @@ public class CarServiceImpl implements CarService {
     }
     
     @Override
-    public boolean findByVin(String vin) {
+    public boolean existByVin(String vin) {
         if (vin.isEmpty()){
             return false;
         }
         return this.carRepository.findByVin(vin).isPresent();
     }
+    
+    @Override
+    public Optional<Car> findByVin(String vin) {
+        return carRepository.findByVin(vin);
+    }
+    
+    
 }

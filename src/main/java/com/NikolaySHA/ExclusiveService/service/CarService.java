@@ -2,6 +2,8 @@ package com.NikolaySHA.ExclusiveService.service;
 
 import com.NikolaySHA.ExclusiveService.model.entity.Car;
 import com.NikolaySHA.ExclusiveService.model.dto.carDTO.CarDataDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,13 +17,14 @@ public interface CarService {
     
     void delete(Car car);
     
-    List<Car> findAllCars();
+    Page<Car> findAllCars(Pageable pageable);
     
-    List<Car> searchCars(String licensePlate, String make, String customer);
+    Page<Car> searchCars(String licensePlate, String make, String vin, String customer, Pageable pageable);
     
     void updateCar(Long id, CarDataDTO car);
     
     boolean findByLicensePlate(String licensePlate);
     
-    boolean findByVin(String vin);
+    boolean existByVin(String vin);
+    Optional<Car> findByVin(String vin);
 }
