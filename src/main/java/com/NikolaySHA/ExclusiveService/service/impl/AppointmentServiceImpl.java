@@ -7,12 +7,13 @@ import com.NikolaySHA.ExclusiveService.model.entity.User;
 import com.NikolaySHA.ExclusiveService.model.enums.Status;
 import com.NikolaySHA.ExclusiveService.repo.AppointmentRepository;
 import com.NikolaySHA.ExclusiveService.service.AppointmentService;
-import com.NikolaySHA.ExclusiveService.service.UserService;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
@@ -60,23 +61,22 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
         return appointments;
     }
-    @Override
-    public List<Appointment> searchAppointments(String date, String licensePlate, String make, String client, Status status) {
-        LocalDate localDate = null;
-        if (date != null && !date.isEmpty()) {
-            localDate = LocalDate.parse(date);
-        }
-        return appointmentRepository.findAppointments(localDate, licensePlate, make, client, status);
+    public Page<Appointment> getAllAppointmentsPaginated(Pageable pageable) {
+        return appointmentRepository.findAll(pageable);
     }
     
     @Override
-    public List<Appointment> getAllAppointments() {
-        return this.appointmentRepository.findAll();
+    public Page<Appointment> searchAppointmentsPaginated(LocalDate date, String licensePlate, String make, String client, Status status, Pageable pageable) {
+        return appointmentRepository.searchAppointmentsPaginated(date, licensePlate, make, client, status, pageable);
     }
 //    @Override
-//    public void updateAppointmentStatus(Appointment appointment, Status status) {
-//        appointment.setStatus(status);
+//    public Page<Appointment> searchAppointmentsPaginated(LocalDate date, String licensePlate,
+//                                                         String make, String customer,
+//                                                         Status status, Pageable pageable) {
+//        return appointmentRepository.searchAppointmentsPaginated(date, licensePlate, make, customer, status, pageable);
 //    }
+    
+    
     
     @Override
     public List<Appointment> findByDate(LocalDate today) {

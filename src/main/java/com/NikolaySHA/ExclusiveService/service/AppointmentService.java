@@ -5,7 +5,9 @@ import com.NikolaySHA.ExclusiveService.model.dto.appointmentDTO.EditAppointmentD
 import com.NikolaySHA.ExclusiveService.model.entity.Appointment;
 import com.NikolaySHA.ExclusiveService.model.enums.Status;
 import jakarta.mail.MessagingException;
+import org.springframework.data.domain.Page;
 
+import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
@@ -16,9 +18,8 @@ public interface AppointmentService {
     
     boolean create(AddAppointmentDTO data) throws MessagingException, GeneralSecurityException, IOException;
     List<Appointment> getAppointmentsByUserEmail(String email);
-    List<Appointment> getAllAppointments();
-//    void updateAppointmentStatus(Appointment appointment, Status status);
-    List<Appointment> searchAppointments(String date, String licensePlate, String make, String client, Status status);
+    Page<Appointment> getAllAppointmentsPaginated(Pageable pageable);
+    Page<Appointment> searchAppointmentsPaginated(LocalDate date, String licensePlate, String make, String client, Status status, Pageable pageable);
     Optional<Appointment> findById(Long id);
     Optional<Appointment> findByIdInitializingUsersWithCars(Long id);
     void delete(Appointment appointment);

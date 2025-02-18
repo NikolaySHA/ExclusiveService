@@ -89,6 +89,22 @@
                             </tr>
                             </tbody>
                         </table>
+                        <div class="pagination d-flex justify-content-center mt-3">
+                            <a th:if="${currentPage > 0}"
+                               class="btn btn-warning btn-sm mx-1"
+                               th:href="@{/garage/appointments(page=${currentPage - 1}, size=10)}">
+                                Предишна
+                            </a>
+
+                            <span class="text-light mx-2">Страница <span th:text="${currentPage + 1}"></span> от <span th:text="${totalPages}"></span></span>
+
+                            <a th:if="${currentPage + 1 < totalPages}"
+                               class="btn btn-warning btn-sm mx-1"
+                               th:href="@{/garage/appointments(page=${currentPage + 1}, size=10)}">
+                                Следваща
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </div>
