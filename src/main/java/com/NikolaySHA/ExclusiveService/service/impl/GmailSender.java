@@ -23,6 +23,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
@@ -37,7 +38,8 @@ public class GmailSender {
     private static final String APPLICATION_NAME = "Exclusive Service Email API";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
-    private static final List<String> SCOPES = Collections.singletonList(GmailScopes.GMAIL_SEND);  // Updated Scope
+    private static final String STORED_CREDENTIAL_PATH = TOKENS_DIRECTORY_PATH + "/StoredCredential";
+    private static final List<String> SCOPES = Collections.singletonList(GmailScopes.GMAIL_SEND);
     private static final String CREDENTIALS_FILE_PATH = "/client_secret_299103921534-n6n44h5ju3493qilbskniinitmd0cbu4.apps.googleusercontent.com.json";
     private static final String SENDER = "exclautoservice@gmail.com";
     private final Gmail service;
@@ -56,27 +58,33 @@ public class GmailSender {
         }
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
         
-        // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
                 .setDataStoreFactory(new FileDataStoreFactory(Paths.get(TOKENS_DIRECTORY_PATH).toFile()))
-                .setAccessType("offline")  // Ensure offline access
+                .setAccessType("offline")
                 .build();
         
         Credential credential = flow.loadCredential("user");
         
         if (credential != null && credential.getAccessToken() != null) {
-            // Проверка дали access_token е изтекъл
-            if (credential.getExpiresInSeconds() != null && credential.getExpiresInSeconds() <= 60) {
-                System.out.println("Access token expired. Refreshing...");
-                if (credential.refreshToken()) {
-                    System.out.println("Token refreshed successfully.");
-                } else {
-                    System.err.println("Failed to refresh token!");
+            try {
+                if (credential.getExpiresInSeconds() != null && credential.getExpiresInSeconds() <= 60) {
+                    System.out.println("Access token expired. Attempting to refresh...");
+                    if (credential.refreshToken()) {
+                        System.out.println("Token refreshed successfully.");
+                    } else {
+                        throw new IOException("Failed to refresh token!");
+                    }
                 }
+            } catch (IOException e) {
+                System.err.println("Token is invalid. Deleting stored credentials...");
+                deleteStoredCredential();
+                credential = null;  // Задължително, за да се поиска нов токен
             }
-        } else {
-            System.out.println("No existing credentials found. Requesting new authorization.");
+        }
+        
+        if (credential == null) {
+            System.out.println("No valid credentials found. Requesting new authorization...");
             LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
             credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
         }
@@ -85,14 +93,24 @@ public class GmailSender {
     }
     
     
+    private static void deleteStoredCredential() {
+        try {
+            Files.deleteIfExists(Paths.get(STORED_CREDENTIAL_PATH));
+            System.out.println("Stored credential deleted.");
+        } catch (IOException e) {
+            System.err.println("Error deleting stored credential: " + e.getMessage());
+        }
+    }
+    
     public void sendMail(String subject, String message, String recipient) throws IOException, GeneralSecurityException, MessagingException {
+        Credential credential = getCredentials(GoogleNetHttpTransport.newTrustedTransport());
         
-        // Увери се, че токенът е валиден
-        if (service.getRequestFactory() != null) {
-            Credential credential = getCredentials(GoogleNetHttpTransport.newTrustedTransport());
-            if (credential.getExpiresInSeconds() != null && credential.getExpiresInSeconds() <= 60) {
-                System.out.println("Refreshing token before sending email...");
-                credential.refreshToken();
+        if (credential.getExpiresInSeconds() != null && credential.getExpiresInSeconds() <= 60) {
+            System.out.println("Refreshing token before sending email...");
+            if (!credential.refreshToken()) {
+                System.err.println("Failed to refresh token before sending email! Deleting stored credentials...");
+                deleteStoredCredential();
+                throw new IOException("Cannot refresh token. User reauthorization required.");
             }
         }
         
@@ -114,7 +132,7 @@ public class GmailSender {
         
         try {
             msg = service.users().messages().send("me", msg).execute();
-            System.out.println("Message id: " + msg.getId());
+            System.out.println("Message sent successfully. Message ID: " + msg.getId());
         } catch (GoogleJsonResponseException e) {
             GoogleJsonError error = e.getDetails();
             if (error.getCode() == 403) {

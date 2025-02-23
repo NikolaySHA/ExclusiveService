@@ -14,6 +14,8 @@ import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -81,13 +83,13 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public List<User> findAllUsersWithRoles() {
-        return this.userRepository.findAllWithRoles();
+    public Page<User> findAllUsersWithRoles(Pageable pageable) {
+        return this.userRepository.findAllWithRoles(pageable);
     }
     
     @Override
-    public List<User> searchUsers(String name, String email, UserRolesEnum role) {
-        return this.userRepository.searchUsers(name, email, role);
+    public Page<User> searchUsers(String name, String licensePlate, String email, UserRolesEnum role, Pageable pageable) {
+        return this.userRepository.searchUsers(name, licensePlate, email, role, pageable);
     }
     
     @Override
@@ -156,8 +158,8 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
     
     @Override
@@ -170,16 +172,10 @@ public class UserServiceImpl implements UserService {
             token.setUser(user);
             token.setToken(resetToken);
             token.setExpiryDate(LocalDateTime.now().plusHours(1));
-            
-            // Записваме токена в таблицата tokens
             tokenRepository.save(token);
             //TODO: промяна на линка при пускнане на сайта
-            // Създаване на линк за възстановяване на парола
             String resetLink = "http://localhost:8080/users/reset-password?token=" + resetToken;
-            
-            // Изпращане на имейл с линк за възстановяване на парола
             emailSender.sendMail("Възстановяване на парола", "Моля натиснете линка: \n" + resetLink + "\nза да възстановите паролата си.", email);
-            
             return true;
         }
         return false;

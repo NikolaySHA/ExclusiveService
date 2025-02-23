@@ -61,10 +61,6 @@ public class AppointmentController {
         return getCarList();
     }
     
-    @ModelAttribute("users")
-    public List<User> users() {
-        return userService.findAll();
-    }
     @GetMapping("/add")
     public String addAppointment(Model model, RedirectAttributes redirectAttributes) {
         

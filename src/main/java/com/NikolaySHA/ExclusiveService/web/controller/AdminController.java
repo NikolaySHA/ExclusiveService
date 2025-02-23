@@ -122,19 +122,26 @@ public String searchAppointments(Model model,
     @GetMapping("/garage/users")
     @PreAuthorize("hasRole('ADMIN')")
     public String searchCustomers(Model model,
-                                     @ModelAttribute("searchCriteria") UserSearchDTO searchCriteria) {
+                                     @ModelAttribute("searchCriteria") UserSearchDTO searchCriteria,
+                                     @RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "6") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
+        Page<User> userPage;
         model.addAttribute("userRoles", UserRolesEnum.values());
-        List<User> users;
-        if (searchCriteria.getName() != null || searchCriteria.getEmail() != null || searchCriteria.getRole() != null) {
-            users = userService.searchUsers(searchCriteria.getName(), searchCriteria.getEmail(), searchCriteria.getRole());
+        if (searchCriteria.getName() != null || searchCriteria.getLicensePlate() != null || searchCriteria.getEmail() != null || searchCriteria.getRole() != null) {
+            userPage = userService.searchUsers(searchCriteria.getName(), searchCriteria.getLicensePlate(), searchCriteria.getEmail(), searchCriteria.getRole(), pageable);
         } else {
-            users = userService.findAllUsersWithRoles();
+            userPage = userService.findAllUsersWithRoles(pageable);
         }
         
-        model.addAttribute("usersData", users);
+        model.addAttribute("usersData", userPage);
         model.addAttribute("searchCriteria", searchCriteria);
+        model.addAttribute("count", userPage.getTotalElements());
+        model.addAttribute("currentPage", userPage.getNumber());
+        model.addAttribute("totalPages", userPage.getTotalPages());
         
         return "garage-users";
     }
-   
+    
+    
 }

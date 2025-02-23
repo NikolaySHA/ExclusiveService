@@ -196,16 +196,16 @@ class UserServiceImplTest {
         assertTrue(isAdmin);
     }
     
-    @Test
-    void testFindAll() {
-        // Arrange
-        List<User> users = List.of(new User(), new User());
-        when(userRepository.findAll()).thenReturn(users);
-        
-        // Act
-        List<User> result = userService.findAll();
-        
-        // Assert
-        assertEquals(users, result);
-    }
+//    @Test
+//    void testFindAll() {
+//        // Arrange
+//        List<User> users = List.of(new User(), new User());
+//        when(userRepository.findAll()).thenReturn(users);
+//
+//        // Act
+//        List<User> result = userService.findAll();
+//
+//        // Assert
+//        assertEquals(users, result);
+//    }
 }

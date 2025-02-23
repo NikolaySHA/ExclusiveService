@@ -59,7 +59,6 @@ public class GalleryController {
             
         } catch (IOException e) {
             e.printStackTrace();
-            //TODO да се изпише съобщение
             return "error-contact-admin";
         }
         
@@ -76,7 +75,6 @@ public class GalleryController {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            //TODO да се изпише грешката
             return "error-contact-admin";
         }
         return "redirect:/gallery";

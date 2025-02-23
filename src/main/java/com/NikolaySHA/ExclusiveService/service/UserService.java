@@ -6,6 +6,8 @@ import com.NikolaySHA.ExclusiveService.model.entity.User;
 import com.NikolaySHA.ExclusiveService.model.entity.UserRole;
 import com.NikolaySHA.ExclusiveService.model.enums.UserRolesEnum;
 import jakarta.mail.MessagingException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -23,9 +25,9 @@ public interface UserService {
     boolean loggedUserHasRole(String role);
     
     
-    List<User> findAllUsersWithRoles();
+    Page<User> findAllUsersWithRoles(Pageable pageable);
     
-    List<User> searchUsers(String name, String email, UserRolesEnum role);
+    Page<User> searchUsers(String name, String licensePlate, String email, UserRolesEnum role, Pageable pageable);
     
     Optional<User> findById(Long id);
     boolean updateUser(Long id, UserEditDTO user);
@@ -36,9 +38,9 @@ public interface UserService {
     
     boolean isAdmin(List<UserRole> roles);
     
-    List<User> findAll();
+    Page<User> findAll(Pageable pageable);
     
-    public default boolean sendPasswordResetLink(String email) throws MessagingException, GeneralSecurityException, IOException {
+    default boolean sendPasswordResetLink(String email) throws MessagingException, GeneralSecurityException, IOException {
         return false;
     }
 }
