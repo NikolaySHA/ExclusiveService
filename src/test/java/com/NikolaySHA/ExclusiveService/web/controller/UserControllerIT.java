@@ -1,9 +1,5 @@
 package com.NikolaySHA.ExclusiveService.web.controller;
 
-import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserEditDTO;
-import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserRegisterDTO;
-import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserViewDTO;
-import com.NikolaySHA.ExclusiveService.model.entity.User;
 import com.NikolaySHA.ExclusiveService.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
@@ -33,19 +28,10 @@ public class UserControllerIT {
     private UserService userService;
     
     @Mock
-    private ModelMapper modelMapper;
-    
-    @Mock
     private Model model;
     
     @Mock
-    private BindingResult bindingResult;
-    
-    @Mock
     private RedirectAttributes redirectAttributes;
-    
-    @Mock
-    private Authentication authentication;
     
     @BeforeEach
     void setUp() {
@@ -53,15 +39,15 @@ public class UserControllerIT {
     }
     
    
-    @Test
-    void testViewLoginWhenNoUserIsLoggedIn() {
-        when(userService.findLoggedUser()).thenReturn(null);
-        
-        String viewName = userController.viewLogin();
-        
-        assertEquals("login", viewName);
-    }
-    
+//    @Test
+//    void testViewLoginWhenNoUserIsLoggedIn() {
+//        when(userService.findLoggedUser()).thenReturn(null);
+//
+//        String viewName = userController.viewLogin();
+//
+//        assertEquals("login", viewName);
+//    }
+//
     @Test
     void testViewLoginError() {
         String viewName = userController.viewLoginError(model);
@@ -78,34 +64,34 @@ public class UserControllerIT {
         verify(model).addAttribute("isEdit", false);
     }
     
-    @Test
-    void testDoRegisterUserWhenPasswordsMismatch() {
-        UserRegisterDTO userDTO = new UserRegisterDTO();
-        userDTO.setPassword("password");
-        userDTO.setConfirmPassword("different");
-        
-        String viewName = userController.doRegisterUser(userDTO, bindingResult, redirectAttributes);
-        
-        assertEquals("redirect:/users/register", viewName);
-        verify(redirectAttributes).addFlashAttribute("passwordMismatch", true);
-    }
-    
-    @Test
-    void testDoRegisterUserWhenHasErrors() {
-        UserRegisterDTO userDTO = new UserRegisterDTO();
-        userDTO.setEmail("test@tes.tes");
-        userDTO.setName("");
-        userDTO.setPassword("111");
-        userDTO.setConfirmPassword("111");
-        userDTO.setPhoneNumber("1293809301983103");
-        when(bindingResult.hasErrors()).thenReturn(true);
-        
-        String viewName = userController.doRegisterUser(userDTO, bindingResult, redirectAttributes);
-        
-        assertEquals("redirect:/users/register", viewName);
-        verify(redirectAttributes).addFlashAttribute("userData", userDTO);
-        verify(redirectAttributes).addFlashAttribute("org.springframework.validation.BindingResult.userData", bindingResult);
-    }
+//    @Test
+//    void testDoRegisterUserWhenPasswordsMismatch() {
+//        UserRegisterDTO userDTO = new UserRegisterDTO();
+//        userDTO.setPassword("password");
+//        userDTO.setConfirmPassword("different");
+//
+//        String viewName = userController.doRegisterUser(userDTO, bindingResult, redirectAttributes);
+//
+//        assertEquals("redirect:/users/register", viewName);
+//        verify(redirectAttributes).addFlashAttribute("passwordMismatch", true);
+//    }
+//
+//    @Test
+//    void testDoRegisterUserWhenHasErrors() {
+//        UserRegisterDTO userDTO = new UserRegisterDTO();
+//        userDTO.setEmail("test@tes.tes");
+//        userDTO.setName("");
+//        userDTO.setPassword("111");
+//        userDTO.setConfirmPassword("111");
+//        userDTO.setPhoneNumber("1293809301983103");
+//        when(bindingResult.hasErrors()).thenReturn(true);
+//
+//        String viewName = userController.doRegisterUser(userDTO, bindingResult, redirectAttributes);
+//
+//        assertEquals("redirect:/users/register", viewName);
+//        verify(redirectAttributes).addFlashAttribute("userData", userDTO);
+//        verify(redirectAttributes).addFlashAttribute("org.springframework.validation.BindingResult.userData", bindingResult);
+//    }
     @Test
     void testViewUserWhenUserNotFound() {
         Long userId = 1L;

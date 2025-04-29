@@ -2,6 +2,7 @@ package com.NikolaySHA.ExclusiveService.model.dto.userDTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,10 @@ public class UserRegisterDTO {
     private String password;
     @NotBlank(message = "{error_message_not_null}")
     @Size(min = 3 , max = 20, message = "{error_message_size_3_20}")
+    @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,}$",
+            message = "{error_message_password}"
+    )
     private String confirmPassword;
     @NotBlank(message = "{error_message_not_null}")
     @Size(min = 3 , max = 20, message = "{error_message_size_3_20}")

@@ -1,37 +1,32 @@
 package com.NikolaySHA.ExclusiveService.web.controller;
 
-import com.NikolaySHA.ExclusiveService.model.dto.ProtocolDTO;
-import com.NikolaySHA.ExclusiveService.model.entity.TransferProtocol;
 import com.NikolaySHA.ExclusiveService.service.ProtocolService;
-import org.modelmapper.ModelMapper;
+import com.itextpdf.text.DocumentException;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Optional;
-
+@RequestMapping({"/protocol"})
 @Controller
-@RequestMapping("/protocols")
 public class ProtocolController {
     private final ProtocolService protocolService;
-    private final ModelMapper modelMapper;
     
-    public ProtocolController(ProtocolService protocolService, ModelMapper modelMapper) {
+    public ProtocolController(ProtocolService protocolService) {
         this.protocolService = protocolService;
-        this.modelMapper = modelMapper;
     }
     
-@GetMapping("/{id}")
-    public String viewProtocol(@PathVariable("id") Long id, ProtocolDTO data, RedirectAttributes redirectAttributes, Model model) {
-        Optional<TransferProtocol> protocolOptional = protocolService.findById(id);
-        if (protocolOptional.isEmpty()){
-            redirectAttributes.addFlashAttribute("notFoundErrorMessage", true);
-            return "redirect:/error/contact-admin";
-        }
-        TransferProtocol protocol = protocolOptional.get();
-        data = modelMapper.map(protocol, ProtocolDTO.class);
-        model.addAttribute("protocolData", data);
-        return "view-transfer-protocol";
+    @GetMapping({"/{id}"})
+    public void getProtocolPdf(@PathVariable Long id, HttpServletResponse response) throws DocumentException, IOException {
+        this.protocolService.generatePdf(id, response);
+    }
+    
+    @PostMapping({"/delete/{appointmentId}/{id}"})
+    public String deleteProtocol(@PathVariable("id") Long id, @PathVariable("appointmentId") Long appointmentId) {
+        this.protocolService.delete(id, appointmentId);
+        return "redirect:/appointments/" + appointmentId;
     }
 }

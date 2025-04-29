@@ -1,67 +1,129 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/commons::head}"></head>
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{fragments/commons::head}">
+    <!-- Връзки към Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
 <body>
 <header th:replace="~{fragments/commons::nav}"></header>
 <main>
-    <div class="row no-gutters">
-        <div class="col-lg-4 col-md-4 col-sm-12 mb-4 mb-lg-0">
-            <div class="gallery-container">
-                <img src="https://www.hdcarwallpapers.com/thumbs/2024/ferrari_12cilindri_spider_2024_8k-t2.jpg" class="gallery-img img-fluid" alt="Porsche">
-                <div class="text-overlay text-light">Ferrari 12 Cilindri Spider</div>
-            </div>
-            <div class="gallery-container">
-                <img src="https://www.hdcarwallpapers.com/walls/novitec_ferrari_296_gtb_aero_2024_4k-HD.jpg" class="gallery-img img-fluid" alt="BMW Z3M">
-                <div class="text-overlay text-light">Ferrari 296GTB</div>
-            </div>
-            <div class="gallery-container">
-                <img src="https://www.hdcarwallpapers.com/walls/ferrari_sf90_spider_4k_4-HD.jpg" class="gallery-img img-fluid" alt="Mercedes GLE53AMG">
-                <div class="text-overlay text-light">Ferrari SF90 Spider</div>
-            </div>
-            <div class="gallery-container">
-                <img src="https://www.hdcarwallpapers.com/thumbs/2024/novitec_ferrari_296_gts_aero_2024-t2.jpg" class="gallery-img img-fluid" alt="Mercedes GLE53AMG">
-                <div class="text-overlay text-light">Ferrari 296 GTS</div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-12 mb-4 mb-lg-0">
-            <div class="gallery-container">
-                <img src="https://www.hdcarwallpapers.com/walls/vorsteiner_lamborghini_huracan_novara_2-HD.jpg" class="gallery-img img-fluid" alt="Porsche">
-                <div class="text-overlay text-light">Lamborghini Huracan</div>
-            </div>
-            <div class="gallery-container">
-                <img src="https://www.hdcarwallpapers.com/walls/lamborghini_countach_lp400_4k-HD.jpg" class="gallery-img img-fluid" alt="Mercedes GLE53AMG">
-                <div class="text-overlay text-light">Lamborghini Countach</div>
-            </div>
-            <div class="gallery-container">
-                <img src="https://www.hdcarwallpapers.com/walls/lamborghini_huracan_sto_8k-HD.jpg" class="gallery-img img-fluid" alt="Mercedes GLE53AMG">
-                <div class="text-overlay text-light">Lamborghini Huracan</div>
-            </div>
-            <div class="gallery-container">
-                <img src="https://www.hdcarwallpapers.com/walls/lamborghini_revuelto_rear-HD.jpg" class="gallery-img img-fluid" alt="Porsche">
-                <div class="text-overlay text-light">Lamborghini Revuelto</div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-12 mb-4 mb-lg-0">
-            <div class="gallery-container">
-                <img src="https://www.wsupercars.com/thumbnails/Porsche/2022-Porsche-718-Cayman-GT4-ePerformance-006.jpg" class="gallery-img img-fluid" alt="BMW Z3M">
-                <div class="text-overlay text-light">Porsche</div>
-            </div>
-            <div class="gallery-container">
-                <img src="https://www.wsupercars.com/thumbnails/Porsche/2023-Porsche-911-Carrera-T-002.jpg" class="gallery-img img-fluid" alt="Porsche">
-                <div class="text-overlay text-light">Porsche</div>
-            </div>
-            <div class="gallery-container">
-                <img src="https://www.wsupercars.com/thumbnails/Porsche/2023-Porsche-911-GT3-RS-005.jpg" class="gallery-img img-fluid" alt="Porsche">
-                <div class="text-overlay text-light">Porsche</div>
-            </div>
-            <div class="gallery-container">
-                <img src="https://i.etsystatic.com/40485572/r/il/265f25/4549611470/il_1588xN.4549611470_aqx9.jpg" class="gallery-img img-fluid" alt="Porsche">
-                <div class="text-overlay text-light">Porsche</div>
-            </div>
+    <div class="container bg-blur mb-5" sec:authorize="hasRole('ROLE_ADMIN')">
+        <form id="uploadForm" action="/gallery/upload" method="post" enctype="multipart/form-data" th:action="@{/gallery/upload}" th:object="${image}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <input type="file" id="imageFile" name="image">
+            <input type="text" id="imageTitle" name="title" placeholder="Въведете име">
+            <button class="btn btn-warning ml-5" type="submit">Качи</button>
+        </form>
+    </div>
 
+    <div id="gallery" class="row g-0">
+        <div th:each="image : ${images}" class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="gallery-container">
+                <img th:src="@{${image.url}}" th:alt="${image.title}" class="gallery-img" loading="lazy" onclick="openImageModal('${image.url}', '${image.title}')"/>
+                <div class="text-overlay text-light" th:text="${image.title}"></div>
+                <!-- Формата за изтриване с потвърждение -->
+                <form th:method="POST" th:action="@{/gallery/delete/{id}(id=${image.id})}" onsubmit="return confirmDelete()">
+                    <input type="hidden" name="imageId" th:value="${image.id}"/>
+                    <button class="button-overlay btn btn-danger btn-sm" type="submit" sec:authorize="hasRole('ROLE_ADMIN')">Изтрий</button>
+                </form>
+            </div>
         </div>
     </div>
+
+    <!-- Модално прозорче за показване на голямо изображение -->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- Затваряне на модала -->
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <!-- Добавяме контейнер за заглавието на изображението -->
+                    <img id="modalImage" src="" class="img-fluid" alt="Изображение">
+                    <h5 id="modalImageTitle" class="text-overlay text-light"></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" id="prevImage" th:text="#{previous}"></button>
+                    <button type="button" class="btn btn-warning" id="nextImage" th:text="#{next}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Функция за потвърждение при изтриване на изображение
+        function confirmDelete() {
+            return confirm("Сигурни ли сте, че искате да изтриете това изображение?");
+        }
+
+        // Променлива за индекса на текущата снимка в галерията
+        let currentImageIndex = 0;
+        let imagesArray = [];
+        let titlesArray = [];
+
+        // Функция за отваряне на модалното прозорче
+        function openImageModal(imageUrl, title) {
+            const modalImage = document.getElementById("modalImage");
+            const modalTitle = document.getElementById("modalImageTitle");
+            modalImage.src = imageUrl;
+            modalTitle.textContent = title;
+            currentImageIndex = imagesArray.indexOf(imageUrl);
+            $('#imageModal').modal('show');
+        }
+
+        // Функция за показване на следващата снимка
+        function showNextImage() {
+            currentImageIndex = (currentImageIndex + 1) % imagesArray.length;
+            const modalImage = document.getElementById("modalImage");
+            const modalTitle = document.getElementById("modalImageTitle");
+            modalImage.src = imagesArray[currentImageIndex];
+            modalTitle.textContent = titlesArray[currentImageIndex];
+        }
+
+        // Функция за показване на предишната снимка
+        function showPreviousImage() {
+            currentImageIndex = (currentImageIndex - 1 + imagesArray.length) % imagesArray.length;
+            const modalImage = document.getElementById("modalImage");
+            const modalTitle = document.getElementById("modalImageTitle");
+            modalImage.src = imagesArray[currentImageIndex];
+            modalTitle.textContent = titlesArray[currentImageIndex];
+        }
+
+        // Събития за стрелките
+        document.getElementById("nextImage").addEventListener("click", showNextImage);
+        document.getElementById("prevImage").addEventListener("click", showPreviousImage);
+
+        // Добавяне на събитие за клик върху снимките в галерията
+        document.querySelectorAll('.gallery-img').forEach(function (imageElement) {
+            const imageTitle = imageElement.getAttribute('alt');
+            imagesArray.push(imageElement.src);
+            titlesArray.push(imageTitle);
+            imageElement.addEventListener('click', function () {
+                openImageModal(imageElement.src, imageTitle);
+            });
+        });
+
+        // Формуляр за качване на изображение
+        document.getElementById("uploadForm").addEventListener("submit", function(event) {
+            var imageTitle = document.getElementById("imageTitle").value.trim();
+            var imageFile = document.getElementById("imageFile").files[0];
+            if (!imageFile) {
+                alert("Моля, изберете файл за качване.");
+                event.preventDefault();
+                return;
+            }
+            if (imageTitle === "") {
+                alert("Моля, въведете заглавие на снимката.");
+                event.preventDefault();
+            }
+        });
+    </script>
+    <!-- Връзка към Bootstrap JS и Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
 </main>
 <footer th:replace="~{fragments/commons::footer}"></footer>
 </body>

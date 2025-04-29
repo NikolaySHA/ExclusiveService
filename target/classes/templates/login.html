@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/commons::head"></head>
+<head th:replace="~{fragments/commons::head}"></head>
 <body>
-<header th:replace="fragments/commons::nav"></header>
+<header th:replace="~{fragments/commons::nav}"></header>
 <main>
     <h1 class="text-center mt-2"><span class="badge badge-pill badge-warning" th:text="#{nav_bar_login}"></span></h1>
     <hr class="hr-3 w-25 bg-white"/>
@@ -13,13 +13,36 @@
           th:object="${loginData}"
           style="padding: 20px;">
         <div class="form-group">
-            <div class="alert alert-danger" th:if="${showErrorMessage}">
-                <a class="close" data-dismiss="alert" aria-label="close"></a>
-                <div th:text="#{error_message_login}"></div>
+            <div class="alert alert-danger alert-dismissible fade show" th:if="${param.blocked}">
+                <span th:text="#{user_login_blocked}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="alert alert-success" th:if="${successfulRegistration}">
-                <a class="close" data-dismiss="alert" aria-label="close"></a>
-                <div th:text="#{success_registration_message}"></div>
+            <div class="alert alert-danger alert-dismissible fade show" th:if="${showErrorMessage}">
+                <span th:text="#{error_message_login}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-danger alert-dismissible fade show" th:if="${showRegisteredErrorMessage}">
+                <span th:text="#{error_message_registered_and_login}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="alert alert-success alert-dismissible fade show" th:if="${successfulRegistration}">
+                <span th:text="#{success_registration_message}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-success alert-dismissible fade show" th:if="${successfulPasswordChange}">
+                <span th:text="#{success_password_change}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="label-holder text-white d-flex justify-content-center">
                 <label for="email" class="h4 mb-2" th:text="#{email}"></label>
@@ -47,11 +70,17 @@
         <div class="button-holder d-flex justify-content-center">
             <button type="submit" class="btn btn-warning mb-3" th:text="#{login_btn}"></button>
         </div>
+        <a href="#" th:href="@{/users/forgot-password}" class="text-warning">
+            <span th:text="#{forgot_password}"></span>
+            <span>?</span>
+        </a>
     </form>
     <div class="text-center mt-3">
         <p class="text-white"><span th:text="#{login_message} + ' '"> </span><a href="#" th:href="@{/users/register}" class="text-yellow"><span th:text="#{login_link}"></span></a></p>
+        <p class="text-white mt-2">
+        </p>
     </div>
 </main>
-<footer th:replace="fragments/commons::footer"></footer>
+<footer th:replace="~{fragments/commons::footer}"></footer>
 </body>
 </html>

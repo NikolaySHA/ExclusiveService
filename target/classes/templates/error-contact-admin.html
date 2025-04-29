@@ -3,34 +3,45 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/commons::head}"></head>
+<head th:replace="~{fragments/commons::head}">
+    <title>Contact Admin</title>
+</head>
 <body>
 <header th:replace="~{fragments/commons::nav}"></header>
 <main>
     <div class="jumbotron container bg-blur rounded mt-5 ">
         <div>
-            <img src="https://hips.hearstapps.com/hmg-prod/images/check-engine-light-icon-1616189100.jpg?crop=1.00xw:0.891xh;0,0.0295xh&resize=980:*" width="200rem" height="160rem">
+            <img src="https://hips.hearstapps.com/hmg-prod/images/check-engine-light-icon-1616189100.jpg?crop=1.00xw:0.891xh;0,0.0295xh&resize=980:*" alt="contact admin" width="200rem" height="160rem">
 
             <div th:if="${deleteCarErrorMessage}">
-                <p class="lead">Посочения автомобил има записан час за ремонт и не може да бъде изтрит</p>
+                <p class="lead" th:text="#{error_car_have_appointment}"></p>
             </div>
             <div th:if="${noSuchCarErrorMessage}">
-                <p class="lead">Няма такъв автомобил в базата данни</p>
+                <p class="lead" th:text="#{no_such_car}"></p>
+            </div>
+            <div th:if="${cantUpdateAppointment}">
+                <p class="lead" th:text="#{cant_update_appointment}"></p>
+            </div>
+            <div th:if="${vinExist}">
+                <p class="lead" th:text="#{car_existing_vin}"></p>
             </div>
             <div th:if="${notFoundErrorMessage}">
-                <p class="lead">Страницата която търсите не е достъпна</p>
+                <p class="lead" th:text="#{no_such_page}"></p>
             </div>
             <div th:if="${noPrivilegeMessage}">
-                <p class="lead">Нямате права за извършване на избраната операция</p>
+                <p class="lead" th:text="#{no_permission}"></p>
+            </div>
+            <div th:if="${errorEditingCar}">
+                <p class="lead" th:text="#{cant_edit_car}"></p>
             </div>
             <hr class="my-4">
-            <p>Моля, свържете се с администратора на системата за отстраняване на проблема.</p>
+            <p th:text="#{contact_admin}"></p>
             <p class="lead">
-                <a th:href="@{/contacts}" class="contact-link text-warning">свържете с нас</a>
+                <a th:href="@{/contacts}" class="contact-link text-warning" th:text="#{contact_us}"></a>
             </p>
         </div>
     </div>
 </main>
-<footer th:replace="fragments/commons::footer"></footer>
+<footer th:replace="~{fragments/commons::footer}"></footer>
 </body>
 </html>

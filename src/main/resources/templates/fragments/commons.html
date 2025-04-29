@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Exclusive Service</title>
-    <link rel="stylesheet" href="/css/reset-css.css"/>
-    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/css/style.css"/>
+    <!-- Замени линковете с тези на CloudFront -->
+    <link rel="stylesheet" href="https://d1qbcwrvrtxdo2.cloudfront.net/css/reset-css.css"/>
+    <link rel="stylesheet" href="https://d1qbcwrvrtxdo2.cloudfront.net/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://d1qbcwrvrtxdo2.cloudfront.net/css/style.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://d1qbcwrvrtxdo2.cloudfront.net/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="https://d1qbcwrvrtxdo2.cloudfront.net/favicon.svg" />
+    <link rel="shortcut icon" href="https://d1qbcwrvrtxdo2.cloudfront.net/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://d1qbcwrvrtxdo2.cloudfront.net/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Exclusive Service" />
+    <link rel="manifest" href="https://d1qbcwrvrtxdo2.cloudfront.net/site.webmanifest" />
     <script src="https://kit.fontawesome.com/8c77968f69.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
@@ -26,7 +33,7 @@
                 updateDate();
             });
             function updateDate() {
-                var detailsCount = $('#paintDetails').val();
+                let detailsCount = $('#paintDetails').val();
                 if(detailsCount) {
                     $.ajax({
                         url: '/next-available-date',
@@ -35,8 +42,8 @@
                             detailsCount: detailsCount
                         },
                         success: function(response) {
-                            var earliestDate = new Date(response);
-                            var formattedDate = earliestDate.toISOString().split('T')[0];
+                            let earliestDate = new Date(response);
+                            let formattedDate = earliestDate.toISOString().split('T')[0];
                             $('#date').attr('min', formattedDate);
                             $('#date').val(formattedDate);
                         },
@@ -46,19 +53,6 @@
                     });
                 }
             }
-
-            // Set a timeout to close the alerts after 5 seconds (5000 milliseconds)
-            setTimeout(function() {
-                $('.alert').alert('close');
-            }, 5000);
-        });
-    </script>
-<!--    <script>-->
-        $(document).ready(function() {
-            // Set a timeout to close the alerts after 5 seconds (5000 milliseconds)
-            setTimeout(function() {
-                $('.alert').alert('close');
-            }, 5000);
         });
     </script>
     <script>
@@ -66,7 +60,7 @@
             // Function to automatically close alert messages after a delay
             function autoCloseAlerts() {
                 $('.alert').each(function() {
-                    var alert = $(this);
+                    let alert = $(this);
                     if (alert.hasClass('fade') && alert.hasClass('show')) {
                         setTimeout(function() {
                             alert.alert('close');  // Close the alert after 5 seconds
@@ -74,8 +68,6 @@
                     }
                 });
             }
-
-            // Call the function to auto close alerts
             autoCloseAlerts();
         });
     </script>
@@ -83,9 +75,9 @@
 
 <body>
 <header>
-    <nav class="navbar fixed-top navbar-expand-sm navbar-light">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light">
         <a class="navbar-brand text-white" th:href="@{/}">
-            <img class="mx-auto" src="/images/Logo.jpg" alt="Exclusive Service" width="120" height="60">
+            <img class="mx-auto" src="https://d1qbcwrvrtxdo2.cloudfront.net/images/logo_yellow.png" alt="Exclusive Service" width="160" height="40">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -96,43 +88,29 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/services}" th:text="#{nav_bar_services}">Services</a>
+                    <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/services}" th:text="#{nav_bar_services}"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/about}" th:text="#{nav_bar_about_us}">About Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/gallery}" th:text="#{nav_bar_gallery}">Gallery</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/contacts}" th:text="#{nav_bar_contact_us}">Contact Us</a>
+                    <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/about}" th:text="#{nav_bar_about_us}"></a>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/garage/appointments}" th:text="#{nav_bar_repairs}">Repairs</a>
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/garage/appointments}" th:text="#{nav_bar_repairs}"></a>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/garage/cars}" th:text="#{nav_bar_cars}">Cars</a>
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/garage/cars}" th:text="#{nav_bar_cars}"></a>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/garage/users}" th:text="#{nav_bar_customers}">Customers</a>
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/garage/users}" th:text="#{nav_bar_customers}"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://maps.app.goo.gl/cFwKBYrQBYPQYKCKA'}">
-                        <i class="fa-solid fa-map"></i>
-                    </a>
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{/gallery}" th:text="#{nav_bar_gallery}"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://www.instagram.com/exclusiveservice.sofia/'}">
-                        <i class="fa-brands fa-square-instagram"></i>
-                    </a>
+                    <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/insurance}" th:text="#{nav_bar_insurance}"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://www.facebook.com/eurolinkservice/'}">
-                        <i class="fa-brands fa-square-facebook"></i>
-                    </a>
+                    <a class="nav-link text-light active h5 text-stroke" sec:authorize="!hasRole('ROLE_ADMIN')" th:href="@{/contacts}" th:text="#{nav_bar_contact_us}"></a>
                 </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link text-light active h5 text-stroke" th:href="@{/appointments/add}">
                         <i class="fa-solid fa-calendar-check"></i>
@@ -145,7 +123,6 @@
                         <span class="button-text" th:text="#{add_car}"></span>
                     </a>
                 </li>
-
                 <li class="nav-item" sec:authorize="!isAuthenticated()">
                     <a class="nav-link text-light active h5 text-stroke" th:href="@{/users/login}">
                         <i class="fa-solid fa-right-to-bracket"></i>
@@ -154,7 +131,7 @@
                 </li>
                 <li class="nav-item" sec:authorize="!isAuthenticated()">
                     <a class="nav-link text-light active h5 text-stroke" th:href="@{/users/register}">
-                        <i class="fa-solid fa-user-secret"></i>
+                        <i class="fa-solid fa-user"></i>
                         <span class="button-text" th:text="#{register}"></span>
                     </a>
                 </li>
@@ -171,17 +148,34 @@
                         </button>
                     </form>
                 </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" sec:authorize="!hasRole('ROLE_ADMIN')">
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://maps.app.goo.gl/cFwKBYrQBYPQYKCKA'}" target="_blank">
+                        <i class="fa-solid fa-map"></i>
+                    </a>
+                </li>
+                <li class="nav-item" sec:authorize="!hasRole('ROLE_ADMIN')">
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://www.instagram.com/exclusiveservice.sofia/'}" target="_blank">
+                        <i class="fa-brands fa-square-instagram"></i>
+                    </a>
+                </li>
+                <li class="nav-item" sec:authorize="!hasRole('ROLE_ADMIN')">
+                    <a class="nav-link text-light active h5 text-stroke" th:href="@{'https://www.facebook.com/eurolinkservice/'}" target="_blank">
+                        <i class="fa-brands fa-square-facebook"></i>
+                    </a>
+                </li>
                 <li th:if="${#locale.toString().equals('en')}">
                     <a href="?lang=bg" class="nav-link">
                         <div class="flag-container">
-                            <img src="/images/bg_flag.svg" alt="Bulgarian" class="rounded-flag">
+                            <img src="https://d1qbcwrvrtxdo2.cloudfront.net/images/bg_flag.svg" alt="Bulgarian" class="rounded-flag">
                         </div>
                     </a>
                 </li>
                 <li th:if="${#locale.toString().equals('bg')}">
                     <a href="?lang=en" class="nav-link">
                         <div class="flag-container">
-                            <img src="/images/uk_flag.svg" alt="English" class="rounded-flag">
+                            <img src="https://d1qbcwrvrtxdo2.cloudfront.net/images/uk_flag.svg" alt="English" class="rounded-flag">
                         </div>
                     </a>
                 </li>
@@ -189,14 +183,14 @@
         </div>
     </nav>
 </header>
-
 <main>
 </main>
-
 <footer class="footer bg-transparent py-2">
     <div class="container-fluid text-center fixed-bottom">
         <h1 class="text-center text-white mt-2 h4">
-            <span class="badge badge-pill footer-badge">&copy;Exclusive Service 2024. All rights reserved.</span>
+            <span class="badge badge-pill footer-badge d-block d-sm-inline-block">
+                &copy; Exclusive Service 2024. All rights reserved.
+            </span>
         </h1>
     </div>
 </footer>

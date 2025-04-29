@@ -19,6 +19,10 @@
                             <input type="text" class="form-control" id="make" name="make" placeholder="Марка" th:field="*{make}">
                         </div>
                         <div class="form-group col-md-3">
+                            <label for="vin">Рама</label>
+                            <input type="text" class="form-control" id="vin" name="vin" placeholder="Рама" th:field="*{vin}">
+                        </div>
+                        <div class="form-group col-md-3">
                             <label for="client">Клиент</label>
                             <input type="text" class="form-control" id="client" name="client" placeholder="Клиент" th:field="*{customer}">
                         </div>
@@ -26,19 +30,22 @@
 
                 </div>
                 <div class="col-md-2 d-flex flex-column justify-content-center">
-                    <a th:href="@{/garage/cars}" class="btn btn-secondary mb-2 btn-sm">Изчисти</a>
                     <button type="submit" class="btn btn-warning btn-sm">Търси</button>
+                    <a th:href="@{/garage/cars}" class="btn btn-secondary btn-sm mt-3">Изчисти</a>
                 </div>
             </div>
         </form>
     </div>
     <div class="container bg-blur rounded mt-1 mb-4">
-        <h3 class="bg-gray text-light mb-0 mt-0"><span class="badge badge-pill badge-warning">Резултати [<span th:text="${carsData.size()}"></span>]</span></h3>
+        <h3 class="bg-gray text-light mb-0 mt-0">
+            <span class="badge badge-pill badge-warning">Резултати [<span th:text="${count}"></span>]
+            </span>
+        </h3>
         <div class="row mt-1 mb-2">
             <div class="col-12 mt-1 mb-1">
                 <div>
                     <h3 class="mySticky bg-gray text-light mb-0 mt-2"></h3>
-                    <div class="bg-dark rounded m-auto" style="height: 31vh; overflow: auto">
+                    <div class="bg-dark rounded m-auto" style="height: 48vh; overflow: auto">
                         <table class="table table-striped table-dark">
                             <thead>
                             <tr>
@@ -46,24 +53,43 @@
                                 <th>Регистрационен номер</th>
                                 <th>Марка</th>
                                 <th>Модел</th>
+                                <th>Рама</th>
                                 <th>Клиент</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="car : ${carsData}">
                                 <a th:href="@{/cars/{id}(id=${car.id})}" style="display: table-row; color: inherit; text-decoration: none;">
-                                    <td class="bg-warning" scope="row" style="width: 5%">
-                                        <img class="mr-2" src="/images/p911.png" alt="Appointments" width="35px" height="35px">
+                                    <td class="bg-warning-container" style="width: 3%">
+                                        <div class="bg-warning">
+                                            <img class="appointment-icon" src="https://d1qbcwrvrtxdo2.cloudfront.net/images/p911.png" alt="Appointments" width="35px" height="25px">
+                                        </div>
                                     </td>
                                     <td><a class="text-light" th:href="@{/cars/{id}(id=${car.id})}" th:text="${car.getLicensePlate()}"></a></td>
                                     <td><a class="text-light" th:href="@{/cars/{id}(id=${car.id})}" th:text="${car.getMake()}"></a></td>
                                     <td><a class="text-light" th:href="@{/cars/{id}(id=${car.id})}" th:text="${car.getModel()}"></a></td>
+                                    <td><a class="text-light" th:href="@{/cars/{id}(id=${car.id})}" th:text="${car.getVin()}"></a></td>
                                     <td><a class="text-light" th:href="@{/users/{id}(id=${car.getOwner().id})}" th:text="${car.getOwner().getName()}"></a></td>
 
                                 </a>
                             </tr>
                             </tbody>
                         </table>
+                        <div class="pagination d-flex justify-content-center mt-3">
+                            <a th:if="${currentPage > 0}"
+                               class="btn btn-warning btn-sm mx-1"
+                               th:href="@{/garage/cars(page=${currentPage - 1}, size=8)}">
+                                Предишна
+                            </a>
+
+                            <span class="text-light mx-2">Страница <span th:text="${currentPage + 1}"></span> от <span th:text="${totalPages}"></span></span>
+
+                            <a th:if="${currentPage + 1 < totalPages}"
+                               class="btn btn-warning btn-sm mx-1"
+                               th:href="@{/garage/cars(page=${currentPage + 1}, size=8)}">
+                                Следваща
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

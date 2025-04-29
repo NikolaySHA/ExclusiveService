@@ -3,28 +3,25 @@ package com.NikolaySHA.ExclusiveService.web.controller;
 import com.NikolaySHA.ExclusiveService.model.dto.appointmentDTO.AppointmentSearchDTO;
 import com.NikolaySHA.ExclusiveService.model.dto.carDTO.CarSearchDTO;
 import com.NikolaySHA.ExclusiveService.model.dto.userDTO.UserSearchDTO;
-import com.NikolaySHA.ExclusiveService.model.entity.Appointment;
-import com.NikolaySHA.ExclusiveService.model.entity.Car;
-import com.NikolaySHA.ExclusiveService.model.entity.User;
 import com.NikolaySHA.ExclusiveService.model.enums.Status;
 import com.NikolaySHA.ExclusiveService.model.enums.UserRolesEnum;
 import com.NikolaySHA.ExclusiveService.service.AppointmentService;
 import com.NikolaySHA.ExclusiveService.service.CarService;
 import com.NikolaySHA.ExclusiveService.service.UserService;
+import java.time.LocalDate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AdminController {
-    
     private final UserService userService;
     private final AppointmentService appointmentService;
     private final CarService carService;
@@ -34,64 +31,77 @@ public class AdminController {
         this.appointmentService = appointmentService;
         this.carService = carService;
     }
-    @GetMapping("/error/contact-admin")
-    public String errorContactAdmin(){
+    
+    @GetMapping({"/error/contact-admin"})
+    public String errorContactAdmin() {
         return "error-contact-admin";
     }
-   
-    @GetMapping("/garage/appointments")
+    
+    @GetMapping({"/garage/appointments"})
     @PreAuthorize("hasRole('ADMIN')")
-    public String searchAppointments(@AuthenticationPrincipal UserDetails userDetails, Model model,
-                           @ModelAttribute("searchCriteria") AppointmentSearchDTO searchCriteria) {
+    public String searchAppointments(Model model, @ModelAttribute("searchCriteria") AppointmentSearchDTO searchCriteria, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
         model.addAttribute("statuses", Status.values());
-        List<Appointment> appointments;
-        if (searchCriteria.getDate() != null || searchCriteria.getLicensePlate() != null || searchCriteria.getMake() != null || searchCriteria.getCustomer() != null || searchCriteria.getStatus() != null) {
-            appointments = appointmentService.searchAppointments(searchCriteria.getDate(), searchCriteria.getLicensePlate(), searchCriteria.getMake(), searchCriteria.getCustomer(), searchCriteria.getStatus());
-        } else {
-            appointments = appointmentService.getAllAppointments()
-                    .stream().filter(appointment -> !appointment.getStatus().equals(Status.COMPLETED))
-                    .collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(page, size, Sort.by(new String[]{"date"}));
+        LocalDate date = null;
+        if (searchCriteria.getDate() != null && !searchCriteria.getDate().isEmpty()) {
+            try {
+                date = LocalDate.parse(searchCriteria.getDate());
+            } catch (Exception var9) {
+                model.addAttribute("errorMessage", "Invalid date format");
+                return "garage-appointments";
+            }
         }
-        appointments = appointments.stream().sorted(Comparator.comparing(Appointment::getDate)).collect(Collectors.toList());
-        model.addAttribute("appointmentsData", appointments);
-        model.addAttribute("searchCriteria", searchCriteria);
         
+        Page appointmentPage;
+        if (date == null && searchCriteria.getLicensePlate() == null && searchCriteria.getMake() == null && searchCriteria.getCustomer() == null && searchCriteria.getStatus() == null) {
+            appointmentPage = this.appointmentService.getAllAppointmentsPaginated(pageable);
+        } else {
+            appointmentPage = this.appointmentService.searchAppointmentsPaginated(date, searchCriteria.getLicensePlate(), searchCriteria.getMake(), searchCriteria.getCustomer(), searchCriteria.getStatus(), pageable);
+        }
+        
+        model.addAttribute("appointmentsData", appointmentPage);
+        model.addAttribute("currentPage", appointmentPage.getNumber());
+        model.addAttribute("totalPages", appointmentPage.getTotalPages());
+        model.addAttribute("searchCriteria", searchCriteria);
         return "garage-appointments";
     }
-   
-    @GetMapping("/garage/cars")
+    
+    @GetMapping({"/garage/cars"})
     @PreAuthorize("hasRole('ADMIN')")
-    public String searchAppointments(@AuthenticationPrincipal UserDetails userDetails, Model model,
-                                     @ModelAttribute("searchCriteria") CarSearchDTO searchCriteria) {
-        List<Car> cars;
-        if (searchCriteria.getLicensePlate() != null || searchCriteria.getMake() != null || searchCriteria.getCustomer() != null) {
-            cars = carService.searchCars(searchCriteria.getLicensePlate(), searchCriteria.getMake(), searchCriteria.getCustomer());
+    public String searchCars(Model model, @ModelAttribute("searchCriteria") CarSearchDTO searchCriteria, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(new String[]{"licensePlate"}));
+        Page carPage;
+        if (searchCriteria.getVin() != null && !searchCriteria.getVin().isEmpty()) {
+            carPage = this.carService.searchCars(searchCriteria.getLicensePlate(), searchCriteria.getMake(), searchCriteria.getVin(), searchCriteria.getCustomer(), pageable);
         } else {
-            cars = carService.findAllCars();
+            carPage = this.carService.searchCars(searchCriteria.getLicensePlate(), searchCriteria.getMake(), (String)null, searchCriteria.getCustomer(), pageable);
         }
         
-        model.addAttribute("carsData", cars);
+        model.addAttribute("carsData", carPage.getContent());
+        model.addAttribute("count", carPage.getTotalElements());
+        model.addAttribute("currentPage", carPage.getNumber());
+        model.addAttribute("totalPages", carPage.getTotalPages());
         model.addAttribute("searchCriteria", searchCriteria);
-        
         return "garage-cars";
     }
-   
-    @GetMapping("/garage/users")
+    
+    @GetMapping({"/garage/users"})
     @PreAuthorize("hasRole('ADMIN')")
-    public String searchCustomers(@AuthenticationPrincipal UserDetails userDetails, Model model,
-                                     @ModelAttribute("searchCriteria") UserSearchDTO searchCriteria) {
+    public String searchCustomers(Model model, @ModelAttribute("searchCriteria") UserSearchDTO searchCriteria, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "6") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(new String[]{"name"}));
         model.addAttribute("userRoles", UserRolesEnum.values());
-        List<User> users;
-        if (searchCriteria.getName() != null || searchCriteria.getEmail() != null || searchCriteria.getRole() != null) {
-            users = userService.searchUsers(searchCriteria.getName(), searchCriteria.getEmail(), searchCriteria.getRole());
+        Page userPage;
+        if (searchCriteria.getName() == null && searchCriteria.getLicensePlate() == null && searchCriteria.getEmail() == null && searchCriteria.getRole() == null) {
+            userPage = this.userService.findAllUsersWithRoles(pageable);
         } else {
-            users = userService.findAllUsersWithRoles();
+            userPage = this.userService.searchUsers(searchCriteria.getName(), searchCriteria.getLicensePlate(), searchCriteria.getEmail(), searchCriteria.getRole(), pageable);
         }
         
-        model.addAttribute("usersData", users);
+        model.addAttribute("usersData", userPage);
         model.addAttribute("searchCriteria", searchCriteria);
-        
+        model.addAttribute("count", userPage.getTotalElements());
+        model.addAttribute("currentPage", userPage.getNumber());
+        model.addAttribute("totalPages", userPage.getTotalPages());
         return "garage-users";
     }
-   
 }

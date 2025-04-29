@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/commons::head}"></head>
+<body>
+<header th:replace="~{fragments/commons::nav}"></header>
+
+<main>
+    <div class="container bg-blur contacts-panel">
+        <div class="row">
+            <!-- Лява колона с текст -->
+            <div class="col-lg-5 text-light p-4">
+                <h2 class="text-center mt-2">
+                    <span class="badge badge-pill badge-warning" th:text="#{casco_civil}"></span>
+                </h2>
+                <p class="lead" th:text="#{insurance_paragraph}"></p>
+                <p class="lead" th:text="#{insurance_paragraph_2}"></p>
+                <ul class="list lead">
+                    <li th:text="#{insurance_security}"></li>
+                    <li th:text="#{trusted_insurer}"></li>
+                    <li th:text="#{easy_calc}"></li>
+                </ul>
+                <p class="mt-3" th:text="#{insurance_guarantee}">
+                <p class="mt-3">
+                    <span th:text="#{insurance_contact_us}"></span>
+                    <a href="tel:+359878343343" class="text-warning font-weight-bold">+359 878 343 343</a>
+                </p>
+            </div>
+
+            <!-- Дясна колона с калкулатора -->
+            <div class="col-lg-7 text-light p-4">
+                <h2 class="text-center mt-2">
+                    <span class="badge badge-pill badge-warning" th:text="#{calc}"></span>
+                </h2>
+                <div class="row">
+                    <div class="col-lg-6 text-light p-4">
+                        <span class="badge badge-pill badge-warning"
+                              style="font-size: 1rem;" th:text="#{liability}"></span>
+                        <form id="insuranceCalculator">
+                            <!-- Вид на МПС -->
+                            <div class="form-group">
+                                <label for="vehicleType" th:text="#{car_type}"></label>
+                                <select id="vehicleType" class="form-control" onchange="updateFields()">
+                                    <option value="" th:text="#{choose}"></option>
+                                    <option value="car" th:text="#{passenger_car}"></option>
+                                    <option value="moped" th:text="#{moped}"></option>
+                                    <option value="electric" th:text="#{ev}"></option>
+                                </select>
+                            </div>
+
+                            <!-- Кубатура (появява се само при "Лек автомобил") -->
+                            <div class="form-group" id="engineCapacityGroup" style="display: none;">
+                                <label for="engineCapacity" th:text="#{engine_capacity}"></label>
+                                <select id="engineCapacity" class="form-control">
+                                    <option value="" th:text="#{choose}"></option>
+                                    <option value="1400" th:text="#{1400_cc}"></option>
+                                    <option value="1600" th:text="#{1600_cc}"></option>
+                                    <option value="1800" th:text="#{1800_cc}"></option>
+                                    <option value="2000" th:text="#{2000_cc}"></option>
+                                    <option value="2500" th:text="#{2500_cc}"></option>
+                                    <option value="2501" th:text="#{2501_cc}"></option>
+                                </select>
+                            </div>
+
+                            <!-- Адресна регистрация (появява се при "Лек автомобил" и "Електромобил") -->
+                            <div class="form-group" id="registrationGroup" style="display: none;">
+                                <label for="registration" th:text="#{owners_address}"></label>
+                                <select id="registration" class="form-control">
+                                    <option value="" th:text="#{choose}"></option>
+                                    <option value="sofia" th:text="#{sofia}">София</option>
+                                    <option value="bigCities" th:text="#{big_cities}"></option>
+                                    <option value="other" th:text="#{other_cities}"></option>
+                                </select>
+                            </div>
+
+                            <button type="button" class="btn btn-warning mt-3" onclick="calculateInsurance()" th:text="#{calculate}">
+                            </button>
+                        </form>
+                        <!-- Липсващи полета -->
+                        <div id="missingFieldsWarning" class="mt-3 text-light" style="display: none;" th:text="#{missing_fields}"></div>
+                        <!-- Резултат -->
+                        <div id="result" class="mt-3 text-light" style="display: none;">
+                            <div th:text="#{liability_result}"></div>
+                            <span><strong id="calculatedLiabilityAmount"></strong></span>
+                            <span th:text="#{bgn}"></span>
+                        </div>
+                        <div id="bonusMalusInfo" class="mt-2 text-warning" style="display: none;">
+                            <span th:text="#{bonus_malus}"></span>
+                            <a href="tel:+359878343343" class="badge badge-pill badge-warning">+359 878 343 343</a>
+                        </div>
+
+                        <script>
+                            function updateFields() {
+                                let vehicleType = document.getElementById("vehicleType").value;
+                                let engineCapacityGroup = document.getElementById("engineCapacityGroup");
+                                let registrationGroup = document.getElementById("registrationGroup");
+                                // Покажи/скрий полетата според избрания тип МПС
+                                if (vehicleType === "car") {
+                                    engineCapacityGroup.style.display = "block";
+                                    registrationGroup.style.display = "block";
+                                } else if (vehicleType === "electric") {
+                                    engineCapacityGroup.style.display = "none";
+                                    registrationGroup.style.display = "block";
+                                } else {
+                                    engineCapacityGroup.style.display = "none";
+                                    registrationGroup.style.display = "none";
+                                }
+                            }
+
+                            function calculateInsurance() {
+                                let vehicleType = document.getElementById("vehicleType").value;
+                                let engineCapacity = document.getElementById("engineCapacity").value;
+                                let registration = document.getElementById("registration").value;
+                                let bonusMalusInfo = document.getElementById("bonusMalusInfo");
+                                let missingFieldsWarning = document.getElementById("missingFieldsWarning");  // добавено за съобщението
+
+                                // Проверка за попълнени полета
+                                if (!vehicleType || (vehicleType === "car" && !engineCapacity) || ((vehicleType === "car" || vehicleType === "electric") && !registration)) {
+                                    missingFieldsWarning.style.display = "block";  // показваме съобщението
+                                    return;
+                                }
+                                missingFieldsWarning.style.display = "none";
+                                let price = 0;
+
+                                // Определяне на базова цена спрямо типа МПС
+                                if (vehicleType === "car") {
+                                    if (engineCapacity === "1400") {
+                                        if (registration === "sofia") price = 329.97;
+                                        if (registration === "bigCities") price = 304.08;
+                                        if (registration === "other") price = 281.90;
+                                    }
+                                    if (engineCapacity === "1600") {
+                                        if (registration === "sofia") price = 333.33;
+                                        if (registration === "bigCities") price = 307.11;
+                                        if (registration === "other") price = 282.90;
+                                    }
+                                    if (engineCapacity === "1800") {
+                                        if (registration === "sofia") price = 334.15;
+                                        if (registration === "bigCities") price = 309.89;
+                                        if (registration === "other") price = 284.93;
+                                    }
+                                    if (engineCapacity === "2000") {
+                                        if (registration === "sofia") price = 338.12;
+                                        if (registration === "bigCities") price = 313.82;
+                                        if (registration === "other") price = 286.95;
+                                    }
+                                    if (engineCapacity === "2500") {
+                                        if (registration === "sofia") price = 370.19;
+                                        if (registration === "bigCities") price = 339.56;
+                                        if (registration === "other") price = 304.50;
+                                    }
+                                    if (engineCapacity === "2501") {
+                                        if (registration === "sofia") price = 449.80;
+                                        if (registration === "bigCities") price = 420.12;
+                                        if (registration === "other") price = 380.02;
+                                    }
+                                } else if (vehicleType === "moped") {
+                                    price = 249.95;
+                                } else if (vehicleType === "electric") {
+                                    if (registration === "sofia") {
+                                        price = 329.97;
+                                    } else if (registration === "bigCities") {
+                                        price = 304.08;
+                                    } else if (registration === "other") {
+                                        price = 281.90;
+                                    }
+                                }
+
+                                let calculatedAmountDiv = document.getElementById("calculatedLiabilityAmount");
+                                let resultDiv = document.getElementById("result");
+                                calculatedAmountDiv.innerHTML = `${price.toFixed(2)}`;
+                                resultDiv.style.display = "block";
+                                bonusMalusInfo.style.display = "block";
+                            }
+                        </script>
+                    </div>
+                    <!--            Каско-->
+                    <div class="col-lg-6 text-light p-4">
+                        <span class="badge badge-pill badge-warning" style="font-size: 1rem;" th:text="#{casco}"></span>
+                        <form id="cascoCalculator">
+                            <div class="form-group">
+                                <label for="age" th:text="#{vehicle_age}"></label>
+                                <select id="age" class="form-control" onchange="updateFields()">
+                                    <option value="" th:text="#{choose}"></option>
+                                    <option value="5" th:text="#{5_years}"></option>
+                                    <option value="8" th:text="#{8_years}"></option>
+                                    <option value="11" th:text="#{11_years}"></option>
+                                    <option value="12" th:text="#{12_years}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="insuranceSum" th:text="#{insurance_amount}"></label>
+                                <input type="number" id="insuranceSum" class="form-control" min="0"
+                                       th:placeholder="#{enter_amount}">
+                            </div>
+                            <div class="form-group">
+                                <label for="NumberOfInstallments" th:text="#{installments}"></label>
+                                <select id="NumberOfInstallments" class="form-control">
+                                    <option value="" th:text="#{choose}"></option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" id="newlyInsured" class="form-check-input">
+                                <label class="form-check-label" for="newlyInsured" th:text="#{newly_insured}"></label>
+                            </div>
+                            <!-- Бутон за изчисление -->
+                            <button type="button" class="btn btn-warning mt-3" onclick="calculateCasco()" th:text="#{calculate}"></button>
+                        </form>
+                        <!-- Резултат -->
+                        <div id="missingFieldsWarningCasco" class="mt-3 text-light" style="display: none;" th:text="#{missing_fields}"></div>
+                        <div id="cascoResult" class="mt-3 text-light" style="display: none;">
+                            <div th:text="#{casco_result}"></div>
+                            <span><strong id="calculatedAmount"></strong></span>
+                            <span th:text="#{bgn}"></span>
+                        </div>
+                        <div id="moreDiscounts" class="mt-2 text-warning" style="display: none;">
+                            <span th:text="#{discounts}"></span>
+                            <a href="tel:+359878343343" class="badge badge-pill badge-warning">+359 878 343 343</a>
+                        </div>
+                        <script>
+                            function calculateCasco() {
+                                let age = document.getElementById("age").value;
+                                let insuranceSum = document.getElementById("insuranceSum").value;
+                                let numberOfInstallments = document.getElementById("NumberOfInstallments").value; // Поправено ID
+                                let newlyInsured = document.getElementById("newlyInsured").checked;
+                                let missingFieldsWarning = document.getElementById("missingFieldsWarningCasco");
+
+                                // Проверка за попълнени полета
+                                if (!age || !insuranceSum || !numberOfInstallments) {
+                                    missingFieldsWarning.style.display = "block";
+                                    return;
+                                }
+                                missingFieldsWarning.style.display = "none";
+
+                                // Изчисляване на коефициента на застраховката
+                                let rate = 0;
+                                if (age === "5") {
+                                    if (newlyInsured) {
+                                        rate = numberOfInstallments === "1" ? 3.58 : 3.85;
+                                    } else {
+                                        rate = 5.5;
+                                    }
+                                } else if (age === "8") {
+                                    if (newlyInsured) {
+                                        rate = numberOfInstallments === "1" ? 4.03 : 4.34;
+                                    } else {
+                                        rate = 6.2;
+                                    }
+                                } else if (age === "11") {
+                                    if (newlyInsured) {
+                                        rate = numberOfInstallments === "1" ? 4.36 : 4.69;
+                                    } else {
+                                        rate = 6.7;
+                                    }
+                                } else if (age === "12") {
+                                    if (newlyInsured) {
+                                        rate = numberOfInstallments === "1" ? 4.94 : 5.32;
+                                    } else {
+                                        rate = 7.6;
+                                    }
+                                }
+
+                                // Изчисление на крайната сума
+                                let result = (insuranceSum * rate) / 100;
+                                if (result < 300) result = 300;
+                                let tax = (result * 2) / 100;
+                                let finalAmount = result + tax;
+
+                                // Показване на резултата в div
+                                let calculatedAmountDiv = document.getElementById("calculatedAmount");
+                                let cascoResultDiv = document.getElementById("cascoResult");
+                                calculatedAmountDiv.innerHTML = `${finalAmount.toFixed(2)}`;
+                                cascoResultDiv.style.display = "block";
+                                let moreDiscountsDiv = document.getElementById("moreDiscounts");
+                                moreDiscountsDiv.style.display = "block";
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/commons::footer}"></footer>
+</body>
+</html>

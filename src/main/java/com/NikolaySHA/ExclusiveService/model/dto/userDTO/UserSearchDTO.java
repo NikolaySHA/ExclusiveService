@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserSearchDTO {
     private String name;
+    private String licensePlate;
     private String email;
     private UserRolesEnum role;
 }

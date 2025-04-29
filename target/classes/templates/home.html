@@ -1,82 +1,108 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/commons::head}">
-<!--    <script src="https://kit.fontawesome.com/8c77968f69.js" crossorigin="anonymous"></script>-->
-</head>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/commons::head}"></head>
 <body>
 <header th:replace="~{fragments/commons::nav}"></header>
 <main>
     <div class="container bg-blur rounded mt-1 mb-4">
-        <h6 class="bg-gray text-light mb-0 mt-0"><span class="badge badge-pill badge-warning">Добре дошъл, <span th:text="${welcomeMessage}"></span></span></h6>
+        <h4 class="bg-gray text-light mb-0 mt-0">
+            <span class="badge badge-pill badge-warning">
+                <span th:text="#{welcome_message}"></span>, <span th:text="${userName}"></span>
+            </span>
+        </h4>
         <div class="row mt-1 mb-2">
-            <div class="col-md-6 col-12 mt-1 mb-1">
+            <div class="col-md-12 col-12 mt-1 mb-1">
                 <div>
-                    <h3 class="mySticky bg-gray text-light  mb-0 mt-2">Моите автомобили</h3>
-                    <div class="bg-dark rounded m-auto" style="height: 31vh; overflow: auto">
+                    <h3 class="mySticky bg-gray text-light mb-0 mt-2" th:text="#{nav_bar_cars}"></h3>
+                    <div class="bg-dark rounded m-auto" style="height: 28vh; overflow: auto">
                         <table class="table table-striped table-dark">
                             <tr>
                                 <td></td>
-                                <td>Марка</td>
-                                <td>Модел</td>
-                                <td>Рег. номер</td>
-                                <td>Премахни</td>
+                                <td th:text="#{vehicle_license_plate}"></td>
+                                <td th:text="#{vehicle_make}"></td>
+                                <td th:text="#{vehicle_model}"></td>
+                                <td th:text="#{vehicle_vin}"></td>
+                                <td th:text="#{remove}"></td>
                             </tr>
                             <tr th:each="car : ${myCarsData}">
-                                <td class="bg-success" scope="row" style="width: 5%">
-                                    <img class="mr-2 " src="/images/p911.png" alt="myCars" width="35px"
-                                         height="35px">
+                                <td class="bg-warning-container" style="width: 4%">
+                                    <div class="bg-warning">
+                                        <img class="appointment-icon" src="https://d1qbcwrvrtxdo2.cloudfront.net/images/p911.png" alt="Appointments" width="35px" height="25px">
+                                    </div>
                                 </td>
                                 <td><a class="text-light" th:href="@{/cars/{id}(id=${car.id})}" th:text="${car.getLicensePlate()}"></a></td>
                                 <td><a class="text-light" th:href="@{/cars/{id}(id=${car.id})}" th:text="${car.getMake()}"></a></td>
                                 <td><a class="text-light" th:href="@{/cars/{id}(id=${car.id})}" th:text="${car.getModel()}"></a></td>
+                                <td><a class="text-light" th:href="@{/cars/{id}(id=${car.id})}" th:text="${car.getVin()}"></a></td>
                                 <td>
-                                    <form th:method="POST"
-                                          th:action="@{/cars/delete/{id}(id=${car.id})}">
+                                    <form th:method="POST" th:action="@{/cars/delete/{id}(id=${car.id})}" id="deleteCarForm_${car.id}">
                                         <button class="bg-transparent border-0" type="submit">
-                                            <a>
-                                                <i class="fa-solid fa-trash-can text-yellow"></i>
-                                            </a>
+                                            <i class="fa-solid fa-trash-can text-yellow"></i>
                                         </button>
                                     </form>
+                                    <span id="deleteCarMessage_${car.id}" th:text="#{delete_car_message}" style="display:none;"></span>
                                 </td>
                             </tr>
                         </table>
                     </div>
                 </div>
-
             </div>
-            <div class="col-md-6 col-12 mt-1 mb-1">
+            <div class="col-md-12 col-12 mt-1 mb-1">
                 <div>
-                    <h3 class="mySticky bg-gray text-light  mb-0 mt-2">Ремонти</h3>
-                    <div class="bg-dark rounded m-auto" style="height: 31vh; overflow: auto">
+                    <h3 class="mySticky bg-gray text-light mb-0 mt-2" th:text="#{nav_bar_repairs}"></h3>
+                    <div class="bg-dark rounded m-auto" style="height: 28vh; overflow: auto">
                         <table class="table table-striped table-dark">
                             <tr>
                                 <td></td>
-                                <td>Дата</td>
-                                <td>Рег. номер</td>
-                                <td>Статус</td>
-                                <td>Бр. детайли</td>
+                                <td th:text="#{date}">Дата</td>
+                                <td th:text="#{vehicle_license_plate}">Рег. номер</td>
+                                <td th:text="#{status}">Статус</td>
+                                <td th:text="#{details_count}">Бр. детайли</td>
                             </tr>
                             <tr th:each="appointment : ${appointmentsData}">
-                                <td class="bg-warning" scope="row" style="width: 5%">
-                                    <img class="mr-2 " src="/images/p911.png" alt="Appointments" width="35px" height="35px">
+                                <td class="bg-warning" style="width: 45px">
+                                    <i class="fa-solid fa-square-parking fa-xl" style="color: black;" ></i>
                                 </td>
                                 <td><a class="text-light" th:href="@{/appointments/{id}(id=${appointment.id})}" th:text="${appointment.getDate()}"></a></td>
                                 <td><a class="text-light" th:href="@{/appointments/{id}(id=${appointment.id})}" th:text="${appointment.car.getLicensePlate()}"></a></td>
                                 <td><a class="text-light" th:href="@{/appointments/{id}(id=${appointment.id})}" th:text="${appointment.getStatus()}"></a></td>
                                 <td><a class="text-light" th:href="@{/appointments/{id}(id=${appointment.id})}" th:text="${appointment.getPaintDetails()}"></a></td>
-                                </td>
                             </tr>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-            <a class="btn btn-warning" th:href="@{/users/{id}(id=${userId})}">
-                <span th:text="#{my-profile}"></span>
-            </a>
+        <a class="btn btn-warning" th:href="@{/users/{id}(id=${userId})}">
+            <span th:text="#{my-profile}"></span>
+        </a>
     </div>
+
+    <!-- Скрито съобщение -->
+    <span id="deleteCarMessage" th:text="#{delete_car_message}" style="display:none"></span>
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Избиране на всички форми за изтриване на кола чрез тяхното уникално ID
+            const deleteCarForms = document.querySelectorAll('[id^="deleteCarForm_"]');
+
+            deleteCarForms.forEach(form => {
+                // Извличаме уникалния идентификатор на колата от ID на формата
+                const carId = form.id.split('_')[1];
+
+                // Извличаме съобщението за потвърждение за тази кола
+                const confirmationMessage = document.getElementById(`deleteCarMessage_${carId}`).textContent;
+
+                form.addEventListener('submit', function (event) {
+                    var confirmation = confirm(confirmationMessage);
+
+                    if (!confirmation) {
+                        event.preventDefault(); // предотвратяваме изпращането на формата, ако не е потвърдено
+                    }
+                });
+            });
+        });
+    </script>
 </main>
 <footer th:replace="~{fragments/commons::footer}"></footer>
 </body>

@@ -1,5 +1,6 @@
 package com.NikolaySHA.ExclusiveService.model.dto;
 
+import com.NikolaySHA.ExclusiveService.model.dto.expenseDTO.ExpenseOutDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

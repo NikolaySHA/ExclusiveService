@@ -1,20 +1,31 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/commons::head"></head>
+<head th:replace="~{fragments/commons::head}"></head>
 <body>
-<header th:replace="fragments/commons::nav"></header>
+<header th:replace="~{fragments/commons::nav}"></header>
 <main>
     <h1 class="text-center mt-2">
-        <span class="badge badge-pill badge-warning" th:text="${isEdit} ? 'Промени профил' : #{register}"></span>
+        <span class="badge badge-pill badge-warning" th:text="${isEdit} ? #{edit_profile} : #{register}"></span>
     </h1>
     <hr class="hr-3 w-25 bg-white"/>
-
     <form class="mx-auto w-75 bg-blur col-xl-3 col-md-4 col-sm-5"
           style="padding: 20px;"
           th:action="@{${isEdit} ? '/users/edit/' + ${id} : '/users/register'}"
           th:method="POST"
           th:object="${userData}">
         <div class="form-group">
+            <div class="alert alert-danger alert-dismissible fade show" th:if="${passwordMismatch}">
+                <span th:text="#{password_miss-match}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-danger alert-dismissible fade show" th:if="${registrationFailed}">
+                <span th:text="#{registration_failed}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <div>
                 <div class="label-holder text-white d-flex justify-content-center">
                     <label for="email" class="h4 mb-2"><span th:text="#{email}"></span><span class="text-danger"> *</span></label>
@@ -24,7 +35,8 @@
                        id="email"
                        name="email"
                        th:field="*{email}"
-                       th:errorclass="'is-invalid alert-danger'"/>
+                       th:errorclass="'is-invalid alert-danger'"
+                       th:readonly="${isEdit}"/>
                 <small th:errors="*{email}" class="invalid-feedback text-danger"></small>
             </div>
             <div>
@@ -41,7 +53,7 @@
             </div>
             <div>
                 <div class="label-holder text-white d-flex justify-content-center">
-                    <label for="phoneNumber" class="h4 mb-2"><span th:text="#{phone}"></span><span class="text-danger"> *</span></label>
+                    <label for="phoneNumber" class="h4 mb-2"><span th:text="#{contact-phone}"></span><span class="text-danger"> *</span></label>
                 </div>
                 <input type="number"
                        class="form-control"
@@ -73,24 +85,17 @@
                        th:field="*{confirmPassword}"
                        th:errorclass="'is-invalid alert-danger'"/>
                 <small th:errors="*{confirmPassword}" class="invalid-feedback text-danger"></small>
-
-                <div class="alert alert-danger" th:if="${passwordMismatch}">
-                    <span th:text="#{password_miss-match}"></span>
-
-                </div>
-                <div class="alert alert-danger" th:if="${registrationFailed}">
-                    <span th:text="#{registration_failed}"></span>
                 </div>
             </div>
         </div>
         <div class="button-holder d-flex justify-content-center">
-            <button type="submit" class="btn btn-warning mb-3" th:text="${isEdit} ? 'Запази' : #{register_btn}"></button>
+            <button type="submit" class="btn btn-warning mb-3" th:text="${isEdit} ? #{save_changes} : #{register_btn}"></button>
         </div>
     </form>
     <div th:if="${!isEdit}" class="text-center mt-3">
         <p class="text-white"><span  th:text="#{if_you_are_registered}"></span><a th:href="@{/users/login}" class="text-yellow"> <span th:text="#{sign_in}"></span></a></p>
     </div>
 </main>
-<footer th:replace="fragments/commons::footer"></footer>
+<footer th:replace="~{fragments/commons::footer}"></footer>
 </body>
 </html>

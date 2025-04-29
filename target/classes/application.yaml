@@ -2,14 +2,15 @@ spring:
   application:
     name: ExclusiveService
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/exclusive_service?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:exclusive-serivce-db.cd88gsw8c2w4.eu-central-1.rds.amazonaws.com}:${MYSQL_PORT:3306}/exclusive_service_db?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     defer-datasource-initialization: true
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
     hibernate:
       ddl-auto: update
@@ -26,12 +27,14 @@ spring:
     username: ${MAIL_SENDER_USERNAME}
     password: ${MAIL_SENDER_PASSWORD}
     properties:
+      mail.debug: false
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
-
+  server:
+    forward-headers-strategy: framework
 expenses:
   api:
-    base-Url: "${EXPENSES_BASE_URL:http://localhost:8081}"
+    baseUrl: "${EXPENSES_BASE_URL:http://exclusiveservice.bg:8081}"

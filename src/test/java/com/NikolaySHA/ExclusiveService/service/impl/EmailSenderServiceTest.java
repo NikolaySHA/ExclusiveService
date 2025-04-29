@@ -18,7 +18,7 @@ public class EmailSenderServiceTest {
     private JavaMailSender mailSender;
     
     @InjectMocks
-    private EmailSenderService emailSenderService;
+    private GmailSender emailSenderService;
     
     @BeforeEach
     public void setUp() {
@@ -31,7 +31,7 @@ public class EmailSenderServiceTest {
         String subject = "Test Subject";
         String text = "Test email body";
         
-        emailSenderService.sendSimpleEmail(to, subject, text);
+        emailSenderService.sendMail(to, subject, text);
         
         ArgumentCaptor<SimpleMailMessage> messageCaptor = ArgumentCaptor.forClass(SimpleMailMessage.class);
         verify(mailSender).send(messageCaptor.capture());

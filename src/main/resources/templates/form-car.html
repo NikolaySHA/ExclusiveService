@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/commons::head"></head>
+<head th:replace="~{fragments/commons::head}"></head>
 <body>
-<header th:replace="fragments/commons::nav"></header>
+<header th:replace="~{fragments/commons::nav}"></header>
 <main>
     <h1 class="text-center mt-2">
-        <span class="badge badge-pill badge-warning" th:text="${isEdit} ? 'Промени автомобил' : #{add_car}"></span>
+        <span class="badge badge-pill badge-warning" th:text="${isEdit} ? #{edit_car} : #{add_car}"></span>
     </h1>
     <hr class="hr-3 w-25 bg-white"/>
     <form class="mx-auto w-75 bg-blur col-xl-3 col-md-4 col-sm-5"
@@ -14,10 +14,19 @@
           th:method="POST"
           th:object="${carData}">
         <div class="form-group">
-            <div class="alert alert-danger" th:if="${showErrorMessage}">
-                <a class="close" data-dismiss="alert" aria-label="close"></a>
-                <div th:text="#{error_message_must_have_car}"></div>
+            <div class="alert alert-danger alert-dismissible fade show" th:if="${showErrorMessage}">
+                <span th:text="#{error_message_must_have_car}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <div class="alert alert-danger alert-dismissible fade show" th:if="${showErrorMessageExistingCar}">
+                <span th:text="#{error_message_same_car}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
             <div class="label-holder text-white d-flex justify-content-center">
                 <label for="licensePlate" class="h4 mb-2"><span th:text="#{vehicle_license_plate}"></span><span class="text-danger"> *</span></label>
             </div>
@@ -74,10 +83,10 @@
             <small th:errors="*{color}" class="invalid-feedback text-danger"></small>
         </div>
         <div class="button-holder d-flex justify-content-center">
-            <button type="submit" class="btn btn-warning mb-3" th:text="${isEdit} ? 'Запази' : #{add_car}"></button>
+            <button type="submit" class="btn btn-warning mb-3" th:text="${isEdit} ? #{save_changes} : #{add_car}"></button>
         </div>
     </form>
 </main>
-<footer th:replace="fragments/commons::footer"></footer>
+<footer th:replace="~{fragments/commons::footer}"></footer>
 </body>
 </html>

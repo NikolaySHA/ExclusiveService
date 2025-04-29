@@ -1,26 +1,77 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+<html lang="bg" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-
-<head th:replace="~{fragments/commons::head}"></head>
+<head th:replace="~{fragments/commons::head}">
+</head>
 <body>
 <header th:replace="~{fragments/commons::nav}"></header>
 <main>
-    <div class="container bg-blur rounded mt-5">
-        <h1 th:text="#{home_welcome_message}"></h1>
-        <hr class="my-3 bg-white w-50"/>
+    <div class="header-image col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="header-text">
+            <h1 class="badge badge-pill badge-warning" th:text="#{about_h1}"></h1>
+            <h3 th:text="#{about_h3}"></h3>
+        </div>
+    </div>
+    <!-- Content Section -->
+    <div class="container content-section col-xl-12">
 
-        <p class="h4" th:text="#{home_paragraph_message}"></p>
-        <hr class="my-3 bg-white w-75"/>
+        <!-- Първи ред -->
+        <div class="row mb-4">
+            <div class="col-12 col-md-6 align-content-lg-center about bg-blur border-0">
+                <h2 th:text="#{about_history}"></h2>
+                <p th:text="#{about_history_p}"></p>
+            </div>
+            <div class="col-12 col-md-6 about">
+                <img src="https://d1qbcwrvrtxdo2.cloudfront.net/images/mclaren.jpg" class="gallery-img" alt="Mclaren">
+            </div>
+        </div>
 
-        <h3>
-            <a class="text-light text-yellow" th:href="@{/users/login}" th:text="#{nav_bar_login}"></a>
-            <span th:text="#{home_paragraph_2_message}"></span>
-            <a class="text-light text-yellow" th:href="@{/users/register}" th:text="#{home_paragraph_register_message}"></a>
-            <span  th:text="#{home_paragraph_3_message}">
-        </h3>
+        <!-- Втори ред -->
+        <div class="row mb-4">
+            <div class="col-12 col-md-6 order-md-2 align-content-lg-center about bg-blur border-0">
+                <h2 th:text="#{about_mission}"></h2>
+                <p th:text="#{about_mission_p}"></p>
+            </div>
+            <div class="col-12 col-md-6 order-md-1 about">
+                <img src="https://d1qbcwrvrtxdo2.cloudfront.net/images/Mustang.jpg" class="gallery-img" alt="Mustang">
+            </div>
+        </div>
+
+        <!-- Трети ред -->
+        <div class="row mb-4">
+            <div class="col-12 col-md-6 about align-content-lg-center bg-blur border-0">
+                <h2 th:text="#{about_vision}"></h2>
+                <p th:text="#{about_vision_p}"></p>
+            </div>
+            <div class="col-12 col-md-6 about">
+                <img src="https://d1qbcwrvrtxdo2.cloudfront.net/images/red_ferrari.jpg" class="gallery-img" alt="Ferrari">
+            </div>
+        </div>
+
+        <!-- Четвърти ред -->
+        <div class="row mb-4">
+            <div class="col-12 col-md-6 order-md-2 align-content-lg-center about bg-blur border-0">
+                <h2 th:text="#{about_team}"></h2>
+                <p th:text="#{about_team_p}"></p>
+            </div>
+            <div class="col-12 col-md-6 order-md-1 about">
+                <img src="https://d1qbcwrvrtxdo2.cloudfront.net/images/lamborghini_yellow_wet.jpg" class="gallery-img" alt="Lamborghini">
+            </div>
+        </div>
+
+        <!-- Пети ред -->
+        <div class="row mb-4">
+            <div class="col-12 col-md-6 about align-content-lg-center bg-blur border-0">
+                <h2 th:text="#{about_partners}"></h2>
+                <p th:text="#{about_partners_p}"></p>
+            </div>
+            <div class="col-12 col-md-6 about">
+                <img src="https://d1qbcwrvrtxdo2.cloudfront.net/images/mercedes_pagode.JPG" class="gallery-img" alt="Pagoda">
+            </div>
+        </div>
+
     </div>
 </main>
-<footer th:replace="fragments/commons::footer"></footer>
+<footer th:replace="~{fragments/commons::footer}"></footer>
 </body>
 </html>

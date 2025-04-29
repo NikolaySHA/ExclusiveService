@@ -2,23 +2,23 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.w3.org/1999/xhtml">
-<head th:replace="fragments/commons::head">
+<head th:replace="~{fragments/commons::head}">
 
 </head>
 <body>
 
-<header th:replace="fragments/commons::nav"></header>
+<header th:replace="~{fragments/commons::nav}"></header>
 <main>
     <h1 class="text-center mt-2">
-        <span class="badge badge-pill badge-warning" th:text="${isEdit} ? 'Промени назначен ремонт' : #{nav_bar_add_appointment}"></span>
+        <span class="badge badge-pill badge-warning" th:text="${isEdit} ? #{edit_appointment} : #{nav_bar_add_appointment}"></span>
     </h1>
     <hr class="hr-3 w-25 bg-white"/>
 
     <form class="mx-auto w-75 bg-blur col-xl-3 col-md-4 col-sm-5"
-          th:method="POST"
+          style="padding: 20px;"
           th:action="@{${isEdit} ? '/appointments/edit/' + ${id} : '/appointments/add'}"
-          th:object="${appointmentData}"
-          style="padding: 20px;">
+          th:method="POST"
+          th:object="${appointmentData}">
         <div class="form-group" th:if="${isEdit}">
             <input type="hidden" th:field="*{user.id}" />
         </div>
@@ -50,9 +50,9 @@
                     th:field="*{paymentMethod}"
                     th:errorclass="'is-invalid alert-danger'">
                 <option value="" th:text="#{choose_payment_method}"></option>
-                <option value="ASSIGMENT_LETTER">Възлагателно писмо / само за АСЕТ ИНШЪРАНС</option>
-                <option value="ANOTHER_INSURER_CLAIM">Щета по каско / по съгласувана Фактура</option>
-                <option value="PRIVATE_ORDER">Частна поръчка</option>
+                <option value="ASSIGMENT_LETTER" th:text="#{payment_options_1}"></option>
+                <option value="ANOTHER_INSURER_CLAIM" th:text="#{payment_options_2}"></option>
+                <option value="PRIVATE_ORDER" th:text="#{payment_options_3}"></option>
             </select>
             <small th:errors="*{paymentMethod}" class="invalid-feedback text-danger"></small>
         </div>
@@ -71,6 +71,10 @@
                 </select>
                 <small th:errors="${appointmentData.status}" class="invalid-feedback text-danger"></small>
             </div>
+            <div sec:authorize="!hasRole('ROLE_ADMIN')" style="display:none;">
+                <input type="hidden" th:field="*{status}"
+                th:value="*{status}"/>
+            </div>
         </div>
 
         <div class="form-group">
@@ -82,7 +86,7 @@
                     name="paintDetails"
                     th:field="*{paintDetails}"
                     th:errorclass="'is-invalid alert-danger'">
-                <option value=""th:text="#{choose-details}"></option>
+                <option value="" th:text="#{choose-details}"></option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -95,7 +99,8 @@
                 <option value="10">10</option>
                 <option value="11">11</option>
                 <option value="12">12</option>
-                <option value="13"th:text="#{full_repair}"></option>
+                <option value="1" th:text="#{changing_windscreen}"></option>
+                <option value="13" th:text="#{full_repair}"></option>
             </select>
             <small th:errors="*{paintDetails}" class="invalid-feedback text-danger"></small>
         </div>
@@ -125,10 +130,10 @@
                       th:field="*{comment}"></textarea>
         </div>
         <div class="button-holder d-flex justify-content-center">
-            <button type="submit" class="btn btn-warning mb-3" th:text="${isEdit} ? 'Запази промени' : #{save}"></button>
+            <button type="submit" class="btn btn-warning mb-3" th:text="${isEdit} ? #{save_changes} : #{save}"></button>
         </div>
     </form>
 </main>
-<footer th:replace="fragments/commons::footer"></footer>
+<footer th:replace="~{fragments/commons::footer}"></footer>
 </body>
 </html>

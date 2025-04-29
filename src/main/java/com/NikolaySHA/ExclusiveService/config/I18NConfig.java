@@ -1,5 +1,6 @@
 package com.NikolaySHA.ExclusiveService.config;
 
+import java.util.Locale;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,14 +9,17 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
-import java.util.Locale;
-
 @Configuration
 public class I18NConfig {
+    public I18NConfig() {
+    }
     
     @Bean
     public LocaleResolver localeResolver() {
-        return new CookieLocaleResolver("lang");
+        CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
+        cookieLocaleResolver.setDefaultLocale(new Locale("bg"));
+        cookieLocaleResolver.setCookieName("lang");
+        return cookieLocaleResolver;
     }
     
     @Bean

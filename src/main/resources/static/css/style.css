@@ -11,7 +11,6 @@ body > main {
     margin-top: 6rem;
 }
 
-
 .footer-badge {
     backdrop-filter: blur(10px); /* Замъгляване */
     color: darkgray;
@@ -32,20 +31,13 @@ body > main {
     text-align: center;
 }
 
-/*.mySticky {*/
-/*    position: sticky;*/
-/*    left: 0;*/
-/*}*/
-
 .navbar .nav-link:hover,
 .text-yellow{
     color: #F2CD13!important;
 }
 
-
 .table td, .table th {
     padding: 0.15rem;
-
 }
 .nav-link .button-text {
     display: none; /* По подразбиране текстът е скрит */
@@ -53,29 +45,22 @@ body > main {
 .nav-link:hover .button-text {
     display: inline-block; /* Показва текстът при ховър */
     font-size: 15px;
-
 }
-
 .navbar-nav .nav-link {
     position: relative;
     display: inline-block;
     padding: 10px 20px;
-    /*color: #F2CD13;*/
-    /*text-decoration: none;*/
 }
-
 .navbar-nav .nav-link::before {
     content: '';
     position: absolute;
     bottom: 0;
     left: 50%;
-    width: 0%;
     height: 2px; /* Височина на подчертаването */
     background-color: #F2CD13; /* Цвят на подчертаването */
     transition: width 0.3s ease;
     transform: translateX(-50%);
 }
-
 .navbar-nav .nav-link:hover::before {
     width: calc(100%); /* Ширина на подчертаването */
 }
@@ -105,14 +90,6 @@ body > main {
 .navbar-toggler {
     transition: background-color 0.3s; /* Плавен преход за ховър ефектите */
 }
-.navbar-toggler-icon {
-
-}
-/* Стил при ховър на бутона */
-.navbar-toggler:hover {
-
-}
-
 .rounded-flag {
     width: 100%;
     height: 100%;
@@ -130,7 +107,6 @@ body > main > div > p:nth-child(5) > a {
 .text-white {
     text-decoration-color: white;
 }
-
 .card-img-top {
     width: 100%;
     height: 300px;
@@ -142,14 +118,16 @@ body > main > div > p:nth-child(5) > a {
 .gallery-container {
     position: relative;
     width: 100%;
-    height: 250px; /* Определете височината на контейнера за изображенията */
-    overflow: hidden;
+    height: 300px; /* Задаваме фиксирана височина за всички контейнери */
+
 }
 
 .gallery-img {
     width: 100%;
-    height: 100%;
-    object-fit: cover; /* Уверете се, че изображението запълва контейнера без изкривяване */
+    height: 100%;  /* Изображението ще запълни контейнера изцяло */
+    object-fit: cover;  /* Изображението ще покрие целия контейнер, без да се изкривява */
+    max-width: 100%;
+    max-height: 100%;
 }
 .text-overlay {
     position: absolute;
@@ -159,13 +137,25 @@ body > main > div > p:nth-child(5) > a {
     padding: 5px 10px;
     border-radius: 5px;
 }
-
+.button-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+#gallery .col-12, #gallery .col-sm-6, #gallery .col-md-4, #gallery .col-lg-3 {
+    padding-left: 0;
+    padding-right: 0;
+}
+/* Стил за header-image и текст */
 .header-image {
-    background: url('https://www.hdcarwallpapers.com/walls/mansory_lamborghini_huracan_sterrato_2024_rear-HD.jpg') no-repeat center center;
+    background: url('/images/lamborghini_mansory.jpg') no-repeat center center;
     background-size: cover;
-    height: 100vh;
+    height: 100vh; /* Използваме 100% височина на екрана */
     position: relative;
 }
+
 .header-text {
     position: absolute;
     top: 50%;
@@ -173,13 +163,36 @@ body > main > div > p:nth-child(5) > a {
     transform: translate(-50%, -50%);
     color: white;
     text-align: center;
+    width: 80%; /* Ограничаваме ширината на текста */
 }
+
+/* Стилове за заглавието */
 .header-text h1 {
     font-size: 4rem;
     font-weight: bold;
+    line-height: 1.2; /* Добавяме малко разстояние между редовете */
 }
+
+/* Стилове за подзаглавието */
 .header-text p {
     font-size: 1.5rem;
+}
+
+/* Медийна заявка за екрани под 800px */
+@media (max-width: 800px) {
+    .header-image {
+        height: 300px; /* Намаляваме височината на изображението */
+    }
+
+    .header-text h1 {
+        font-size: 2rem; /* Намаляваме размера на заглавието */
+        white-space: normal; /* Позволяваме на заглавието да се пренася на нов ред */
+        word-wrap: break-word; /* Принуждаваме думите да се пренасят */
+    }
+
+    .header-text p {
+        font-size: 1rem; /* Намаляваме размера на подзаглавието */
+    }
 }
 
 .about {
@@ -190,10 +203,68 @@ body > main > div > p:nth-child(5) > a {
     display: flex;
     justify-content: flex-end;
 }
-
+@media (max-width: 576px) {
+    .footer-badge {
+        font-size: 12px;  /* Още по-малък шрифт на мобилни устройства */
+    }
+}
 @font-face {
            font-family: "Jura", sans-serif;
            src: url('https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap') format('truetype');
            font-weight: 500;
            font-style: normal;
+}
+.navbar.fixed-top + main {
+    margin-top: 70px !important; /* Настрой според височината на navbar */
+}
+.modal-content {
+    background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачен черен фон */
+    color: white;
+}
+
+.modal-dialog {
+    display: flex;
+    justify-content: center;  /* Центрира модала хоризонтално */
+    align-items: center;      /* Центрира модала вертикално */
+    max-width: 80vh;  /* Може да промените на нужното за вас */
+    max-height: 80vh; /* Ограничаване на височината */
+    margin: 150px auto;  /* Центрира модала, когато е по-малък от екран */
+}
+
+/* За правилното позициониране на изображението в модала */
+.modal-body {
+    display: flex;
+    justify-content: center;  /* Центрира изображението хоризонтално */
+    align-items: center;      /* Центрира изображението вертикално */
+}
+
+.modal-body img {
+    max-width: 100%;   /* Ограничаване на ширината на изображението */
+    max-height: 80vh;  /* Ограничаване на височината на изображението */
+    object-fit: contain;  /* Запазване на пропорциите на изображението */
+}
+@media (max-width: 1050px) {
+    .navbar-expand-lg .navbar-collapse {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.9); /* Тъмен фон за по-добра видимост */
+        max-height: 80vh; /* Ограничава височината */
+        overflow-y: auto; /* Позволява скролване */
+        visibility: hidden;
+        opacity: 0;
+        height: 0;
+        transition: opacity 0.3s ease, height 0.3s ease;
+        z-index: 1000;
+    }
+    .navbar-expand-lg .navbar-toggler {
+        display: block !important;
+        margin-left: auto;
+    }
+    .navbar-expand-lg .navbar-collapse.show {
+        visibility: visible;
+        opacity: 1;
+        height: auto;
+    }
 }
